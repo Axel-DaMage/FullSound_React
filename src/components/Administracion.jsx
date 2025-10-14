@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { inicializarPrecarga } from "../utilidades/interfaz";
+import { inicializarPrecarga } from "../utils/ui";
 
 export default function Administracion() {
   const [showPreloader, setShowPreloader] = useState(true);  

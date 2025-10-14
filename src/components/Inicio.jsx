@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { inicializarPrecarga, inicializarSlider } from "../utilidades/interfaz";
+import { inicializarPrecarga, inicializarSlider } from "../utils/ui";
 import { datosSlides } from "../datos/datosMusica";
 
 export default function Inicio() {

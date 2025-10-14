@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { initPreloader } from "../utils/ui";
-import { validarLogin } from "../utils/validation";
+import { validarLogin } from "../utils/validacion";
 
 export default function Login() {
   const [showPreloader, setShowPreloader] = useState(true);

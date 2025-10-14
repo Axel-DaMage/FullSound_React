@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { inicializarPrecarga } from "../utilidades/interfaz";
-import { registrarUsuario } from "../utilidades/validacion";
+import { inicializarPrecarga } from "../utils/ui";
+import { registrarUsuario } from "../utils/validacion";
 
 export default function Registro() {
   const [showPreloader, setShowPreloader] = useState(true);

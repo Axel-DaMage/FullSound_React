@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { inicializarPrecarga } from "../utils/interfaz";
+import { inicializarPrecarga } from "../utils/ui";
 import { datosBeats } from "../datos/datosMusica";
 
 export default function Beats() {
