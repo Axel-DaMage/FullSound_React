@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { initPreloader } from "../utils/ui";
+import { inicializarPrecarga } from "../utils/ui";
 import { validarLogin } from "../utils/validacion";
 
 export default function Login() {
   const [showPreloader, setShowPreloader] = useState(true);
   
   useEffect(() => {
-    return initPreloader(setShowPreloader);
+    return inicializarPrecarga(setShowPreloader);
   }, []);
 
   const handleUsuariosClick = (e) => {
