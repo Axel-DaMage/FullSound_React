@@ -10,7 +10,7 @@ import Creditos from './components/Creditos'
 
 function App() {
   return (
-    <Router>
+    <Router basename="/FullSound_React">
       <Routes>
         <Route path="/" element={<Inicio />} />
         <Route path="/beats" element={<Beats />} />
