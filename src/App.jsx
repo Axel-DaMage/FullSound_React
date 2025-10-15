@@ -1,16 +1,27 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Inicio from './components/Inicio'
+import Beats from './components/Beats'
+import Carrito from './components/Carrito'
+import Administracion from './components/Administracion'
+import Login from './components/Login'
+import Registro from './components/Registro'
+import Producto from './components/Producto'
+import Creditos from './components/Creditos'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <Inicio />
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Inicio />} />
+        <Route path="/beats" element={<Beats />} />
+        <Route path="/carrito" element={<Carrito />} />
+        <Route path="/admin" element={<Administracion />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/registro" element={<Registro />} />
+        <Route path="/producto/:id" element={<Producto />} />
+        <Route path="/creditos" element={<Creditos />} />
+      </Routes>
+    </Router>
   )
 }
 

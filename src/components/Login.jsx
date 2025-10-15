@@ -1,58 +1,56 @@
-import React, { useEffect, useState } from "react";
-import { inicializarPrecarga } from "../utils/ui";
-import { validarLogin } from "../utils/validacion";
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import Layout from "./Layout";
 
 export default function Login() {
-  const [showPreloader, setShowPreloader] = useState(true);
-  
-  useEffect(() => {
-    return inicializarPrecarga(setShowPreloader);
-  }, []);
+  const navigate = useNavigate();
 
   const handleUsuariosClick = (e) => {
-    validarLogin(e, 'tienda.html');
+    e.preventDefault();
+    const correo = document.getElementById('correo').value.trim();
+    const password = document.getElementById('password').value.trim();
+
+    if (!correo.endsWith('@gmail.com') && !correo.endsWith('@duocuc.cl')) {
+      alert('El correo debe terminar con "@gmail.com" o con "@duocuc.cl".');
+      return false;
+    }
+    if (password.length === 0) {
+      alert('Por favor ingresa tu contraseña.');
+      return false;
+    }
+    if (password.length >= 4 && password.length <= 10) {
+      navigate('/beats'); // Redirigir a la tienda de beats
+      return true;
+    } else {
+      alert('La contraseña debe tener entre 4 y 10 caracteres.');
+      return false;
+    }
   };
 
   const handleAdminClick = (e) => {
-    validarLogin(e, 'admin.html');
+    e.preventDefault();
+    const correo = document.getElementById('correo').value.trim();
+    const password = document.getElementById('password').value.trim();
+
+    if (!correo.endsWith('@gmail.com') && !correo.endsWith('@duocuc.cl')) {
+      alert('El correo debe terminar con "@gmail.com" o con "@duocuc.cl".');
+      return false;
+    }
+    if (password.length === 0) {
+      alert('Por favor ingresa tu contraseña.');
+      return false;
+    }
+    if (password.length >= 4 && password.length <= 10) {
+      navigate('/admin'); // Redirigir al panel de administración
+      return true;
+    } else {
+      alert('La contraseña debe tener entre 4 y 10 caracteres.');
+      return false;
+    }
   };
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", margin: 0 }}>
-      {showPreloader && (
-        <div id="preloder">
-          <div className="loader" />
-        </div>
-      )}
-
-      <header className="header-section clearfix">
-        <a href="index.html" className="site-logo">
-          <div className="logo-text">FullSound</div>
-        </a>
-        <div className="header-right">
-          <div className="user-panel">
-            <a href="Sesion.html" className="login">Iniciar sesión</a>
-            <a href="registro.html" className="register">Crear una cuenta</a>
-          </div>
-        </div>
-        <ul className="main-menu">
-          <li><a href="index.html">Inicio</a></li>
-          <li><a href="Beats.html">Beats</a></li>
-          <li><a href="carrito.html">Carrito</a></li>
-          <li><a href="admin.html">Administracion</a></li>
-        </ul>
-        <button className="mobile-menu-btn">
-          <span />
-          <span />
-          <span />
-        </button>
-        <div className="mobile-menu">
-          <a href="index.html">Inicio</a>
-          <a href="Beats.html">Beats</a>
-          <a href="carrito.html">Carrito</a>
-          <a href="admin.html">Administracion</a>
-        </div>
-      </header>      <main style={{ flex: 1 }}>
+    <Layout>      <main style={{ flex: 1 }}>
         <section className="login-section spad" style={{ minHeight: "60vh", display: "flex", alignItems: "center" }}>
           <div className="container">
             <div className="row justify-content-center">
@@ -100,25 +98,9 @@ export default function Login() {
                     </div>
                   </form>
                 </div>
-              </div>
-            </div>
-          </div>
+              </div>            </div>        </div>
         </section>
       </main>
-
-      <footer className="footer-section" style={{ marginTop: "auto" }}>
-        <div className="container">
-          <div className="footer-text">
-            <a href="creditos.html"> Creditos </a>
-          </div>
-          <div className="logo-text">FullSound</div>
-          <div className="copyright">
-            Copyright &copy;{new Date().getFullYear()} Todos los derechos
-            reservados | Esta plantilla fue creada con <i className="fa fa-heart-o" aria-hidden="true" /> por
-            <a href="https://colorlib.com" target="_blank" rel="noreferrer"> Colorlib</a>
-          </div>
-        </div>
-      </footer>
-    </div>
+    </Layout>
   );
 }
