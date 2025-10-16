@@ -3,6 +3,10 @@ import { inicializarSlider } from "../utils/ui";
 import { datosSlides } from "../datos/datosMusica";
 import Layout from "./Layout";
 import { Link } from "react-router-dom";
+import imgConcept1 from "../assets/img/concept/1.jpg";
+import imgConcept2 from "../assets/img/concept/2.jpg";
+import imgConcept3 from "../assets/img/concept/3.jpg";
+import imgConcept4 from "../assets/img/concept/4.jpg";
 
 export default function Inicio() {
   const [slideIndex, setSlideIndex] = useState(0);
@@ -127,28 +131,30 @@ export default function Inicio() {
           <div className="row">
             <div className="col-lg-3 col-sm-6">
               <div className="concept-item">
-                <img src="/assets/img/concept/1.jpg" alt="Musica" />
+                <img src={imgConcept1} alt="Musica" />
                 <h5>Música Soul</h5>
               </div>
             </div>
             <div className="col-lg-3 col-sm-6">
               <div className="concept-item">
-                <img src="/assets/img/concept/2.jpg" alt="Musica" />
+                <img src={imgConcept2} alt="Musica" />
                 <h5>Conciertos en vivo</h5>
               </div>
             </div>
             <div className="col-lg-3 col-sm-6">
               <div className="concept-item">
-                <img src="/assets/img/concept/3.jpg" alt="Musica" />
+                <img src={imgConcept3} alt="Musica" />
                 <h5>Sets de DJ</h5>
               </div>
             </div>
             <div className="col-lg-3 col-sm-6">
               <div className="concept-item">
-                <img src="/assets/img/concept/4.jpg" alt="Musica" />
+                <img src={imgConcept4} alt="Musica" />
                 <h5>Transmisiones en vivo</h5>
               </div>
-            </div>          </div>        </div>
+            </div>
+          </div>
+        </div>
       </section>
     </Layout>
   );

@@ -46,11 +46,14 @@
   1. ESTILOS BASE Y RESET
 ========================================*/
 
-html,
-body {
+html, body {
 	height: 100%;
 	font-family: "Oxanium", sans-serif;
 	-webkit-font-smoothing: antialiased;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	margin: 0;
 }
 
 /* Barra de scroll personalizada */
@@ -724,6 +727,8 @@ ol {
 .footer-section {
 	background: var(--bg);
 	padding-top: 30px;
+	width: 100%;
+	margin-top: auto;
 }
 
 .footer-widget {
