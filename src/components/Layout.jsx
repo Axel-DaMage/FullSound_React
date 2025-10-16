@@ -11,16 +11,17 @@ export default function Layout({ children, activeItem = "", showPreloader: showP
       return inicializarPrecarga(setShowPreloader);
     }
   }, [showPreloaderProp]);
-
   return (
-    <div>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       {showPreloader && (
         <div id="preloder">
           <div className="loader" />
         </div>
       )}
       <Header activeItem={activeItem} />
-      {children}
+      <main style={{ flex: '1 0 auto' }}>
+        {children}
+      </main>
       <Footer />
     </div>
   );

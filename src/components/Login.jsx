@@ -19,7 +19,7 @@ export default function Login() {
       return false;
     }
     if (password.length >= 4 && password.length <= 10) {
-      navigate('/beats'); // Redirigir a la tienda de beats
+      navigate('/beats');
       return true;
     } else {
       alert('La contraseña debe tener entre 4 y 10 caracteres.');
@@ -41,20 +41,19 @@ export default function Login() {
       return false;
     }
     if (password.length >= 4 && password.length <= 10) {
-      navigate('/admin'); // Redirigir al panel de administración
+      navigate('/admin');
       return true;
     } else {
       alert('La contraseña debe tener entre 4 y 10 caracteres.');
       return false;
-    }
-  };
-
+    }  };
+  
   return (
-    <Layout>      <main style={{ flex: 1 }}>
-        <section className="login-section spad" style={{ minHeight: "60vh", display: "flex", alignItems: "center" }}>
+    <Layout>
+        <section className="login-section spad" style={{ padding: "100px 0 80px", display: "flex", alignItems: "center", minHeight: "calc(100vh - 200px)" }}>
           <div className="container">
             <div className="row justify-content-center">
-              <div className="col-md-6 col-lg-5">
+              <div className="col-md-8 col-lg-6">
                 <div className="card shadow p-4">
                   <h2 className="text-center mb-4">Iniciar Sesión</h2>
                   <form>
@@ -96,11 +95,11 @@ export default function Login() {
                         Administración
                       </button>
                     </div>
-                  </form>
-                </div>
-              </div>            </div>        </div>
+                  </form>                </div>
+              </div>
+            </div>
+        </div>
         </section>
-      </main>
     </Layout>
   );
 }
