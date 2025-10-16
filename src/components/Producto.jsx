@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Layout from "./Layout";
+import img16 from "../assets/img/16.jpg";
 
 export default function Producto() {
   return (
@@ -9,7 +10,7 @@ export default function Producto() {
         <div className="container">
           <div className="row align-items-center">
             <div className="col-md-5 mb-4 mb-md-0">
-              <img src="img/16.jpg" alt="Álbum Jazz Clásico" className="img-fluid rounded shadow" />
+              <img src={img16} alt="Álbum Jazz Clásico" className="img-fluid rounded shadow" />
             </div>
             <div className="col-md-7">
               <h2>La melodia de Lampa</h2>
@@ -24,13 +25,16 @@ export default function Producto() {
               </p>
               <p className="mb-3">
                 <strong>Precio:</strong> <span className="h4 text-success">$250.000</span>
-              </p>              <audio controls className="w-100 mb-3">
+              </p>
+              <audio controls className="w-100 mb-3">
                 <source src="audio/1.mp3" type="audio/mpeg" />
               </audio>
               <Link to="/carrito" className="site-btn">
                 <i className="fa fa-shopping-cart" /> Agregar al carrito
-              </Link></div>
-          </div>        </div>
+              </Link>
+            </div>
+          </div>
+        </div>
       </section>
     </Layout>
   );

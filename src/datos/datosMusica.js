@@ -7,6 +7,7 @@ import audio5 from '../assets/audio/5.mp3';
 import audio6 from '../assets/audio/6.mp3';
 import audio7 from '../assets/audio/7.mp3';
 import audio8 from '../assets/audio/8.mp3';
+import img1 from '../assets/img/1.jpg';
 import img2 from '../assets/img/2.jpg';
 import img7 from '../assets/img/7.jpg';
 
@@ -79,17 +80,24 @@ export const datosBeats = [
 
 export const datosSlides = [
   {
-    prefijoTitulo: "Donde",
-    sufijoTitulo: " los beats nacen, y la música comienza.",
-    texto: "Impulsa tu talento: comparte, vende y descubre música en un solo lugar.",
-    imagen: img7,
-    alt: "Musica",
+    imagen: img1,
+    alt: "Slide 1",
+    prefijoTitulo: "Título 1",
+    sufijoTitulo: "Subtítulo 1",
+    texto: "Texto del slide 1",
   },
   {
-    prefijoTitulo: "Conecta,",
-    sufijoTitulo: " crea y haz sonar tu mundo con Fullsound.",
-    texto: "Explora miles de beats originales, gratuitos y de pago, listos para inspirar tu próxima canción.",
     imagen: img2,
-    alt: "Musica",
+    alt: "Slide 2",
+    prefijoTitulo: "Título 2",
+    sufijoTitulo: "Subtítulo 2",
+    texto: "Texto del slide 2",
+  },
+  {
+    imagen: img7,
+    alt: "Slide 3",
+    prefijoTitulo: "Título 3",
+    sufijoTitulo: "Subtítulo 3",
+    texto: "Texto del slide 3",
   },
 ];
