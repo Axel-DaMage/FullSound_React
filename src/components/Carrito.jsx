@@ -1,5 +1,6 @@
-import React from "react";
 import Layout from "./Layout";
+import img15 from "../assets/img/15.jpg";
+import img14 from "../assets/img/14.jpg";
 
 export default function Carrito() {
   return (
@@ -19,7 +20,7 @@ export default function Carrito() {
                 <tr>
                   <td>
                     <img
-                      src="img/15.jpg"
+                      src={img15}
                       alt="Producto 1"
                       style={{ width: 60, height: 60, objectFit: "cover", marginRight: 10 }}
                     />
@@ -30,7 +31,7 @@ export default function Carrito() {
                 <tr>
                   <td>
                     <img
-                      src="img/14.jpg"
+                      src={img14}
                       alt="Producto 2"
                       style={{ width: 60, height: 60, objectFit: "cover", marginRight: 10 }}
                     />
@@ -60,8 +61,10 @@ export default function Carrito() {
                     Finalizar compra
                   </a>
                 </div>
-              </div>            </div>
-          </div>        </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
     </Layout>
   );
