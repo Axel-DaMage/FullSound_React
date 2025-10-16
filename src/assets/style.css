@@ -50,10 +50,17 @@ html, body {
 	height: 100%;
 	font-family: "Oxanium", sans-serif;
 	-webkit-font-smoothing: antialiased;
+	margin: 0;
+}
+
+body {
+	min-height: 100vh;
+}
+
+#root {
 	min-height: 100vh;
 	display: flex;
 	flex-direction: column;
-	margin: 0;
 }
 
 /* Barra de scroll personalizada */
@@ -723,12 +730,41 @@ ol {
 	margin-bottom: 0;
 }
 
+/* Páginas de autenticación (Login y Registro) */
+.login-section {
+	padding: 100px 0 80px;
+	min-height: calc(100vh - 200px);
+	display: flex;
+	align-items: center;
+	position: relative;
+	z-index: 1;
+}
+
+.login-section .card {
+	margin-bottom: 0;
+	padding: 2.5rem !important;
+	position: relative;
+	z-index: 2;
+}
+
+.login-section .container {
+	max-width: 800px;
+	position: relative;
+	z-index: 2;
+}
+
+.login-section .form-control {
+	padding: 12px 15px;
+	font-size: 1rem;
+}
+
 /* Pie de página */
 .footer-section {
 	background: var(--bg);
 	padding-top: 30px;
 	width: 100%;
 	margin-top: auto;
+	flex-shrink: 0;
 }
 
 .footer-widget {

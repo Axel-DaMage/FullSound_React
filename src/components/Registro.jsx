@@ -17,18 +17,15 @@ export default function Registro() {
     const { id, value, checked, type } = e.target;
     setForm((f) => ({ ...f, [id]: type === "checkbox" ? checked : value }));
   };
-  const onSubmit = (e) => {
-    e.preventDefault();
-    registrarUsuario(form, navigate);
+  const onSubmit = (e) => {    e.preventDefault();    registrarUsuario(form, navigate);
   };
-
+  
   return (
     <Layout>
-      <main style={{ flex: 1 }}>
-        <section className="login-section spad" style={{ minHeight: "60vh", display: "flex", alignItems: "center" }}>
+        <section className="login-section spad" style={{ padding: "100px 0 80px", display: "flex", alignItems: "center", minHeight: "calc(100vh - 200px)" }}>
           <div className="container">
             <div className="row justify-content-center">
-              <div className="col-md-6 col-lg-5">
+              <div className="col-md-8 col-lg-6">
                 <div className="card shadow p-4">
                   <h2 className="text-center mb-4">Crear Cuenta</h2>
                   <form onSubmit={onSubmit}>
@@ -102,11 +99,11 @@ export default function Registro() {
                         </p>
                       </div>
                     </div>
-                  </form>
-                </div>
-              </div>            </div>        </div>
+                  </form>                </div>
+              </div>
+            </div>
+        </div>
         </section>
-      </main>
     </Layout>
   );
 }
