@@ -7,8 +7,6 @@ import audio5 from '../assets/audio/5.mp3';
 import audio6 from '../assets/audio/6.mp3';
 import audio7 from '../assets/audio/7.mp3';
 import audio8 from '../assets/audio/8.mp3';
-
-// Import images
 import img2 from '../assets/img/2.jpg';
 import img7 from '../assets/img/7.jpg';
 

@@ -7,6 +7,7 @@ import imgConcept1 from "../assets/img/concept/1.jpg";
 import imgConcept2 from "../assets/img/concept/2.jpg";
 import imgConcept3 from "../assets/img/concept/3.jpg";
 import imgConcept4 from "../assets/img/concept/4.jpg";
+import Carrusel from "./Carrusel";
 
 export default function Inicio() {
   const [slideIndex, setSlideIndex] = useState(0);
@@ -18,34 +19,7 @@ export default function Inicio() {
   return (
     <Layout activeItem="inicio">
       <section className="hero-section">
-        <div className="hero-slider">
-          {datosSlides.map((slide, i) => (
-            <div
-              className="hs-item"
-              key={i}
-              style={{ display: i === slideIndex ? "block" : "none" }}
-            >
-              <div className="container">
-                <div className="row">
-                  <div className="col-lg-6">
-                    <div className="hs-text">
-                      <h2>
-                        <span>{slide.prefijoTitulo}</span>
-                        {slide.sufijoTitulo}
-                      </h2>
-                      <p>{slide.texto}</p>
-                    </div>
-                  </div>
-                  <div className="col-lg-6">
-                    <div className="hr-img">
-                      <img src={slide.imagen} alt={slide.alt} className="hero-img" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+        <Carrusel />
       </section>
       <section className="intro-section spad">
         <div className="container">
