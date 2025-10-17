@@ -1,0 +1,400 @@
+/*========================================
+  REPRODUCTORES MULTIMEDIA
+========================================*/
+
+.single_player_container {
+	margin-top: 30px;
+	text-align: center;
+}
+
+.single_player_container .jp-interface {
+	display: flex;
+}
+
+.player_bars {
+	width: calc(100% - 145px);
+	position: relative;
+	padding-top: 8px;
+}
+
+.player_controls_box {
+	width: 145px;
+}
+
+.player_controls>button:not(:last-of-type) {
+	margin-right: 4px;
+}
+
+.player_button {
+	position: relative;
+	width: 28px;
+	height: 28px;
+	background: var(--secondary);
+	border: none;
+	border-radius: 50%;
+	outline: none !important;
+	cursor: pointer;
+	flex: 0 0 auto;
+}
+
+.player_button::after {
+	display: block;
+	position: absolute;
+}
+
+.jp-play {
+	background: var(--highlight);
+}
+
+.jp-play:after {
+	left: 9px;
+	top: 3px;
+	width: 11px;
+	height: 13px;
+	content: url(../img/icons/play.png);
+}
+
+.jp-state-playing .jp-play::after,
+.playing .jp-play::after {
+	top: 4px !important;
+	left: 7px !important;
+	content: url(../img/icons/pause.png);
+}
+
+.jp-prev:after {
+	top: 1px !important;
+	left: 6px !important;
+	content: url(../img/icons/back.png);
+}
+
+.jp-next:after {
+	top: 1px !important;
+	right: 7px !important;
+	content: url(../img/icons/next.png);
+}
+
+.jp-stop::after {
+	top: 10px;
+	left: 10px;
+	width: 8px;
+	height: 8px;
+	background: #475069;
+	content: "";
+}
+
+.jp-progress {
+	width: 100%;
+	cursor: pointer;
+}
+
+.jp-seek-bar {
+	height: 100%;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	background: transparent;
+	margin-bottom: -5px;
+}
+
+.jp-seek-bar>div {
+	height: 2px;
+	background: var(--secondary);
+}
+
+.jp-play-bar {
+	position: relative;
+	height: 100%;
+	background: #272727;
+	overflow: visible !important;
+}
+
+.jp-current-time {
+	position: absolute;
+	font-size: 14px;
+	color: var(--bg);
+	right: -40px;
+	top: 100%;
+	padding-top: 15px;
+	background: var(--accent);
+	z-index: 1;
+	transition: all 0.3s;
+}
+
+.middle .jp-current-time {
+	right: -5px;
+	padding: 15px 5px 0;
+}
+
+.jp-duration {
+	position: absolute;
+	font-size: 14px;
+	color: var(--secondary);
+	right: 0;
+	bottom: -16px;
+}
+
+/* Player Box */
+.player-box {
+	padding: 77px 121px 100px 81px;
+	border-radius: 24px;
+	background: var(--accent);
+	display: flex;
+}
+
+.wave-player-warp {
+	padding-top: 40px;
+	position: relative;
+	width: calc(100% - 382px);
+}
+
+.tarck-thumb-warp {
+	width: 382px;
+}
+
+.tarck-thumb {
+	max-width: 333px;
+	position: relative;
+}
+
+.tarck-thumb img {
+	border-radius: 22px;
+}
+
+.tarck-thumb .wp-play {
+	position: absolute;
+	width: 70px;
+	height: 70px;
+	left: calc(50% - 35px);
+	top: calc(50% - 35px);
+	border: none;
+	border-radius: 50%;
+	color: var(--highlight);
+	background: var(--accent);
+}
+
+.tarck-thumb .wp-play:after {
+	position: absolute;
+	content: "";
+	left: calc(50% - 6px);
+	top: calc(50% - 8px);
+	font: normal normal normal 18px/1 FontAwesome, sans-serif;
+}
+
+.playing .tarck-thumb .wp-play:after {
+	position: absolute;
+	content: "";
+	left: calc(50% - 8px);
+	font: normal normal normal 18px/1 FontAwesome, sans-serif;
+}
+
+.wave-player-info h2 {
+	font-size: 48px;
+	font-weight: 600;
+}
+
+.wave-player-info p {
+	font-size: 14px;
+}
+
+.wavePlayer_controls {
+	padding-top: 20px;
+}
+
+#wavePlayer {
+	position: relative;
+}
+
+#currentTime {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	font-size: 14px;
+	color: var(--bg);
+	font-weight: 500;
+	background: var(--accent);
+	padding-right: 2px;
+}
+
+#clipTime {
+	position: absolute;
+	right: 10px;
+	top: 59px;
+	font-size: 14px;
+	color: var(--secondary);
+	font-weight: 500;
+}
+
+/* Song Details */
+.songs-details-section {
+	padding: 100px 38px 50px;
+	background: #f9fcfd;
+}
+
+.song-details-box {
+	margin-bottom: 30px;
+	overflow: hidden;
+}
+
+.song-details-box h3 {
+	margin-bottom: 50px;
+}
+
+.song-details-box ul {
+	list-style: none;
+	max-width: 310px;
+}
+
+.song-details-box ul li {
+	margin-bottom: 15px;
+	font-size: 14px;
+	line-height: 2;
+}
+
+.song-details-box ul strong {
+	float: left;
+	margin-right: 6px;
+	font-weight: 600;
+	color: var(--bg);
+}
+
+.song-details-box ul span {
+	display: block;
+	overflow: hidden;
+	color: var(--secondary);
+}
+
+.song-details-box .single_player_container {
+	margin-top: 0;
+	padding-left: 0;
+}
+
+.artist-details img {
+	float: left;
+	width: 163px;
+	height: 163px;
+	margin-right: 30px;
+	border-radius: 50%;
+}
+
+.artist-details h5 {
+	margin-bottom: 5px;
+	padding-top: 10px;
+}
+
+.artist-details span {
+	display: block;
+	font-size: 12px;
+	color: var(--secondary);
+	margin-bottom: 15px;
+}
+
+.artist-details .ad-text {
+	overflow: hidden;
+}
+
+.song-details-box .song-info-box img {
+	width: 60px;
+	height: 60px;
+	border-radius: 20px;
+	margin-right: 13px;
+}
+
+.song-details-box .song-info-box .song-info {
+	padding-top: 10px;
+}
+
+.song-details-box .song-info-box .song-info h4 {
+	font-size: 14px;
+}
+
+.song-details-box .song-info-box .song-info p {
+	font-size: 10px;
+}
+
+.song-details-box .song-item {
+	margin-bottom: 22px;
+}
+
+.song-details-box .player_controls_box {
+	width: 102px;
+}
+
+.song-details-box .player_button {
+	transform: scale(0.7);
+	transform-origin: center;
+	margin: 0 -5px;
+}
+
+.song-details-box .player_bars {
+	width: calc(100% - 102px);
+}
+
+.song-details-box .single_player {
+	padding: 14px 15px 0 0px;
+}
+
+.song-details-box .jp-current-time {
+	font-size: 10px;
+	right: -29px;
+	padding-top: 9px;
+}
+
+.song-details-box .middle .jp-current-time {
+	right: -5px;
+	padding: 9px 5px 0;
+}
+
+.song-details-box .jp-duration {
+	font-size: 10px;
+	bottom: -6px;
+}
+
+/* Similar Songs */
+.similar-songs-section {
+	padding: 100px 33px;
+}
+
+.similar-songs-section h3 {
+	margin-bottom: 70px;
+	padding-left: 6px;
+}
+
+.similar-song {
+	padding: 0 6px;
+	margin-bottom: 35px;
+}
+
+.similar-song .ss-thumb {
+	border-radius: 41px;
+	margin-bottom: 22px;
+	min-width: 100%;
+}
+
+.similar-song h4 {
+	font-size: 20px;
+	margin-bottom: 5px;
+}
+
+.similar-song p {
+	font-size: 14px;
+}
+
+.similar-song .player_bars {
+	width: 100%;
+}
+
+.similar-song .jp-current-time {
+	padding-top: 10px;
+}
+
+.similar-song .jp-duration {
+	bottom: -25px;
+}
+
+.ss-controls {
+	padding: 15px 0 10px;
+}
+
+.ss-controls .songs-links {
+	padding-top: 0;
+	float: right;
+}

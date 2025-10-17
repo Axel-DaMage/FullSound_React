@@ -15,14 +15,13 @@ export default function Carrito() {
                   <th>Producto</th>
                   <th>Precio</th>
                 </tr>
-              </thead>
-              <tbody>
+              </thead>              <tbody>
                 <tr>
                   <td>
                     <img
                       src={img15}
                       alt="Producto 1"
-                      style={{ width: 60, height: 60, objectFit: "cover", marginRight: 10 }}
+                      className="cart-product-img"
                     />
                     <span>Álbum Jazz Clásico</span>
                   </td>
@@ -33,7 +32,7 @@ export default function Carrito() {
                     <img
                       src={img14}
                       alt="Producto 2"
-                      style={{ width: 60, height: 60, objectFit: "cover", marginRight: 10 }}
+                      className="cart-product-img"
                     />
                     <span>Single Electrónico</span>
                   </td>
@@ -57,9 +56,9 @@ export default function Carrito() {
                   Total: <span className="float-right">$150.00</span>
                 </h5>
                 <div className="text-center mt-4">
-                  <a href="#" className="site-btn">
+                  <button className="site-btn">
                     Finalizar compra
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>

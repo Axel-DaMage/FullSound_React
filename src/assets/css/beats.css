@@ -1,0 +1,161 @@
+/*========================================
+  TIENDA DE BEATS
+========================================*/
+
+.shop-section {
+	padding: 120px 0 80px;
+	background: var(--bg);
+	min-height: 100vh;
+}
+
+.shop-section h2 {
+	color: var(--accent);
+	font-size: 48px;
+	margin-bottom: 40px;
+	text-align: center;
+}
+
+/* Estilos adicionales de tarjetas */
+.shop-section .card {
+	background: var(--fg);
+	border: none;
+	border-radius: 20px;
+	height: 100%;
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.shop-section .card:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.shop-section .card-body {
+	padding: 25px;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	min-height: 450px;
+}
+
+.shop-section .card-title {
+	color: var(--accent);
+	font-size: 22px;
+	font-weight: 600;
+	margin-bottom: 20px;
+	height: 60px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	line-height: 1.2;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	flex-shrink: 0;
+}
+
+.shop-section .card-content {
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+	justify-content: space-between;
+}
+
+.shop-section .card-info {
+	flex-shrink: 0;
+	margin-bottom: 15px;
+}
+
+.shop-section .card-audio {
+	flex-shrink: 0;
+	margin: 15px 0;
+}
+
+.shop-section .card-button {
+	flex-shrink: 0;
+	margin-top: auto;
+}
+
+.shop-section .card-text strong {
+	color: var(--highlight);
+	font-weight: 600;
+}
+
+.shop-section .card-body audio {
+	margin: 20px 0;
+	border-radius: 10px;
+}
+
+.shop-section .site-btn i {
+	margin-right: 8px;
+}
+
+.shop-section .card-img-top {
+	height: 250px;
+	object-fit: cover;
+	border-bottom: 2px solid var(--highlight);
+}
+
+.shop-section .card-text {
+	color: var(--accent);
+	font-size: 16px;
+	margin-bottom: 15px;
+}
+
+.shop-section .card-text.price {
+	color: var(--highlight);
+	font-size: 24px;
+	font-weight: 700;
+	margin-bottom: 20px;
+}
+
+.shop-section .btn-primary {
+	background: var(--highlight);
+	border: none;
+	color: var(--bg);
+	padding: 10px 20px;
+	font-weight: 600;
+	border-radius: 25px;
+	transition: all 0.3s ease;
+}
+
+.shop-section .btn-primary:hover {
+	background: var(--accent);
+	color: var(--bg);
+	transform: scale(1.05);
+}
+
+/* Filtros y búsqueda */
+.search-form {
+	margin-bottom: 40px;
+}
+
+.search-form input {
+	background: var(--fg);
+	border: 2px solid var(--highlight);
+	color: var(--accent);
+	padding: 12px 20px;
+	border-radius: 25px;
+}
+
+.search-form input:focus {
+	background: var(--fg);
+	color: var(--accent);
+	border-color: var(--highlight);
+	box-shadow: 0 0 10px rgba(163, 218, 88, 0.3);
+}
+
+.search-form input::placeholder {
+	color: rgba(255, 255, 255, 0.5);
+}
+
+.filter-section {
+	margin-bottom: 30px;
+}
+
+.filter-section select {
+	background: var(--fg);
+	border: 2px solid var(--highlight);
+	color: var(--accent);
+	padding: 10px 15px;
+	border-radius: 25px;
+}

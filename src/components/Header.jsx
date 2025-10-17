@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { menuItems, getMenuItemClass } from "../utils/headerUtils";
 
 export default function Header({ activeItem = "" }) {
   const [mobileActive, setMobileActive] = useState(false);
@@ -22,26 +24,13 @@ export default function Header({ activeItem = "" }) {
         </div>
       </div>
       <ul className="main-menu">
-        <li>
-          <Link to="/" className={activeItem === "inicio" ? "active" : ""}>
-            Inicio
-          </Link>
-        </li>
-        <li>
-          <Link to="/beats" className={activeItem === "beats" ? "active" : ""}>
-            Beats
-          </Link>
-        </li>
-        <li>
-          <Link to="/carrito" className={activeItem === "carrito" ? "active" : ""}>
-            Carrito
-          </Link>
-        </li>
-        <li>
-          <Link to="/admin" className={activeItem === "administracion" ? "active" : ""}>
-            Administracion
-          </Link>
-        </li>
+        {menuItems.map((item) => (
+          <li key={item.key}>
+            <Link to={item.path} className={getMenuItemClass(item.key, activeItem)}>
+              {item.label}
+            </Link>
+          </li>
+        ))}
       </ul>
       <button className="mobile-menu-btn" onClick={toggleMobile}>
         <span />
@@ -49,11 +38,19 @@ export default function Header({ activeItem = "" }) {
         <span />
       </button>
       <div className={`mobile-menu${mobileActive ? " active" : ""}`}>
-        <Link to="/">Inicio</Link>
-        <Link to="/beats">Beats</Link>
-        <Link to="/carrito">Carrito</Link>
-        <Link to="/admin">Administracion</Link>
-      </div>
+        {menuItems.map((item) => (
+          <Link key={item.key} to={item.path}>
+            {item.label}
+          </Link>
+        ))}
     </header>
   );
 }
+
+Header.propTypes = {
+  activeItem: PropTypes.string
+};
+
+Header.defaultProps = {
+  activeItem: ""
+};

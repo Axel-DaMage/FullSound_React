@@ -19,10 +19,9 @@ export default function Registro() {
   };
   const onSubmit = (e) => {    e.preventDefault();    registrarUsuario(form, navigate);
   };
-  
-  return (
+    return (
     <Layout>
-        <section className="login-section spad" style={{ padding: "100px 0 80px", display: "flex", alignItems: "center", minHeight: "calc(100vh - 200px)" }}>
+        <section className="login-section spad">
           <div className="container">
             <div className="row justify-content-center">
               <div className="col-md-8 col-lg-6">
@@ -87,13 +86,13 @@ export default function Registro() {
                         required
                       />
                       <label className="form-check-label" htmlFor="terminos">
-                        Acepto los <a href="#" className="text-primary">términos y condiciones</a>
+                        Acepto los <button type="button" className="btn btn-link text-primary p-0" style={{textDecoration: 'underline', border: 'none', background: 'none'}}>términos y condiciones</button>
                       </label>
                     </div>
                     <div className="d-flex flex-column gap-3 mt-4">
-                      <button type="submit" className="site-btn btn-block" style={{ fontSize: "1.2rem" }}>
+                      <button type="submit" className="site-btn btn-block">
                         Crear Cuenta
-                      </button>                      <div className="text-center">
+                      </button><div className="text-center">
                         <p className="mb-0">
                           ¿Ya tienes cuenta? <Link to="/login" className="text-primary">Inicia sesión aquí</Link>
                         </p>

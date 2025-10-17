@@ -1,16 +1,31 @@
-# React + Vite
+<!-- Badges de CI y despliegue -->
+[![Tests](https://github.com/Axel-DaMage/FullSound_React/actions/workflows/test.yml/badge.svg)](https://github.com/Axel-DaMage/FullSound_React/actions/workflows/test.yml)
+[![CI & Deploy](https://github.com/Axel-DaMage/FullSound_React/actions/workflows/ci-deploy.yml/badge.svg)](https://github.com/Axel-DaMage/FullSound_React/actions/workflows/ci-deploy.yml)
+[![Pages Deployment](https://img.shields.io/github/deployments/Axel-DaMage/FullSound_React/pages?label=GitHub%20Pages&logo=github)](https://github.com/Axel-DaMage/FullSound_React/deployments)
+[![Vitest Status](https://img.shields.io/badge/tests-vitest-blue.svg)](https://github.com/Axel-DaMage/FullSound_React/actions/workflows/test.yml)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Proyecto FullSound
 
-Currently, two official plugins are available:
+FullSound es una plataforma web para explorar, comprar y administrar beats musicales. Está construida con React + Vite y una estructura modular de CSS y utilidades.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Dependencias
+- Stack: React (v19) + Vite
+- Tests: Vitest
+- Linter: ESLint
+- CI: GitHub Actions (tests → build → deploy a GitHub Pages)
 
-## React Compiler
+## Estructura del proyecto
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+src/
+├── components/      # Componentes React (Header, Layout, Carrusel, Producto, etc.)
+├── assets/          # CSS modular y recursos (css/, img/, audio/)
+├── datos/           # Datos ficticios (beats, slides)
+├── utils/           # Helpers y lógica separada
+├── tests/           # Pruebas unitarias
+├── App.jsx
+└── main.jsx
 
-## Expanding the ESLint configuration
+public/              # Archivos estáticos
+proyecto antiguo/     # Código original HTML/CSS/JS de referencia
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Licencia: MIT

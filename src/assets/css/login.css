@@ -1,0 +1,30 @@
+/*========================================
+  LOGIN Y REGISTRO
+========================================*/
+
+.login-section {
+	padding: 100px 0 80px;
+	min-height: calc(100vh - 200px);
+	display: flex;
+	align-items: center;
+	position: relative;
+	z-index: 1;
+}
+
+.login-section .card {
+	margin-bottom: 0;
+	padding: 2.5rem !important;
+	position: relative;
+	z-index: 2;
+}
+
+.login-section .container {
+	max-width: 800px;
+	position: relative;
+	z-index: 2;
+}
+
+.login-section .form-control {
+	padding: 12px 15px;
+	font-size: 1rem;
+}

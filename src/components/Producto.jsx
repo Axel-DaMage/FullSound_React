@@ -1,39 +1,229 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import Layout from "./Layout";
-import img16 from "../assets/img/16.jpg";
+import { 
+  buscarProductoPorId, 
+  obtenerProductosRelacionados, 
+  agregarAlCarrito,
+  validarCantidad 
+} from "../utils/productUtils";
 
 export default function Producto() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [producto, setProducto] = useState(null);
+  const [cantidad, setCantidad] = useState(1);
+
+  useEffect(() => {
+    const productoEncontrado = buscarProductoPorId(id);
+    setProducto(productoEncontrado);
+  }, [id]);
+
+  const handleAddToCart = () => {
+    const resultado = agregarAlCarrito(producto, cantidad);
+    if (resultado.success) {
+      alert(resultado.mensaje);
+    }
+  };
+
+  const handleBuyNow = () => {
+    navigate('/carrito');
+  };
+
+  const handleCantidadChange = (e) => {
+    setCantidad(validarCantidad(e.target.value));
+  };
+
+  const incrementarCantidad = () => {
+    setCantidad(cantidad + 1);
+  };
+
+  const decrementarCantidad = () => {
+    setCantidad(validarCantidad(cantidad - 1));
+  };
+
+  if (!producto) {
+    return (
+      <Layout>
+        <div className="container product-loading">
+          <h2>Cargando producto...</h2>
+        </div>
+      </Layout>
+    );
+  }
+
+  const productosRelacionados = obtenerProductosRelacionados(producto.id, producto.genero);
+
   return (
-    <Layout>
-      <section className="product-detail-section spad">
+    <Layout activeItem="beats">
+      <section className="product-detail-section">
         <div className="container">
-          <div className="row align-items-center">
-            <div className="col-md-5 mb-4 mb-md-0">
-              <img src={img16} alt="Álbum Jazz Clásico" className="img-fluid rounded shadow" />
-            </div>
-            <div className="col-md-7">
-              <h2>La melodia de Lampa</h2>
-              <p className="mb-2">
-                <strong>Artista:</strong> Ismael Rivas
-              </p>
-              <p className="mb-2">
-                <strong>Género:</strong> Electrónica
-              </p>
-              <p className="mb-2">
-                <strong>Descripción:</strong> Disfruta de un clásico de la Electrónica en este beat exclusivo, ideal para ambientar cualquier momento.
-              </p>
-              <p className="mb-3">
-                <strong>Precio:</strong> <span className="h4 text-success">$250.000</span>
-              </p>
-              <audio controls className="w-100 mb-3">
-                <source src="audio/1.mp3" type="audio/mpeg" />
-              </audio>
-              <Link to="/carrito" className="site-btn">
-                <i className="fa fa-shopping-cart" /> Agregar al carrito
-              </Link>
+          {/* Breadcrumb */}
+          <div className="row mb-4">
+            <div className="col-12">
+              <nav aria-label="breadcrumb">
+                <ol className="breadcrumb product-breadcrumb">
+                  <li className="breadcrumb-item">
+                    <Link to="/" className="breadcrumb-link">
+                      <i className="fa fa-home" /> Inicio
+                    </Link>
+                  </li>
+                  <li className="breadcrumb-item">
+                    <Link to="/beats" className="breadcrumb-link">Beats</Link>
+                  </li>
+                  <li className="breadcrumb-item active breadcrumb-current" aria-current="page">
+                    {producto.titulo}
+                  </li>
+                </ol>
+              </nav>
             </div>
           </div>
+
+          {/* Producto Detail */}
+          <div className="row align-items-center">
+            {/* Imagen del producto */}
+            <div className="col-md-5 mb-4 mb-md-0">
+              <div className="product-image-wrapper">
+                <img 
+                  src={producto.imagen} 
+                  alt={producto.titulo} 
+                  className="img-fluid rounded shadow-lg" 
+                />
+              </div>
+            </div>
+
+            {/* Información del producto */}
+            <div className="col-md-7">
+              <h2 className="mb-3 product-title">
+                {producto.titulo}
+              </h2>
+              
+              <div className="product-info mb-3">
+                <p className="mb-2">
+                  <strong className="product-artist">Artista:</strong>{" "}
+                  <span className="product-artist-value">{producto.artista}</span>
+                </p>
+                <p className="mb-2">
+                  <strong className="product-genre">Género:</strong>{" "}
+                  <span className="product-genre-badge">
+                    {producto.genero}
+                  </span>
+                </p>
+                <p className="mb-3">
+                  <strong className="product-description">Descripción:</strong>{" "}
+                  <span className="product-description-value">{producto.descripcion}</span>
+                </p>
+                <p className="mb-4">
+                  <strong className="product-price-label">Precio:</strong>{" "}
+                  <span className="h3 product-price">
+                    {producto.precio}
+                  </span>
+                </p>
+              </div>
+
+              {/* Reproductor de audio */}
+              <div className="audio-preview-section">
+                <div className="audio-preview-label">
+                  <i className="fa fa-music" /> Vista previa:
+                </div>
+                <audio controls className="w-100 audio-preview-player">
+                  <source src={producto.fuente} type="audio/mpeg" />
+                  <track kind="captions" srcLang="es" label="Spanish" />
+                  Tu navegador no soporta el elemento de audio.
+                </audio>
+              </div>
+
+              {/* Cantidad */}
+              <div className="quantity-selector-section">
+                <div className="quantity-selector-label">
+                  Cantidad:
+                </div>
+                <div className="quantity-selector-wrapper">
+                  <button 
+                    className="btn btn-sm quantity-btn"
+                    onClick={decrementarCantidad}
+                    aria-label="Disminuir cantidad"
+                  >
+                    -
+                  </button>
+                  <input 
+                    type="number" 
+                    value={cantidad}
+                    onChange={handleCantidadChange}
+                    className="form-control quantity-input"
+                    min="1"
+                    aria-label="Cantidad del producto"
+                  />
+                  <button 
+                    className="btn btn-sm quantity-btn"
+                    onClick={incrementarCantidad}
+                    aria-label="Aumentar cantidad"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+
+              {/* Botones de acción */}
+              <div className="product-actions">
+                <button 
+                  onClick={handleAddToCart}
+                  className="site-btn btn-add-to-cart"
+                >
+                  <i className="fa fa-shopping-cart" /> Agregar al carrito
+                </button>
+                <button 
+                  onClick={handleBuyNow}
+                  className="site-btn btn-buy-now"
+                >
+                  <i className="fa fa-credit-card" /> Comprar ahora
+                </button>
+              </div>
+
+              {/* Volver a Beats */}
+              <div className="mt-4">
+                <Link 
+                  to="/beats" 
+                  className="back-to-beats-link"
+                >
+                  <i className="fa fa-arrow-left" /> Volver a Beats
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Productos relacionados */}
+          {productosRelacionados.length > 0 && (
+            <div className="row related-products-section">
+              <div className="col-12">
+                <h3 className="related-products-title">
+                  Productos relacionados
+                </h3>
+                <div className="row">
+                  {productosRelacionados.map(beat => (
+                    <div key={beat.id} className="col-md-4 mb-4">
+                      <div className="card related-product-card">
+                        <img src={beat.imagen} className="card-img-top" alt={beat.titulo} />
+                        <div className="card-body">
+                          <h5 className="card-title related-product-title">{beat.titulo}</h5>
+                          <p className="card-text related-product-artist">{beat.artista}</p>
+                          <p className="card-text related-product-price">
+                            <strong>{beat.precio}</strong>
+                          </p>
+                          <Link 
+                            to={`/producto/${beat.id}`} 
+                            className="site-btn btn-sm"
+                          >
+                            Ver producto
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </section>
     </Layout>

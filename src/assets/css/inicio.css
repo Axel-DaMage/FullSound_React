@@ -1,0 +1,167 @@
+/*========================================
+  INICIO - SECCIONES DE CONTENIDO
+========================================*/
+
+/* Sección de introducción */
+.intro-section {
+	background: var(--fg);
+	text-align: center;
+}
+
+.intro-section h2 {
+	font-size: 60px;
+	color: var(--accent);
+	margin-bottom: 20px;
+}
+
+.intro-section p {
+	color: var(--accent);
+}
+
+/* Sección Cómo funciona */
+.how-section {
+	background: var(--bg);
+	text-align: center;
+}
+
+.how-section h2 {
+	font-size: 60px;
+	color: var(--accent);
+	margin-bottom: 20px;
+}
+
+.how-section .hw-icon img {
+	margin-bottom: 30px;
+}
+
+.how-section .hw-text {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+}
+
+.how-section .hw-text h3 {
+	color: var(--accent);
+	margin-bottom: 15px;
+}
+
+.how-section .hw-text p {
+	color: var(--accent);
+}
+
+/* Sección de conceptos */
+.concept-section {
+	background: var(--fg);
+	text-align: center;
+}
+
+.concept-section h2 {
+	color: var(--accent);
+	font-size: 60px;
+	margin-bottom: 60px;
+}
+
+.concept-item img {
+	width: 100%;
+	border-radius: 30px;
+}
+
+.concept-item .ci-text {
+	padding-top: 25px;
+	text-align: center;
+}
+
+.concept-item .ci-text h4 {
+	color: var(--accent);
+	margin-bottom: 5px;
+}
+
+/* Sección de suscripción */
+.subscription-section {
+	background: var(--bg);
+	text-align: center;
+}
+
+.subscription-section h2 {
+	font-size: 60px;
+	color: var(--accent);
+	margin-bottom: 20px;
+}
+
+.subscription-section p {
+	color: var(--accent);
+	margin-bottom: 40px;
+}
+
+.subscription-form input[type="email"] {
+	width: 100%;
+	padding: 15px 20px;
+	border: 2px solid var(--accent);
+	border-radius: 50px;
+	background: var(--bg);
+	color: var(--accent);
+	font-size: 15px;
+	margin-bottom: 20px;
+}
+
+.subscription-form input[type="email"]:focus {
+	outline: none;
+	border-color: var(--highlight);
+}
+
+.subscription-form button {
+	width: 100%;
+}
+
+/* Sección Premium */
+.premium-section {
+	background: var(--fg);
+	padding-top: 105px;
+	padding-bottom: 90px;
+}
+
+.premium-section h2 {
+	font-size: 60px;
+	color: var(--accent);
+	text-align: center;
+	margin-bottom: 50px;
+}
+
+.premium-features {
+	display: flex;
+	justify-content: space-around;
+	flex-wrap: wrap;
+	gap: 30px;
+}
+
+.premium-features-item {
+	flex: 1;
+	text-align: center;
+	padding: 30px;
+	background: var(--bg);
+	border-radius: 15px;
+	min-width: 250px;
+}
+
+.premium-features-item i {
+	font-size: 50px;
+	color: var(--highlight);
+	margin-bottom: 20px;
+}
+
+.premium-features-item h4 {
+	color: var(--accent);
+	margin-bottom: 15px;
+}
+
+.premium-features-item p {
+	color: var(--accent);
+	margin-bottom: 0;
+}
+
+.premium-cta {
+	text-align: center;
+	margin-top: 50px;
+}

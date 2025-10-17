@@ -1,0 +1,163 @@
+/*========================================
+  PLAYLISTS Y CATEGORÍAS
+========================================*/
+
+/* Página de listas de reproducción */
+.playlist-section {
+	padding: 105px 42px;
+}
+
+.playlist-section .section-title {
+	float: left;
+}
+
+.playlist-filter {
+	text-align: right;
+	padding-top: 20px;
+	margin-bottom: 100px;
+}
+
+.playlist-filter li {
+	display: inline-block;
+	font-size: 15px;
+	font-weight: 500;
+	color: var(--secondary);
+	padding: 10px 6px 16px;
+	margin-right: 55px;
+	margin-bottom: 10px;
+	border-bottom: 2px solid transparent;
+	cursor: pointer;
+}
+
+.playlist-filter li.mixitup-control-active {
+	border-bottom: 2px solid var(--highlight);
+}
+
+.playlist-item {
+	text-align: center;
+	padding: 0 11px;
+	margin-bottom: 30px;
+}
+
+.playlist-item img {
+	min-width: 100%;
+	border-radius: 40px;
+	margin-bottom: 30px;
+}
+
+/* Página de categorías */
+.category-section {
+	padding: 105px 36px;
+}
+
+.category-section .section-title {
+	float: left;
+}
+
+.category-links {
+	text-align: right;
+	padding-top: 20px;
+	margin-bottom: 80px;
+}
+
+.category-links a {
+	display: inline-block;
+	font-size: 15px;
+	font-weight: 500;
+	color: var(--secondary);
+	padding: 10px 6px 16px;
+	margin-right: 55px;
+	margin-bottom: 10px;
+	border-bottom: 2px solid transparent;
+	cursor: pointer;
+}
+
+.category-links a.active {
+	border-bottom: 2px solid var(--highlight);
+}
+
+.category-item {
+	position: relative;
+	margin: 0 17px;
+}
+
+.category-item img {
+	min-width: 100%;
+	border-radius: 40px;
+}
+
+.category-item .ci-text {
+	position: absolute;
+	bottom: 35px;
+	left: 50px;
+}
+
+.category-item .ci-text h4 {
+	color: var(--accent);
+	margin-bottom: 3px;
+}
+
+.category-item .ci-text p {
+	color: var(--accent);
+	margin-bottom: 0;
+	font-size: 12px;
+}
+
+.category-item .ci-link {
+	position: absolute;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 71px;
+	height: 71px;
+	right: 29px;
+	bottom: 21px;
+	color: var(--highlight);
+	font-size: 16px;
+	text-align: center;
+	border-radius: 50%;
+	background: var(--accent);
+}
+
+/* Secciones de canciones */
+.songs-section {
+	padding-bottom: 80px;
+}
+
+.song-item {
+	margin-bottom: 33px;
+}
+
+.song-info-box img {
+	float: left;
+	width: 85px;
+	height: 85px;
+	border-radius: 19px;
+	margin-right: 18px;
+}
+
+.song-info-box .song-info {
+	overflow: hidden;
+	padding-top: 20px;
+}
+
+.song-info-box .song-info h4 {
+	font-size: 20px;
+	margin-bottom: 4px;
+}
+
+.song-info-box .song-info p {
+	font-size: 14px;
+	margin-bottom: 0;
+}
+
+.songs-links {
+	text-align: right;
+	padding-top: 26px;
+}
+
+.songs-links a {
+	display: inline-block;
+	margin-left: 15px;
+	padding-top: 5px;
+}

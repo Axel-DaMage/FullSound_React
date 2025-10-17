@@ -1,0 +1,68 @@
+/*========================================
+  CONTACTO Y FORMULARIOS
+========================================*/
+
+.contact-warp {
+	background: var(--accent);
+	border-radius: 30px;
+	padding: 100px 40px;
+	box-shadow: 0 8px 32px rgba(10,24,61,0.08);
+	margin-bottom: 40px;
+}
+
+.contact-warp .section-title {
+	margin-bottom: 40px;
+}
+
+.contact-warp input,
+.contact-warp textarea {
+	width: 100%;
+	border: none;
+	border-radius: 20px;
+	background: var(--secondary);
+	padding: 18px 25px;
+	margin-bottom: 20px;
+	font-size: 15px;
+	color: var(--bg);
+	resize: none;
+}
+
+.contact-warp textarea {
+	min-height: 120px;
+}
+
+.contact-warp button.site-btn {
+	min-width: 180px;
+	margin-top: 10px;
+}
+
+/* Formulario de búsqueda */
+.search-form {
+	position: relative;
+	width: 100%;
+	margin-bottom: 25px;
+}
+
+.search-form input {
+	width: 100%;
+	height: 60px;
+	padding-left: 41px;
+	padding-right: 175px;
+	border: none;
+	border-radius: 80px;
+	font-size: 15px;
+	background: var(--secondary);
+}
+
+.search-form button {
+	position: absolute;
+	height: 60px;
+	min-width: 167px;
+	right: 0;
+	top: 0;
+	border: none;
+	border-radius: 80px;
+	color: var(--accent);
+	font-size: 15px;
+	background: var(--highlight);
+}

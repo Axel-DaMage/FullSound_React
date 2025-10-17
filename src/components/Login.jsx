@@ -1,56 +1,46 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "./Layout";
+import { validarCredenciales, getFieldValue } from "../utils/formUtils";
 
 export default function Login() {
   const navigate = useNavigate();
 
   const handleUsuariosClick = (e) => {
     e.preventDefault();
-    const correo = document.getElementById('correo').value.trim();
-    const password = document.getElementById('password').value.trim();
+    const correo = getFieldValue('correo');
+    const password = getFieldValue('password');
 
-    if (!correo.endsWith('@gmail.com') && !correo.endsWith('@duocuc.cl')) {
-      alert('El correo debe terminar con "@gmail.com" o con "@duocuc.cl".');
+    const validacion = validarCredenciales(correo, password);
+    
+    if (!validacion.isValid) {
+      alert(validacion.error);
       return false;
     }
-    if (password.length === 0) {
-      alert('Por favor ingresa tu contraseña.');
-      return false;
-    }
-    if (password.length >= 4 && password.length <= 10) {
-      navigate('/beats');
-      return true;
-    } else {
-      alert('La contraseña debe tener entre 4 y 10 caracteres.');
-      return false;
-    }
+    
+    navigate('/beats');
+    return true;
   };
 
   const handleAdminClick = (e) => {
     e.preventDefault();
-    const correo = document.getElementById('correo').value.trim();
-    const password = document.getElementById('password').value.trim();
+    const correo = getFieldValue('correo');
+    const password = getFieldValue('password');
 
-    if (!correo.endsWith('@gmail.com') && !correo.endsWith('@duocuc.cl')) {
-      alert('El correo debe terminar con "@gmail.com" o con "@duocuc.cl".');
+    const validacion = validarCredenciales(correo, password);
+    
+    if (!validacion.isValid) {
+      alert(validacion.error);
       return false;
     }
-    if (password.length === 0) {
-      alert('Por favor ingresa tu contraseña.');
-      return false;
-    }
-    if (password.length >= 4 && password.length <= 10) {
-      navigate('/admin');
-      return true;
-    } else {
-      alert('La contraseña debe tener entre 4 y 10 caracteres.');
-      return false;
-    }  };
+    
+    navigate('/admin');
+    return true;
+  };
   
   return (
     <Layout>
-        <section className="login-section spad" style={{ padding: "100px 0 80px", display: "flex", alignItems: "center", minHeight: "calc(100vh - 200px)" }}>
+        <section className="login-section spad">
           <div className="container">
             <div className="row justify-content-center">
               <div className="col-md-8 col-lg-6">
@@ -81,7 +71,6 @@ export default function Login() {
                       <button
                         type="button"
                         className="site-btn btn-block mb-3"
-                        style={{ fontSize: "1.2rem" }}
                         onClick={handleUsuariosClick}
                       >
                         Usuarios
@@ -89,13 +78,12 @@ export default function Login() {
                       <button
                         type="button"
                         className="site-btn btn-block btn-secondary"
-                        style={{ fontSize: "1.2rem" }}
                         onClick={handleAdminClick}
                       >
                         Administración
                       </button>
                     </div>
-                  </form>                </div>
+                  </form></div>
               </div>
             </div>
         </div>

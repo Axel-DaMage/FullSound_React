@@ -1,0 +1,233 @@
+/*========================================
+  ESTILOS BASE - FullSound
+  Variables, Reset, Tipografía y Elementos Comunes
+========================================*/
+
+/*========================================
+  VARIABLES DE COLORES
+========================================*/
+:root {
+  /* CSS HEX */
+  --white: #ffffffff;
+  --vermilion: #615AA8;
+  --russian-violet: #592661;
+  --black: #000000ff;
+  --lime: #A3DA58;
+  
+  /* Variables auxiliares */
+  --fg: var(--vermilion);
+  --bg: var(--black);
+  --accent: var(--white);
+  --secondary: var(--russian-violet);
+  --highlight: var(--lime);
+}
+
+/*========================================
+  ESTILOS BASE Y RESET
+========================================*/
+html, body {
+  height: 100%;
+  font-family: "Oxanium", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+}
+
+body {
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Barra de scroll personalizada */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, var(--fg), var(--highlight));
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, var(--highlight), var(--fg));
+}
+
+/* Para Firefox */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--fg) var(--bg);
+}
+
+/*========================================
+  TIPOGRAFÍA
+========================================*/
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  color: var(--bg);
+  font-weight: 600;
+  line-height: 1;
+}
+
+h1 { font-size: 70px; }
+h2 { font-size: 36px; }
+h3 { font-size: 30px; }
+h4 { font-size: 24px; }
+h5 { font-size: 18px; }
+h6 { font-size: 16px; }
+
+p {
+  font-size: 15px;
+  color: var(--secondary);
+  line-height: 1.8;
+  font-weight: 500;
+}
+
+/*========================================
+  ELEMENTOS COMUNES
+========================================*/
+img {
+  max-width: 100%;
+}
+
+input:focus,
+select:focus,
+button:focus,
+textarea:focus {
+  outline: none;
+}
+
+a:hover,
+a:focus {
+  text-decoration: none;
+  outline: none;
+}
+
+ul, ol {
+  padding: 0;
+  margin: 0;
+}
+
+/* Clases auxiliares */
+.section-title {
+  margin-bottom: 60px;
+  text-align: center;
+}
+
+.section-title h2 {
+  font-size: 60px;
+}
+
+.set-bg {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: top center;
+}
+
+.spad {
+  padding-top: 105px;
+  padding-bottom: 105px;
+}
+
+.text-white h1,
+.text-white h2,
+.text-white h3,
+.text-white h4,
+.text-white h5,
+.text-white h6,
+.text-white p,
+.text-white span,
+.text-white li,
+.text-white a {
+  color: var(--accent);
+}
+
+/* Botón principal del sitio */
+.site-btn {
+  display: inline-block;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  min-width: 195px;
+  padding: 23px 20px;
+  border-radius: 50px;
+  text-transform: uppercase;
+  background: var(--bg);
+  color: var(--highlight);
+  line-height: normal;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.site-btn:hover {
+  background-color: var(--highlight);
+  color: var(--bg);
+}
+
+.site-btn.sb-c2 {
+  background: var(--secondary);
+}
+
+/* Precargador */
+#preloder {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 999999;
+  background: #000;
+}
+
+.loader {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -13px 0 0 -13px;
+  border-radius: 60px;
+  animation: loader 0.8s linear infinite;
+}
+
+@keyframes loader {
+  0% {
+    transform: rotate(0deg);
+    border: 4px solid var(--bg);
+    border-left-color: transparent;
+  }
+  50% {
+    transform: rotate(180deg);
+    border: 4px solid var(--secondary);
+    border-left-color: transparent;
+  }
+  100% {
+    transform: rotate(360deg);
+    border: 4px solid var(--bg);
+    border-left-color: transparent;
+  }
+}
+
+/*========================================
+  4. LAYOUT
+========================================*/
+
+.layout-container {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+.layout-main {
+	flex: 1 0 auto;
+}

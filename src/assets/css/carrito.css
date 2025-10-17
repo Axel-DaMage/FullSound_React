@@ -1,0 +1,138 @@
+/*========================================
+  CARRITO DE COMPRAS
+========================================*/
+
+.cart-section {
+	background: var(--bg) !important;
+	color: var(--accent);
+	padding: 120px 0 80px;
+	min-height: 100vh;
+}
+
+.cart-section h2 {
+	color: var(--accent) !important;
+	text-align: center;
+	margin-bottom: 40px;
+}
+
+.table-cart {
+	background: var(--fg) !important;
+	border: 2px solid var(--secondary) !important;
+	border-radius: 15px !important;
+	overflow: hidden;
+}
+
+.table-cart thead {
+	background: var(--accent) !important;
+}
+
+.table-cart thead th {
+	color: var(--bg) !important;
+	font-weight: 600;
+	padding: 15px;
+	border: none !important;
+}
+
+.table-cart tbody tr {
+	background: var(--fg) !important;
+	border: none !important;
+}
+
+.table-cart tbody tr:hover {
+	background: var(--bg) !important;
+	transition: background 0.3s ease;
+}
+
+.table-cart tbody td {
+	color: var(--accent) !important;
+	padding: 15px;
+	border: 1px solid var(--accent) !important;
+	vertical-align: middle;
+}
+
+.table-cart img {
+	border-radius: 8px;
+	max-width: 100px;
+}
+
+/* Estilos para imágenes del carrito */
+.cart-product-img {
+	width: 60px;
+	height: 60px;
+	object-fit: cover;
+	margin-right: 10px;
+	border-radius: 5px;
+}
+
+.cart-summary {
+	background: var(--fg) !important;
+	border: 2px solid var(--highlight) !important;
+	box-shadow: 0 8px 25px rgba(163, 218, 88, 0.2);
+	border-radius: 15px;
+	padding: 25px;
+}
+
+.cart-summary h4,
+.cart-summary h5 {
+	color: var(--accent) !important;
+	font-weight: 600;
+}
+
+.cart-summary p {
+	color: var(--accent) !important;
+	font-size: 16px;
+	margin-bottom: 10px;
+}
+
+.cart-summary hr {
+	border-color: var(--highlight) !important;
+	border-width: 2px;
+}
+
+.cart-summary .site-btn {
+	background: var(--highlight) !important;
+	color: var(--bg) !important;
+	border: none;
+	padding: 15px 30px;
+	font-weight: 600;
+	font-size: 16px;
+	min-width: 200px;
+	border-radius: 50px;
+	transition: all 0.3s ease;
+}
+
+.cart-summary .site-btn:hover {
+	background: var(--highlight) !important;
+	color: var(--bg) !important;
+	transform: translateY(-2px);
+	box-shadow: 0 5px 15px rgba(163, 218, 88, 0.3);
+}
+
+.btn-remove {
+	background: #dc3545;
+	color: white;
+	border: none;
+	padding: 8px 15px;
+	border-radius: 5px;
+	transition: all 0.3s ease;
+}
+
+.btn-remove:hover {
+	background: #c82333;
+	transform: scale(1.05);
+}
+
+.empty-cart {
+	text-align: center;
+	padding: 60px 20px;
+}
+
+.empty-cart h3 {
+	color: var(--accent);
+	margin-bottom: 20px;
+}
+
+.empty-cart p {
+	color: var(--accent);
+	margin-bottom: 30px;
+}

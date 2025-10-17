@@ -9,5 +9,28 @@
 /* Font Awesome 4.7.0 */
 @import './assets/font-awesome.min.css';
 
-/* Estilos personalizados del proyecto */
-@import './assets/style.css';
+/* Estilos base del proyecto */
+@import './assets/css/base.css';
+
+/* Componentes globales */
+@import './assets/css/header.css';
+@import './assets/css/footer.css';
+
+/* Páginas específicas */
+@import './assets/css/hero.css';
+@import './assets/css/inicio.css';
+@import './assets/css/login.css';
+@import './assets/css/beats.css';
+@import './assets/css/producto.css';
+@import './assets/css/admin.css';
+@import './assets/css/carrito.css';
+@import './assets/css/creditos.css';
+
+/* Páginas adicionales */
+@import './assets/css/playlist.css';
+@import './assets/css/blog.css';
+@import './assets/css/player.css';
+@import './assets/css/contacto.css';
+
+/* Responsive design */
+@import './assets/css/responsive.css';

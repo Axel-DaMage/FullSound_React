@@ -1,0 +1,70 @@
+/*========================================
+  PÁGINA DE CRÉDITOS
+========================================*/
+
+.credits-section {
+	padding: 120px 0 80px;
+	background: var(--bg);
+	min-height: 100vh;
+}
+
+.credits-section h1 {
+	color: var(--accent);
+	text-align: center;
+	margin-bottom: 40px;
+}
+
+.credits-section h2 {
+	color: var(--highlight);
+	margin-top: 40px;
+	margin-bottom: 20px;
+}
+
+.credits-section h3 {
+	color: var(--accent);
+	margin-top: 30px;
+	margin-bottom: 15px;
+}
+
+.credits-section p,
+.credits-section li {
+	color: var(--accent);
+	line-height: 1.8;
+}
+
+.credits-section ul {
+	list-style: none;
+	padding-left: 0;
+}
+
+.credits-section ul li {
+	padding-left: 20px;
+	position: relative;
+	margin-bottom: 10px;
+}
+
+.credits-section ul li:before {
+	content: "►";
+	color: var(--highlight);
+	position: absolute;
+	left: 0;
+}
+
+.credits-section a {
+	color: var(--highlight);
+	text-decoration: none;
+	transition: all 0.3s ease;
+}
+
+.credits-section a:hover {
+	color: var(--accent);
+	text-decoration: underline;
+}
+
+.credits-card {
+	background: var(--fg);
+	border-radius: 15px;
+	padding: 30px;
+	margin-bottom: 30px;
+	box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}

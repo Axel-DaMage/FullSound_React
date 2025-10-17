@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { inicializarSlider } from "../utils/ui";
 import { datosSlides } from "../datos/datosMusica";
 import Layout from "./Layout";
@@ -10,17 +10,13 @@ import imgConcept4 from "../assets/img/concept/4.jpg";
 import Carrusel from "./Carrusel";
 
 export default function Inicio() {
-  const [slideIndex, setSlideIndex] = useState(0);
-
   useEffect(() => {
-    return inicializarSlider(datosSlides.length, setSlideIndex);
+    return inicializarSlider(datosSlides.length);
   }, []);
 
   return (
     <Layout activeItem="inicio">
-      <section className="hero-section">
-        <Carrusel />
-      </section>
+      <Carrusel />
       <section className="intro-section spad">
         <div className="container">
           <div className="row justify-content-center">
