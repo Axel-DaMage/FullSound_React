@@ -64,7 +64,9 @@
 }
 
 .concept-item img {
-	width: 100%;
+	width: 300px;
+	height: 300px;
+	object-fit: cover;
 	border-radius: 30px;
 }
 
@@ -76,6 +78,14 @@
 .concept-item .ci-text h4 {
 	color: var(--accent);
 	margin-bottom: 5px;
+}
+.concept-item h5 {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--accent);
 }
 
 /* Sección de suscripción */
@@ -165,3 +175,9 @@
 	text-align: center;
 	margin-top: 50px;
 }
+
+.concepto-texto p {
+	color: var(--highlight);
+
+}
+

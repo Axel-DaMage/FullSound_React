@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { inicializarSlider } from "../utils/ui";
-import { datosSlides } from "../datos/datosMusica";
+import { datosSlides } from "../utils/datosMusica";
 import Layout from "./Layout";
 import { Link } from "react-router-dom";
 import imgConcept1 from "../assets/img/concept/1.jpg";

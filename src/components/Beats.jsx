@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { datosBeats } from "../datos/datosMusica";
+import { datosBeats } from "../utils/datosMusica";
 import Layout from "./Layout";
 
 export default function Beats() {

@@ -7,6 +7,7 @@ import Login from './components/Login'
 import Registro from './components/Registro'
 import Producto from './components/Producto'
 import Creditos from './components/Creditos'
+import Main from './components/Main'
 import Preloader from './components/Preloader'
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
           <Route path="/registro" element={<Registro />} />
           <Route path="/producto/:id" element={<Producto />} />
           <Route path="/creditos" element={<Creditos />} />
+          <Route path="/main" element={<Main />} />
         </Routes>
       </Router>
     </>

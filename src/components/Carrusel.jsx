@@ -2,7 +2,7 @@ import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { datosSlides } from "../datos/datosMusica";
+import { datosSlides } from "../utils/datosMusica";
 import { carruselSettings, resolveImg, handleImageError } from "../utils/carruselUtils";
 
 export default function Carrusel() {

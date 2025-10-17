@@ -1,4 +1,4 @@
-import { datosBeats } from "../datos/datosMusica";
+import { datosBeats } from "../utils/datosMusica";
 
 /**
  * Busca un producto por su ID
