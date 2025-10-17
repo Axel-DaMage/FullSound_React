@@ -1,15 +1,36 @@
-import React from "react";
 import { Link } from "react-router-dom";
-import { datosBeats } from "../utils/datosMusica";
+import { datosBeats, generosBeats } from "../utils/datosMusica";
 import Layout from "./Layout";
 
+import React, { useState } from "react";
+
 export default function Beats() {
+  const [categoria, setCategoria] = useState("Todos");
+
+  const beatsFiltrados = categoria === "Todos"
+    ? datosBeats
+    : datosBeats.filter(beat => beat.genero === categoria);
+
   return (
     <Layout activeItem="beats">
-      <section className="shop-section spad"><div className="container">
+      <section className="shop-section spad">
+        <div className="container">
           <h2 className="mb-5 text-center">Tienda de Beats</h2>
+          <div className="mb-4 d-flex justify-content-center">
+            <select
+              className="site-btn"
+              value={categoria}
+              onChange={e => setCategoria(e.target.value)}
+              style={{ minWidth: 220, padding: '16px 20px', fontSize: 16, border: 'none', borderRadius: 50, cursor: 'pointer', textTransform: 'uppercase', fontWeight: 600, textAlign: 'center' }}
+            >
+              <option value="Todos">Todos los géneros</option>
+              {generosBeats.map((gen) => (
+                <option key={gen} value={gen}>{gen}</option>
+              ))}
+            </select>
+          </div>
           <div className="row">
-            {datosBeats.map((beat, idx) => (
+            {beatsFiltrados.map((beat, idx) => (
               <div className="col-md-4 mb-4" key={idx}>
                 <div className="card h-100">
                   <div className="card-body">
@@ -24,7 +45,8 @@ export default function Beats() {
                         <audio controls className="w-100 mb-2">
                           <source src={beat.fuente} type="audio/mpeg" />
                         </audio>
-                      </div>                      <div className="card-button">
+                      </div>
+                      <div className="card-button">
                         {beat.enlaceProducto ? (
                           <Link to={beat.enlaceProducto} className="site-btn btn-block mt-auto">
                             <i className="fa fa-shopping-cart" /> Comprar
@@ -38,8 +60,10 @@ export default function Beats() {
                     </div>
                   </div>
                 </div>
-              </div>            ))}
-          </div>        </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
     </Layout>
   );

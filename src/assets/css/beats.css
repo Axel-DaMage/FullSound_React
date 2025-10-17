@@ -159,3 +159,12 @@
 	padding: 10px 15px;
 	border-radius: 25px;
 }
+
+
+.site-btn {
+	background-color: var(--fg);
+	color: var(--accent);
+	align-content: center;
+	text-align: center;
+	text-align-last: center;
+}
