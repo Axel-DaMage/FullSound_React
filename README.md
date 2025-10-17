@@ -1,18 +1,21 @@
 <!-- Badges de CI y despliegue -->
-[![Tests](https://github.com/Axel-DaMage/FullSound_React/actions/workflows/test.yml/badge.svg)](https://github.com/Axel-DaMage/FullSound_React/actions/workflows/test.yml)
-[![CI & Deploy](https://github.com/Axel-DaMage/FullSound_React/actions/workflows/ci-deploy.yml/badge.svg)](https://github.com/Axel-DaMage/FullSound_React/actions/workflows/ci-deploy.yml)
-[![Pages Deployment](https://img.shields.io/github/deployments/Axel-DaMage/FullSound_React/pages?label=GitHub%20Pages&logo=github)](https://github.com/Axel-DaMage/FullSound_React/deployments)
-[![Vitest Status](https://img.shields.io/badge/tests-vitest-blue.svg)](https://github.com/Axel-DaMage/FullSound_React/actions/workflows/test.yml)
+[![Tests](https://img.shields.io/github/actions/workflow/status/Axel-DaMage/FullSound_React/test.yml?style=for-the-badge&label=Tests&logo=vitest&logoColor=white&color=1db954&labelColor=000000)](https://github.com/Axel-DaMage/FullSound_React/actions/workflows/test.yml)
+[![Deploy](https://img.shields.io/github/actions/workflow/status/Axel-DaMage/FullSound_React/deploy.yml?style=for-the-badge&label=Deploy&logo=github&color=1db954&labelColor=000000)](https://github.com/Axel-DaMage/FullSound_React/actions/workflows/deploy.yml)
+[![Coverage](https://img.shields.io/badge/coverage-6.06%25-red?style=for-the-badge&logo=vitest&logoColor=white&labelColor=000000)](./coverage/lcov-report/index.html)
 
 # Proyecto FullSound
 
 FullSound es una plataforma web para explorar, comprar y administrar beats musicales. Está construida con React + Vite y una estructura modular de CSS y utilidades.
 
 ## Dependencias
-- Stack: React (v19) + Vite
-- Tests: Vitest
-- Linter: ESLint
-- CI: GitHub Actions (tests → build → deploy a GitHub Pages)
+- React (v19)
+- Vite
+- Vitest
+- ESLint
+- prop-types
+- @testing-library/react
+- @testing-library/jest-dom
+- happy-dom
 
 ## Estructura del proyecto
 

@@ -36,13 +36,13 @@ export default function Header({ activeItem = "" }) {
         <span />
         <span />
         <span />
-      </button>
-      <div className={`mobile-menu${mobileActive ? " active" : ""}`}>
+      </button>      <div className={`mobile-menu${mobileActive ? " active" : ""}`}>
         {menuItems.map((item) => (
           <Link key={item.key} to={item.path}>
             {item.label}
           </Link>
         ))}
+      </div>
     </header>
   );
 }
