@@ -1,6 +1,4 @@
-import React, { useEffect } from "react";
-import { inicializarSlider } from "../utils/ui";
-import { datosSlides } from "../utils/datosMusica";
+import React from "react";
 import Layout from "./Layout";
 import { Link } from "react-router-dom";
 import imgConcept1 from "../assets/img/concept/1.jpg";
@@ -10,10 +8,6 @@ import imgConcept4 from "../assets/img/concept/4.jpg";
 import Carrusel from "./Carrusel";
 
 export default function Inicio() {
-  useEffect(() => {
-    return inicializarSlider(datosSlides.length);
-  }, []);
-
   return (
     <Layout activeItem="inicio">
       <Carrusel />
