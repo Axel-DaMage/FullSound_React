@@ -122,10 +122,11 @@
 .hero-slider .slick-dots {
 	position: absolute;
 	bottom: 33px;
-	left: 0;
-	width: 100%;
-	padding-left: 15px;
-	text-align: left;
+	left: 50%;
+	transform: translateX(-50%);
+	width: auto;
+	padding-left: 0;
+	text-align: center;
 }
 
 .hero-slider .slick-dots li {
