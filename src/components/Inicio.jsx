@@ -47,8 +47,8 @@ export default function Inicio() {
                 <div className="hi-icon" />
                 <h4>Crea una cuenta</h4>
                 <p>
-                  Regístrate gratis y comienza a disfrutar de todas las
-                  funciones de SolMusic. Comparte tu música y conecta con otros
+                 Regístrate gratis y comienza a disfrutar de todas las
+                  funciones de FullSound. Comparte tu música y conecta con otros
                   artistas.
                 </p>
               </div>

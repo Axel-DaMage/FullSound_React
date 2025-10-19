@@ -49,6 +49,11 @@
 	text-align: center;
 }
 
+.hs-text {
+margin-top: 20%;
+
+}
+
 .hr-img img {
 	max-width: 100%;
 	position: relative;
@@ -156,10 +161,12 @@
 }
 
 .hero-img {
+	border-radius: 99px;
 	width: 50vh;
 	height: 50vh;
 	object-fit: cover;
 	display: block;
+	margin-top: 40%;
 	margin-left: auto;
 	margin-right: auto;
 }
