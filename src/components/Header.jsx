@@ -84,8 +84,7 @@ export default function Header({ activeItem = "" }) {
         <span />
         <span />
         <span />
-      </button>
-      <div className={`mobile-menu${mobileActive ? " active" : ""}`}>
+      </button>      <div className={`mobile-menu${mobileActive ? " active" : ""}`}>
         {menuItems.map((item) => {
           // Ocultar "Administración" si no es admin
           if (item.key === 'administracion' && (!usuario || !esAdmin(usuario))) {
@@ -98,10 +97,15 @@ export default function Header({ activeItem = "" }) {
             </Link>
           );
         })}
-        {usuario && (
+        {usuario ? (
           <a href="#" onClick={handleLogout} style={{ color: '#ff4444' }}>
             <i className="fa fa-sign-out mr-1"></i> Cerrar sesión
           </a>
+        ) : (
+          <>
+            <Link to="/login">Iniciar sesión</Link>
+            <Link to="/registro">Crear cuenta</Link>
+          </>
         )}
       </div>
     </header>
