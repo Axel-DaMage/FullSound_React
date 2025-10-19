@@ -27,19 +27,6 @@ export const validarCorreo = (correo) => {
     };
   }
 
-  // Validar dominios permitidos
-  const dominiosPermitidos = ['@gmail.com', '@duocuc.cl', '@admin.cl'];
-  const tieneDominioPermitido = dominiosPermitidos.some(dominio => 
-    correoTrim.toLowerCase().endsWith(dominio)
-  );
-
-  if (!tieneDominioPermitido) {
-    return {
-      isValid: false,
-      error: 'El correo debe terminar con @gmail.com, @duocuc.cl o @admin.cl'
-    };
-  }
-
   return { isValid: true, error: null };
 };
 
@@ -62,29 +49,6 @@ export const validarPassword = (password, minLength = 8, maxLength = 20) => {
     return {
       isValid: false,
       error: `La contraseña debe tener al menos ${minLength} caracteres.`
-    };
-  }
-
-  if (password.length > maxLength) {
-    return {
-      isValid: false,
-      error: `La contraseña no debe exceder ${maxLength} caracteres.`
-    };
-  }
-
-  // Validar que tenga al menos una letra
-  if (!/[a-zA-Z]/.test(password)) {
-    return {
-      isValid: false,
-      error: 'La contraseña debe contener al menos una letra.'
-    };
-  }
-
-  // Validar que tenga al menos un número
-  if (!/\d/.test(password)) {
-    return {
-      isValid: false,
-      error: 'La contraseña debe contener al menos un número.'
     };
   }
 
