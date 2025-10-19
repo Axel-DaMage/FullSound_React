@@ -73,6 +73,13 @@
 .shop-section .card-button {
 	flex-shrink: 0;
 	margin-top: auto;
+	display: flex;
+	justify-content: center;
+}
+
+.shop-section .card-button .site-btn {
+	width: auto;
+	min-width: 150px;
 }
 
 .shop-section .card-text strong {
