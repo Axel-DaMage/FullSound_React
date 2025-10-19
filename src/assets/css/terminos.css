@@ -1,0 +1,81 @@
+/*========================================
+  TERMINOS Y CONDICIONES - estilos específicos
+========================================*/
+
+body:has(.login-section.terminos) {
+	background: linear-gradient(60deg, rgb(15, 0, 63), rgb(73, 73, 18), rgb(121, 0, 56));
+	background-size: 400% 400%;
+	animation: gradient 8s ease infinite alternate;
+	background-attachment: fixed;
+}
+
+.terminos-card,
+.card.terminos-card {
+  background: rgba(255,255,255,0.03);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+  color: var(--accent);
+}
+
+.terminos-card h2,
+.terminos-card h5,
+.card.terminos-card h2,
+.card.terminos-card h5 {
+  color: var(--accent);
+}
+
+.terminos-content {
+  padding-right: 12px;
+  line-height: 1.6;
+  color: var(--accent);
+}
+
+.terminos-content p {
+  margin-bottom: 1rem;
+  color: var(--accent) !important;
+  text-align: justify;
+}
+
+.terminos-actions {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.terminos-actions .site-btn,
+.card.terminos-card {
+  min-width: 180px;
+  background-color: var(--accent);
+}
+
+.login-section.terminos {
+  padding: 100px 0 80px;
+  min-height: calc(100vh - 200px);
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.login-section.terminos .card {
+  background: transparent;
+  position: relative;
+  z-index: 2;
+}
+
+.terminos-content a {
+  color: var(--highlight);
+  text-decoration: underline;
+}
+
+/* keyframes para que el fondo cambie de color moviendose */
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.site-btn {
+
+  background-color: var(--bg);
+}

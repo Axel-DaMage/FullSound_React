@@ -34,3 +34,6 @@
 
 /* Responsive design */
 @import './assets/css/responsive.css';
+
+/* Términos y condiciones */
+@import './assets/css/terminos.css';

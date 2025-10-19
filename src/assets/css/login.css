@@ -2,6 +2,14 @@
   LOGIN Y REGISTRO
 ========================================*/
 
+/* Fondo animado global para página de login */
+body:has(.login-section) {
+	background: linear-gradient(60deg, rgb(15, 0, 63), rgb(73, 73, 18), rgb(121, 0, 56));
+	background-size: 400% 400%;
+	animation: gradient 8s ease infinite alternate;
+	background-attachment: fixed;
+}
+
 .login-section {
 	padding: 100px 0 80px;
 	min-height: calc(100vh - 200px);
@@ -9,6 +17,8 @@
 	align-items: center;
 	position: relative;
 	z-index: 1;
+	background: transparent;
+	color: var(--fg);
 }
 
 .login-section .card {
@@ -16,15 +26,38 @@
 	padding: 2.5rem !important;
 	position: relative;
 	z-index: 2;
+	color: var(--accent);
+	background: transparent;
 }
 
 .login-section .container {
 	max-width: 800px;
 	position: relative;
 	z-index: 2;
+	color: var(--accent);
 }
 
 .login-section .form-control {
 	padding: 12px 15px;
 	font-size: 1rem;
+	color: var(--accent);
+}
+
+.text-center {
+	color: var(--accent);
+}
+
+.site-btn {
+	background-color: var(--accent);
+}
+
+.text-center p{
+	color: var(--accent);
+}
+
+/* keyframes para que el fondo cambie de color moviendose */
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }

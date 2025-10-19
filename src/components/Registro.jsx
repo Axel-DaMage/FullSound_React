@@ -142,7 +142,7 @@ export default function Registro() {
                         required
                       />
                       <label className="form-check-label" htmlFor="terminos">
-                        Acepto los <button type="button" className="btn btn-link text-primary p-0" style={{textDecoration: 'underline', border: 'none', background: 'none'}}>términos y condiciones</button>
+                        Acepto los <Link to="/terminos" className="text-primary"> términos y condiciones </Link>
                       </label>
                     </div>
                     <div className="d-flex flex-column gap-3 mt-4">
