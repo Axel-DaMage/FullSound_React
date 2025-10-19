@@ -50,9 +50,9 @@
 }
 
 .hr-img img {
-	min-width: 602px;
+	max-width: 100%;
 	position: relative;
-	left: -34px;
+	left: 0;
 	top: 50px;
 	opacity: 0;
 }

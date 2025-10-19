@@ -60,7 +60,30 @@
 		box-sizing: border-box;
 	}
 	.hero-section { min-height: 724px; }
-	.hr-img { display: none; }
+	
+	.hs-item .row {
+		flex-direction: column;
+		align-items: center;
+	}
+	
+	.hs-item .col-lg-6 {
+		max-width: 100%;
+		text-align: center;
+	}
+	
+	.hs-item .hs-text {
+		margin: 0 auto;
+	}
+	
+	.hr-img {
+		margin-top: 30px;
+	}
+	
+	.hr-img img {
+		max-width: 60%;
+		margin: 0 auto;
+		display: block;
+	}
 	
 	.mobile-menu-btn {
 		display: block;
@@ -176,8 +199,43 @@
 		box-sizing: border-box;
 	}
 	.header-section { min-height: 72px; }
-	.hero-section { min-height: 724px; }
-	.hr-img { display: none; }
+	.hero-section { min-height: 600px; }
+	
+	.hs-item {
+		height: auto;
+		min-height: 600px;
+		padding: 80px 0 60px;
+	}
+	
+	.hs-item .row {
+		flex-direction: column;
+		align-items: center;
+	}
+	
+	.hs-item .col-lg-6 {
+		max-width: 100%;
+		flex: 0 0 100%;
+		text-align: center;
+	}
+	
+	.hs-item .hs-text {
+		padding-top: 10vh;
+		margin: 0 auto;
+	}
+	
+	.hs-item h2 {
+		font-size: 36px;
+	}
+	
+	.hr-img {
+		margin-top: 30px;
+	}
+	
+	.hr-img img {
+		max-width: 80%;
+		margin: 0 auto;
+		display: block;
+	}
 	
 	.mobile-menu-btn {
 		display: block;
@@ -321,9 +379,37 @@
 		box-sizing: border-box;
 	}
 	.header-section { min-height: 72px; }
-	.hero-section { min-height: 724px; }
+	.hero-section { min-height: 550px; }
+	
+	.hs-item {
+		height: auto;
+		min-height: 550px;
+		padding: 60px 0 50px;
+	}
+	
+	.hs-item .hs-text {
+		padding-top: 5vh;
+	}
+	
+	.hs-item h2 {
+		font-size: 32px;
+	}
+	
+	.hs-item p {
+		font-size: 14px;
+	}
+	
+	.hr-img {
+		margin-top: 25px;
+	}
+	
+	.hr-img img {
+		max-width: 95%;
+		margin: 0 auto;
+		display: block;
+	}
+	
 	.section-title h2,
-	.hs-item h2,
 	.sub-text h2 { font-size: 36px; }
 	.wave-player-info h2 { font-size: 24px; }
 	.player-box { padding: 40px; }
