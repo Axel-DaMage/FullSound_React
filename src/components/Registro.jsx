@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { registrarUsuario } from "../utils/validacion";
 import Layout from "./Layout";
+import { 
+  validarFormularioRegistro, 
+  obtenerRolPorCorreo,
+  esCorreoAdmin 
+} from "../utils/authValidation";
+import { guardarUsuario } from "../utils/rolesPermisos";
 
 export default function Registro() {
   const navigate = useNavigate();
@@ -17,7 +22,48 @@ export default function Registro() {
     const { id, value, checked, type } = e.target;
     setForm((f) => ({ ...f, [id]: type === "checkbox" ? checked : value }));
   };
-  const onSubmit = (e) => {    e.preventDefault();    registrarUsuario(form, navigate);
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    // Validar formulario completo
+    const validacion = validarFormularioRegistro(
+      form.nombre,
+      form.correo,
+      form.password,
+      form.confirmPassword,
+      form.terminos
+    );
+
+    if (!validacion.isValid) {
+      alert(validacion.error);
+      return;
+    }
+
+    // Determinar rol del usuario basado en el correo
+    const rol = obtenerRolPorCorreo(form.correo);
+
+    // Simular creación de usuario (en producción se enviará al backend)
+    const usuario = {
+      nombre: form.nombre,
+      correo: form.correo,
+      rol: rol,
+      id: Date.now(),
+      fechaRegistro: new Date().toISOString()
+    };
+
+    // Guardar token y usuario en localStorage
+    localStorage.setItem('token', `token_simulado_${Date.now()}`);
+    guardarUsuario(usuario);
+
+    // Mostrar mensaje de éxito
+    if (rol === 'admin') {
+      alert('¡Cuenta de administrador creada exitosamente! Serás redirigido al panel de administración.');
+      navigate('/admin');
+    } else {
+      alert('¡Cuenta creada exitosamente! Serás redirigido a la tienda de beats.');
+      navigate('/beats');
+    }
   };
     return (
     <Layout>
@@ -51,6 +97,13 @@ export default function Registro() {
                         onChange={onChange}
                         required
                       />
+                      <small className="form-text text-muted">
+                        {form.correo && (
+                          esCorreoAdmin(form.correo) 
+                            ? '✓ Correo de administrador (@admin.cl)' 
+                            : 'Correo de usuario regular'
+                        )}
+                      </small>
                     </div>
                     <div className="form-group">
                       <label htmlFor="password">Contraseña</label>
@@ -58,11 +111,14 @@ export default function Registro() {
                         type="password"
                         className="form-control"
                         id="password"
-                        placeholder="Crea una contraseña"
+                        placeholder="Crea una contraseña (mínimo 8 caracteres)"
                         value={form.password}
                         onChange={onChange}
                         required
                       />
+                      <small className="form-text text-muted">
+                        Debe tener al menos 8 caracteres, máximo 20, con letras y números
+                      </small>
                     </div>
                     <div className="form-group">
                       <label htmlFor="confirmPassword">Confirmar contraseña</label>
