@@ -92,7 +92,9 @@ export default function AdminBeats() {
         await actualizarBeat(beatEditando.id, form);
         alert('Beat actualizado exitosamente');
       } else {
-        await crearBeat(form);
+        // Asigna un id único al nuevo beat
+        const nuevoBeat = { ...form, id: Date.now() };
+        await crearBeat(nuevoBeat);
         alert('Beat creado exitosamente');
       }
       
@@ -118,7 +120,10 @@ export default function AdminBeats() {
   };
 
   const formatearPrecio = (precio) => {
-    return new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(precio);
+  // Asegura que el precio sea un número antes de formatear
+  const precioNum = typeof precio === 'string' ? parseFloat(precio) : precio;
+  if (isNaN(precioNum)) return '$0';
+  return new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(precioNum);
   };
 
   return (
@@ -220,7 +225,7 @@ export default function AdminBeats() {
                 beats.map((beat) => (
                   <tr key={beat.id}>
                     <td>{beat.id}</td>
-                    <td>{beat.nombre}</td>
+                    <td>{beat.nombre || beat.titulo}</td>
                     <td>{beat.artista}</td>
                     <td>{beat.genero}</td>
                     <td>{formatearPrecio(beat.precio)}</td>
@@ -228,7 +233,7 @@ export default function AdminBeats() {
                       <button className="btn btn-sm btn-primary mr-2" onClick={() => handleEditar(beat)} title="Editar">
                         <i className="fa fa-edit"></i>
                       </button>
-                      <button className="btn btn-sm btn-danger" onClick={() => handleEliminar(beat.id, beat.nombre)} title="Eliminar">
+                      <button className="btn btn-sm btn-danger" onClick={() => handleEliminar(beat.id, beat.nombre || beat.titulo)} title="Eliminar">
                         <i className="fa fa-trash"></i>
                       </button>
                     </td>

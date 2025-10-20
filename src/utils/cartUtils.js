@@ -29,10 +29,12 @@ export function addItemToCart(beat, cantidad = 1) {
     // Si ya existe, no lo suma ni actualiza cantidad
     return items;
   } else {
+    // Usa 'titulo' si existe, si no usa 'nombre'
+    const titulo = beat.titulo || beat.nombre || 'Beat';
     items.push({
       id: beat.id,
-      titulo: beat.titulo,
-      precioNumerico: beat.precioNumerico || 0,
+      titulo,
+      precioNumerico: beat.precioNumerico || beat.precio || 0,
       precio: beat.precio,
       imagen: beat.imagen,
       cantidad: 1,
