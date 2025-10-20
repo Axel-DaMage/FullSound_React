@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/components/Login.jsx</title>
+    <title>Code coverage report for src/services/beatsService.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/components</a> Login.jsx</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/services</a> beatsService.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/117</span>
+                <span class='fraction'>0/110</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/117</span>
+                <span class='fraction'>0/110</span>
             </div>
         
             
@@ -173,14 +173,7 @@
 <a name='L108'></a><a href='#L108'>108</a>
 <a name='L109'></a><a href='#L109'>109</a>
 <a name='L110'></a><a href='#L110'>110</a>
-<a name='L111'></a><a href='#L111'>111</a>
-<a name='L112'></a><a href='#L112'>112</a>
-<a name='L113'></a><a href='#L113'>113</a>
-<a name='L114'></a><a href='#L114'>114</a>
-<a name='L115'></a><a href='#L115'>115</a>
-<a name='L116'></a><a href='#L116'>116</a>
-<a name='L117'></a><a href='#L117'>117</a>
-<a name='L118'></a><a href='#L118'>118</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L111'></a><a href='#L111'>111</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -290,130 +283,116 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >import React, { useState } from "react";</span></span></span>
-<span class="cstat-no" title="statement not covered" >import { useNavigate } from "react-router-dom";</span>
-<span class="cstat-no" title="statement not covered" >import Layout from "./Layout";</span>
-<span class="cstat-no" title="statement not covered" >import { </span>
-<span class="cstat-no" title="statement not covered" >  validarCredenciales, </span>
-<span class="cstat-no" title="statement not covered" >  obtenerRolPorCorreo, </span>
-<span class="cstat-no" title="statement not covered" >  esCorreoAdmin </span>
-<span class="cstat-no" title="statement not covered" >} from "../utils/authValidation";</span>
-<span class="cstat-no" title="statement not covered" >import { guardarUsuario } from "../utils/rolesPermisos";</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >/**</span></span></span>
+<span class="cstat-no" title="statement not covered" > * API de Beats - Endpoints para gestión de beats musicales</span>
+<span class="cstat-no" title="statement not covered" > */</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >export default function Login() {</span>
-<span class="cstat-no" title="statement not covered" >  const navigate = useNavigate();</span>
-<span class="cstat-no" title="statement not covered" >  const [form, setForm] = useState({</span>
-<span class="cstat-no" title="statement not covered" >    correo: "",</span>
-<span class="cstat-no" title="statement not covered" >    password: "",</span>
-<span class="cstat-no" title="statement not covered" >  });</span>
+<span class="cstat-no" title="statement not covered" >import api from './api';</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  const onChange = (e) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    const { id, value } = e.target;</span>
-<span class="cstat-no" title="statement not covered" >    setForm((f) =&gt; ({ ...f, [id]: value }));</span>
-<span class="cstat-no" title="statement not covered" >  };</span>
+<span class="cstat-no" title="statement not covered" >/**</span>
+<span class="cstat-no" title="statement not covered" > * Obtiene todos los beats</span>
+<span class="cstat-no" title="statement not covered" > * @param {Object} filters - Filtros opcionales (genero, artista, etc.)</span>
+<span class="cstat-no" title="statement not covered" > * @returns {Promise&lt;Array&gt;} Lista de beats</span>
+<span class="cstat-no" title="statement not covered" > */</span>
+<span class="cstat-no" title="statement not covered" >export const obtenerBeats = async (filters = {}) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  try {</span>
+<span class="cstat-no" title="statement not covered" >    const params = new URLSearchParams(filters).toString();</span>
+<span class="cstat-no" title="statement not covered" >    const response = await api.get(`/beats${params ? `?${params}` : ''}`);</span>
+<span class="cstat-no" title="statement not covered" >    return response.data;</span>
+<span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
+<span class="cstat-no" title="statement not covered" >    console.error('Error al obtener beats:', error);</span>
+<span class="cstat-no" title="statement not covered" >    throw error;</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" >};</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  const handleLogin = (e) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    e.preventDefault();</span>
+<span class="cstat-no" title="statement not covered" >/**</span>
+<span class="cstat-no" title="statement not covered" > * Obtiene un beat por ID</span>
+<span class="cstat-no" title="statement not covered" > * @param {number|string} id - ID del beat</span>
+<span class="cstat-no" title="statement not covered" > * @returns {Promise&lt;Object&gt;} Datos del beat</span>
+<span class="cstat-no" title="statement not covered" > */</span>
+<span class="cstat-no" title="statement not covered" >export const obtenerBeatPorId = async (id) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  try {</span>
+<span class="cstat-no" title="statement not covered" >    const response = await api.get(`/beats/${id}`);</span>
+<span class="cstat-no" title="statement not covered" >    return response.data;</span>
+<span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
+<span class="cstat-no" title="statement not covered" >    console.error(`Error al obtener beat ${id}:`, error);</span>
+<span class="cstat-no" title="statement not covered" >    throw error;</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" >};</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    // Validar credenciales</span>
-<span class="cstat-no" title="statement not covered" >    const validacion = validarCredenciales(form.correo, form.password);</span>
-<span class="cstat-no" title="statement not covered" >    </span>
-<span class="cstat-no" title="statement not covered" >    if (!validacion.isValid) {</span>
-<span class="cstat-no" title="statement not covered" >      alert(validacion.error);</span>
-<span class="cstat-no" title="statement not covered" >      return false;</span>
-<span class="cstat-no" title="statement not covered" >    }</span>
+<span class="cstat-no" title="statement not covered" >/**</span>
+<span class="cstat-no" title="statement not covered" > * Crea un nuevo beat</span>
+<span class="cstat-no" title="statement not covered" > * @param {Object} beatData - Datos del beat a crear</span>
+<span class="cstat-no" title="statement not covered" > * @returns {Promise&lt;Object&gt;} Beat creado</span>
+<span class="cstat-no" title="statement not covered" > */</span>
+<span class="cstat-no" title="statement not covered" >export const crearBeat = async (beatData) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  try {</span>
+<span class="cstat-no" title="statement not covered" >    const response = await api.post('/beats', beatData);</span>
+<span class="cstat-no" title="statement not covered" >    return response.data;</span>
+<span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
+<span class="cstat-no" title="statement not covered" >    console.error('Error al crear beat:', error);</span>
+<span class="cstat-no" title="statement not covered" >    throw error;</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" >};</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    // Determinar rol del usuario basado en el correo</span>
-<span class="cstat-no" title="statement not covered" >    const rol = obtenerRolPorCorreo(form.correo);</span>
-<span class="cstat-no" title="statement not covered" >    </span>
-<span class="cstat-no" title="statement not covered" >    // Simular datos del usuario (en producción vendrán del backend)</span>
-<span class="cstat-no" title="statement not covered" >    const usuario = {</span>
-<span class="cstat-no" title="statement not covered" >      nombre: form.correo.split('@')[0], // Nombre temporal del correo</span>
-<span class="cstat-no" title="statement not covered" >      correo: form.correo,</span>
-<span class="cstat-no" title="statement not covered" >      rol: rol,</span>
-<span class="cstat-no" title="statement not covered" >      id: Date.now() // ID temporal</span>
-<span class="cstat-no" title="statement not covered" >    };</span>
+<span class="cstat-no" title="statement not covered" >/**</span>
+<span class="cstat-no" title="statement not covered" > * Actualiza un beat existente</span>
+<span class="cstat-no" title="statement not covered" > * @param {number|string} id - ID del beat</span>
+<span class="cstat-no" title="statement not covered" > * @param {Object} beatData - Datos actualizados</span>
+<span class="cstat-no" title="statement not covered" > * @returns {Promise&lt;Object&gt;} Beat actualizado</span>
+<span class="cstat-no" title="statement not covered" > */</span>
+<span class="cstat-no" title="statement not covered" >export const actualizarBeat = async (id, beatData) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  try {</span>
+<span class="cstat-no" title="statement not covered" >    const response = await api.put(`/beats/${id}`, beatData);</span>
+<span class="cstat-no" title="statement not covered" >    return response.data;</span>
+<span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
+<span class="cstat-no" title="statement not covered" >    console.error(`Error al actualizar beat ${id}:`, error);</span>
+<span class="cstat-no" title="statement not covered" >    throw error;</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" >};</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    // Guardar token y usuario en localStorage</span>
-<span class="cstat-no" title="statement not covered" >    localStorage.setItem('token', `token_simulado_${Date.now()}`);</span>
-<span class="cstat-no" title="statement not covered" >    guardarUsuario(usuario);</span>
+<span class="cstat-no" title="statement not covered" >/**</span>
+<span class="cstat-no" title="statement not covered" > * Elimina un beat</span>
+<span class="cstat-no" title="statement not covered" > * @param {number|string} id - ID del beat</span>
+<span class="cstat-no" title="statement not covered" > * @returns {Promise&lt;void&gt;}</span>
+<span class="cstat-no" title="statement not covered" > */</span>
+<span class="cstat-no" title="statement not covered" >export const eliminarBeat = async (id) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  try {</span>
+<span class="cstat-no" title="statement not covered" >    await api.delete(`/beats/${id}`);</span>
+<span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
+<span class="cstat-no" title="statement not covered" >    console.error(`Error al eliminar beat ${id}:`, error);</span>
+<span class="cstat-no" title="statement not covered" >    throw error;</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" >};</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    // Redirigir según el rol</span>
-<span class="cstat-no" title="statement not covered" >    if (rol === 'admin') {</span>
-<span class="cstat-no" title="statement not covered" >      alert('Bienvenido Administrador');</span>
-<span class="cstat-no" title="statement not covered" >      navigate('/admin');</span>
-<span class="cstat-no" title="statement not covered" >    } else {</span>
-<span class="cstat-no" title="statement not covered" >      alert('Inicio de sesión exitoso');</span>
-<span class="cstat-no" title="statement not covered" >      navigate('/beats');</span>
-<span class="cstat-no" title="statement not covered" >    }</span>
+<span class="cstat-no" title="statement not covered" >/**</span>
+<span class="cstat-no" title="statement not covered" > * Obtiene beats por género</span>
+<span class="cstat-no" title="statement not covered" > * @param {string} genero - Género musical</span>
+<span class="cstat-no" title="statement not covered" > * @returns {Promise&lt;Array&gt;} Lista de beats del género</span>
+<span class="cstat-no" title="statement not covered" > */</span>
+<span class="cstat-no" title="statement not covered" >export const obtenerBeatsPorGenero = async (genero) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  try {</span>
+<span class="cstat-no" title="statement not covered" >    const response = await api.get(`/beats?genero=${genero}`);</span>
+<span class="cstat-no" title="statement not covered" >    return response.data;</span>
+<span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
+<span class="cstat-no" title="statement not covered" >    console.error(`Error al obtener beats del género ${genero}:`, error);</span>
+<span class="cstat-no" title="statement not covered" >    throw error;</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" >};</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    return true;</span>
-<span class="cstat-no" title="statement not covered" >  };</span>
-<span class="cstat-no" title="statement not covered" >  </span>
-<span class="cstat-no" title="statement not covered" >  return (</span>
-<span class="cstat-no" title="statement not covered" >    &lt;Layout&gt;</span>
-<span class="cstat-no" title="statement not covered" >        &lt;section className="login-section spad"&gt;</span>
-<span class="cstat-no" title="statement not covered" >          &lt;div className="container"&gt;</span>
-<span class="cstat-no" title="statement not covered" >            &lt;div className="row justify-content-center"&gt;</span>
-<span class="cstat-no" title="statement not covered" >              &lt;div className="col-md-8 col-lg-6"&gt;</span>
-<span class="cstat-no" title="statement not covered" >                &lt;div className="card shadow p-4"&gt;</span>
-<span class="cstat-no" title="statement not covered" >                  &lt;h2 className="text-center mb-4"&gt;Iniciar Sesión&lt;/h2&gt;</span>
-<span class="cstat-no" title="statement not covered" >                  &lt;form onSubmit={handleLogin}&gt;</span>
-<span class="cstat-no" title="statement not covered" >                    &lt;div className="form-group"&gt;</span>
-<span class="cstat-no" title="statement not covered" >                      &lt;label htmlFor="correo"&gt;Correo electrónico&lt;/label&gt;</span>
-<span class="cstat-no" title="statement not covered" >                      &lt;input</span>
-<span class="cstat-no" title="statement not covered" >                        type="email"</span>
-<span class="cstat-no" title="statement not covered" >                        className="form-control"</span>
-<span class="cstat-no" title="statement not covered" >                        id="correo"</span>
-<span class="cstat-no" title="statement not covered" >                        placeholder="Ingresa tu correo"</span>
-<span class="cstat-no" title="statement not covered" >                        value={form.correo}</span>
-<span class="cstat-no" title="statement not covered" >                        onChange={onChange}</span>
-<span class="cstat-no" title="statement not covered" >                        required</span>
-<span class="cstat-no" title="statement not covered" >                      /&gt;</span>
-<span class="cstat-no" title="statement not covered" >                      &lt;small className="form-text text-muted"&gt;</span>
-<span class="cstat-no" title="statement not covered" >                        {esCorreoAdmin(form.correo) &amp;&amp; '✓ Correo de administrador detectado'}</span>
-<span class="cstat-no" title="statement not covered" >                      &lt;/small&gt;</span>
-<span class="cstat-no" title="statement not covered" >                    &lt;/div&gt;</span>
-<span class="cstat-no" title="statement not covered" >                    &lt;div className="form-group"&gt;</span>
-<span class="cstat-no" title="statement not covered" >                      &lt;label htmlFor="password"&gt;Contraseña&lt;/label&gt;</span>
-<span class="cstat-no" title="statement not covered" >                      &lt;input</span>
-<span class="cstat-no" title="statement not covered" >                        type="password"</span>
-<span class="cstat-no" title="statement not covered" >                        className="form-control"</span>
-<span class="cstat-no" title="statement not covered" >                        id="password"</span>
-<span class="cstat-no" title="statement not covered" >                        placeholder="Contraseña (mínimo 8 caracteres)"</span>
-<span class="cstat-no" title="statement not covered" >                        value={form.password}</span>
-<span class="cstat-no" title="statement not covered" >                        onChange={onChange}</span>
-<span class="cstat-no" title="statement not covered" >                        required</span>
-<span class="cstat-no" title="statement not covered" >                      /&gt;</span>
-<span class="cstat-no" title="statement not covered" >                    &lt;/div&gt;</span>
-<span class="cstat-no" title="statement not covered" >                    &lt;div className="d-flex flex-column gap-3 mt-4"&gt;</span>
-<span class="cstat-no" title="statement not covered" >                      &lt;button</span>
-<span class="cstat-no" title="statement not covered" >                        type="submit"</span>
-<span class="cstat-no" title="statement not covered" >                        className="site-btn btn-block"</span>
-<span class="cstat-no" title="statement not covered" >                      &gt;</span>
-<span class="cstat-no" title="statement not covered" >                        Iniciar Sesión</span>
-<span class="cstat-no" title="statement not covered" >                      &lt;/button&gt;</span>
-<span class="cstat-no" title="statement not covered" >                      &lt;div className="text-center"&gt;</span>
-<span class="cstat-no" title="statement not covered" >                        &lt;p className="mb-0"&gt;</span>
-<span class="cstat-no" title="statement not covered" >                          ¿No tienes cuenta? &lt;a href="/registro" className="text-primary"&gt;Regístrate aquí&lt;/a&gt;</span>
-<span class="cstat-no" title="statement not covered" >                        &lt;/p&gt;</span>
-<span class="cstat-no" title="statement not covered" >                      &lt;/div&gt;</span>
-<span class="cstat-no" title="statement not covered" >                    &lt;/div&gt;</span>
-<span class="cstat-no" title="statement not covered" >                  &lt;/form&gt;&lt;/div&gt;</span>
-<span class="cstat-no" title="statement not covered" >              &lt;/div&gt;</span>
-<span class="cstat-no" title="statement not covered" >            &lt;/div&gt;</span>
-<span class="cstat-no" title="statement not covered" >        &lt;/div&gt;</span>
-<span class="cstat-no" title="statement not covered" >        &lt;/section&gt;</span>
-<span class="cstat-no" title="statement not covered" >    &lt;/Layout&gt;</span>
-<span class="cstat-no" title="statement not covered" >  );</span>
-<span class="cstat-no" title="statement not covered" >}</span>
+<span class="cstat-no" title="statement not covered" >/**</span>
+<span class="cstat-no" title="statement not covered" > * Obtiene los géneros disponibles</span>
+<span class="cstat-no" title="statement not covered" > * @returns {Promise&lt;Array&gt;} Lista de géneros</span>
+<span class="cstat-no" title="statement not covered" > */</span>
+<span class="cstat-no" title="statement not covered" >export const obtenerGeneros = async () =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  try {</span>
+<span class="cstat-no" title="statement not covered" >    const response = await api.get('/generos');</span>
+<span class="cstat-no" title="statement not covered" >    return response.data;</span>
+<span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
+<span class="cstat-no" title="statement not covered" >    console.error('Error al obtener géneros:', error);</span>
+<span class="cstat-no" title="statement not covered" >    throw error;</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" >};</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->

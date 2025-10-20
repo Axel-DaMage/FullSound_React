@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/utils/formUtils.js</title>
+    <title>Code coverage report for src/components/Terminos.jsx</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/utils</a> formUtils.js</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/components</a> Terminos.jsx</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/68</span>
+                <span class='fraction'>0/69</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/68</span>
+                <span class='fraction'>0/69</span>
             </div>
         
             
@@ -131,7 +131,8 @@
 <a name='L66'></a><a href='#L66'>66</a>
 <a name='L67'></a><a href='#L67'>67</a>
 <a name='L68'></a><a href='#L68'>68</a>
-<a name='L69'></a><a href='#L69'>69</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -199,74 +200,76 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >/**</span></span></span>
-<span class="cstat-no" title="statement not covered" > * Utilidades para formularios y validaciones</span>
-<span class="cstat-no" title="statement not covered" > */</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >import React from "react";</span></span></span>
+<span class="cstat-no" title="statement not covered" >import Layout from "./Layout";</span>
+<span class="cstat-no" title="statement not covered" >import { Link } from "react-router-dom";</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >/**</span>
-<span class="cstat-no" title="statement not covered" > * Valida que un correo tenga dominios permitidos</span>
-<span class="cstat-no" title="statement not covered" > * @param {string} correo - Correo electrónico a validar</span>
-<span class="cstat-no" title="statement not covered" > * @returns {boolean} True si el correo es válido</span>
-<span class="cstat-no" title="statement not covered" > */</span>
-<span class="cstat-no" title="statement not covered" >export const validarCorreo = (correo) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  if (!correo) return false;</span>
-<span class="cstat-no" title="statement not covered" >  const correoTrim = correo.trim();</span>
-<span class="cstat-no" title="statement not covered" >  return correoTrim.endsWith('@gmail.com') || correoTrim.endsWith('@duocuc.cl');</span>
-<span class="cstat-no" title="statement not covered" >};</span>
+<span class="cstat-no" title="statement not covered" >export default function Terminos() {</span>
+<span class="cstat-no" title="statement not covered" >  return (</span>
+<span class="cstat-no" title="statement not covered" >    &lt;Layout&gt;</span>
+<span class="cstat-no" title="statement not covered" >      &lt;section className="login-section terminos spad"&gt;</span>
+<span class="cstat-no" title="statement not covered" >        &lt;div className="container"&gt;</span>
+<span class="cstat-no" title="statement not covered" >          &lt;div className="row justify-content-center"&gt;</span>
+<span class="cstat-no" title="statement not covered" >            &lt;div className="col-md-10 col-lg-8"&gt;</span>
+<span class="cstat-no" title="statement not covered" >              &lt;div className="card shadow p-4 terminos-card"&gt;</span>
+<span class="cstat-no" title="statement not covered" >                &lt;h2 className="text-center mb-4"&gt;Términos y Condiciones&lt;/h2&gt;</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >/**</span>
-<span class="cstat-no" title="statement not covered" > * Valida la longitud de una contraseña</span>
-<span class="cstat-no" title="statement not covered" > * @param {string} password - Contraseña a validar</span>
-<span class="cstat-no" title="statement not covered" > * @param {number} minLength - Longitud mínima (default: 4)</span>
-<span class="cstat-no" title="statement not covered" > * @param {number} maxLength - Longitud máxima (default: 10)</span>
-<span class="cstat-no" title="statement not covered" > * @returns {boolean} True si la contraseña es válida</span>
-<span class="cstat-no" title="statement not covered" > */</span>
-<span class="cstat-no" title="statement not covered" >export const validarPassword = (password, minLength = 4, maxLength = 10) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  if (!password) return false;</span>
-<span class="cstat-no" title="statement not covered" >  const length = password.length;</span>
-<span class="cstat-no" title="statement not covered" >  return length &gt;= minLength &amp;&amp; length &lt;= maxLength;</span>
-<span class="cstat-no" title="statement not covered" >};</span>
+<span class="cstat-no" title="statement not covered" >                &lt;div className="terminos-content"&gt;</span>
+<span class="cstat-no" title="statement not covered" >                  &lt;p&gt;</span>
+<span class="cstat-no" title="statement not covered" >                    Bienvenido a FullSound. Al utilizar este sitio acepta cumplir</span>
+<span class="cstat-no" title="statement not covered" >                    con los siguientes términos y condiciones. Lea atentamente</span>
+<span class="cstat-no" title="statement not covered" >                    antes de continuar.</span>
+<span class="cstat-no" title="statement not covered" >                  &lt;/p&gt;</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >/**</span>
-<span class="cstat-no" title="statement not covered" > * Valida las credenciales de login</span>
-<span class="cstat-no" title="statement not covered" > * @param {string} correo - Correo electrónico</span>
-<span class="cstat-no" title="statement not covered" > * @param {string} password - Contraseña</span>
-<span class="cstat-no" title="statement not covered" > * @returns {object} Objeto con isValid y mensaje de error si aplica</span>
-<span class="cstat-no" title="statement not covered" > */</span>
-<span class="cstat-no" title="statement not covered" >export const validarCredenciales = (correo, password) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  if (!validarCorreo(correo)) {</span>
-<span class="cstat-no" title="statement not covered" >    return {</span>
-<span class="cstat-no" title="statement not covered" >      isValid: false,</span>
-<span class="cstat-no" title="statement not covered" >      error: 'El correo debe terminar con "@gmail.com" o con "@duocuc.cl".'</span>
-<span class="cstat-no" title="statement not covered" >    };</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
-<span class="cstat-no" title="statement not covered" >  </span>
-<span class="cstat-no" title="statement not covered" >  if (password.length === 0) {</span>
-<span class="cstat-no" title="statement not covered" >    return {</span>
-<span class="cstat-no" title="statement not covered" >      isValid: false,</span>
-<span class="cstat-no" title="statement not covered" >      error: 'Por favor ingresa tu contraseña.'</span>
-<span class="cstat-no" title="statement not covered" >    };</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
-<span class="cstat-no" title="statement not covered" >  </span>
-<span class="cstat-no" title="statement not covered" >  if (!validarPassword(password)) {</span>
-<span class="cstat-no" title="statement not covered" >    return {</span>
-<span class="cstat-no" title="statement not covered" >      isValid: false,</span>
-<span class="cstat-no" title="statement not covered" >      error: 'La contraseña debe tener entre 4 y 10 caracteres.'</span>
-<span class="cstat-no" title="statement not covered" >    };</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
-<span class="cstat-no" title="statement not covered" >  </span>
-<span class="cstat-no" title="statement not covered" >  return { isValid: true };</span>
-<span class="cstat-no" title="statement not covered" >};</span>
+<span class="cstat-no" title="statement not covered" >                  &lt;h5&gt;1. Uso del servicio&lt;/h5&gt;</span>
+<span class="cstat-no" title="statement not covered" >                  &lt;p&gt;</span>
+<span class="cstat-no" title="statement not covered" >                    El servicio proporciona contenido musical y servicios</span>
+<span class="cstat-no" title="statement not covered" >                    relacionados. Usted se compromete a usar el servicio de</span>
+<span class="cstat-no" title="statement not covered" >                    acuerdo con la ley y a no realizar actividades que perjudiquen</span>
+<span class="cstat-no" title="statement not covered" >                    a otros usuarios o a la plataforma.</span>
+<span class="cstat-no" title="statement not covered" >                  &lt;/p&gt;</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >/**</span>
-<span class="cstat-no" title="statement not covered" > * Obtiene el valor de un campo de formulario por ID</span>
-<span class="cstat-no" title="statement not covered" > * @param {string} fieldId - ID del campo</span>
-<span class="cstat-no" title="statement not covered" > * @returns {string} Valor del campo trimmed</span>
-<span class="cstat-no" title="statement not covered" > */</span>
-<span class="cstat-no" title="statement not covered" >export const getFieldValue = (fieldId) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  const element = document.getElementById(fieldId);</span>
-<span class="cstat-no" title="statement not covered" >  return element ? element.value.trim() : '';</span>
-<span class="cstat-no" title="statement not covered" >};</span>
+<span class="cstat-no" title="statement not covered" >                  &lt;h5&gt;2. Propiedad intelectual&lt;/h5&gt;</span>
+<span class="cstat-no" title="statement not covered" >                  &lt;p&gt;</span>
+<span class="cstat-no" title="statement not covered" >                    Todo el contenido mostrado en el sitio (música, imágenes,</span>
+<span class="cstat-no" title="statement not covered" >                    textos) puede estar protegido por derechos de autor. Queda</span>
+<span class="cstat-no" title="statement not covered" >                    prohibida la reproducción no autorizada en caso de que su respectivo autor no lo permita.</span>
+<span class="cstat-no" title="statement not covered" >                  &lt;/p&gt;</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >                  &lt;h5&gt;3. Privacidad&lt;/h5&gt;</span>
+<span class="cstat-no" title="statement not covered" >                  &lt;p&gt;</span>
+<span class="cstat-no" title="statement not covered" >                    La información recogida será usada según nuestra política de</span>
+<span class="cstat-no" title="statement not covered" >                    privacidad. No compartiremos sus credenciales ni datos</span>
+<span class="cstat-no" title="statement not covered" >                    sensibles con terceros sin su consentimiento.</span>
+<span class="cstat-no" title="statement not covered" >                  &lt;/p&gt;</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >                  &lt;h5&gt;4. Limitación de responsabilidad&lt;/h5&gt;</span>
+<span class="cstat-no" title="statement not covered" >                  &lt;p&gt;</span>
+<span class="cstat-no" title="statement not covered" >                    El sitio no se hace responsable por daños indirectos o</span>
+<span class="cstat-no" title="statement not covered" >                    pérdidas causadas por el uso del servicio. Consulte la</span>
+<span class="cstat-no" title="statement not covered" >                    documentación para detalles.</span>
+<span class="cstat-no" title="statement not covered" >                  &lt;/p&gt;</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >                  &lt;p&gt;</span>
+<span class="cstat-no" title="statement not covered" >                    Estos términos pueden actualizarse. La versión publicada en</span>
+<span class="cstat-no" title="statement not covered" >                    esta página será la vigente.</span>
+<span class="cstat-no" title="statement not covered" >                  &lt;/p&gt;</span>
+<span class="cstat-no" title="statement not covered" >                &lt;/div&gt;</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >                &lt;div className="mt-4 text-center"&gt;</span>
+<span class="cstat-no" title="statement not covered" >                  &lt;Link to="/registro" className="site-btn"&gt;</span>
+<span class="cstat-no" title="statement not covered" >                    Volver al registro</span>
+<span class="cstat-no" title="statement not covered" >                  &lt;/Link&gt;</span>
+<span class="cstat-no" title="statement not covered" >                &lt;/div&gt;</span>
+<span class="cstat-no" title="statement not covered" >              &lt;/div&gt;</span>
+<span class="cstat-no" title="statement not covered" >            &lt;/div&gt;</span>
+<span class="cstat-no" title="statement not covered" >          &lt;/div&gt;</span>
+<span class="cstat-no" title="statement not covered" >        &lt;/div&gt;</span>
+<span class="cstat-no" title="statement not covered" >      &lt;/section&gt;</span>
+<span class="cstat-no" title="statement not covered" >    &lt;/Layout&gt;</span>
+<span class="cstat-no" title="statement not covered" >  );</span>
+<span class="cstat-no" title="statement not covered" >}</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->

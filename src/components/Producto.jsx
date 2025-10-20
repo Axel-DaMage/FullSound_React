@@ -1,46 +1,35 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import Layout from "./Layout";
-import { 
-  buscarProductoPorId, 
-  obtenerProductosRelacionados, 
-  agregarAlCarrito,
-  validarCantidad 
+import {
+  buscarProductoPorId,
+  obtenerProductosRelacionados,
 } from "../utils/productUtils";
+import { useCart } from "../utils/cartUtils";
 
 export default function Producto() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [producto, setProducto] = useState(null);
-  const [cantidad, setCantidad] = useState(1);
+  const [cantidad] = useState(1);
 
   useEffect(() => {
     const productoEncontrado = buscarProductoPorId(id);
     setProducto(productoEncontrado);
   }, [id]);
 
+  const { addItem } = useCart();
+
   const handleAddToCart = () => {
-    const resultado = agregarAlCarrito(producto, cantidad);
-    if (resultado.success) {
-      alert(resultado.mensaje);
-    }
+    addItem(producto, cantidad);
+    // Feedback silencioso; el contador del carrito en el header refleja la acción
   };
 
   const handleBuyNow = () => {
     navigate('/carrito');
   };
 
-  const handleCantidadChange = (e) => {
-    setCantidad(validarCantidad(e.target.value));
-  };
-
-  const incrementarCantidad = () => {
-    setCantidad(cantidad + 1);
-  };
-
-  const decrementarCantidad = () => {
-    setCantidad(validarCantidad(cantidad - 1));
-  };
+  // Cantidad fija en 1 (sin selector, acorde al proyecto)
 
   if (!producto) {
     return (
@@ -133,36 +122,7 @@ export default function Producto() {
                 </audio>
               </div>
 
-              {/* Cantidad */}
-              <div className="quantity-selector-section">
-                <div className="quantity-selector-label">
-                  Cantidad:
-                </div>
-                <div className="quantity-selector-wrapper">
-                  <button 
-                    className="btn btn-sm quantity-btn"
-                    onClick={decrementarCantidad}
-                    aria-label="Disminuir cantidad"
-                  >
-                    -
-                  </button>
-                  <input 
-                    type="number" 
-                    value={cantidad}
-                    onChange={handleCantidadChange}
-                    className="form-control quantity-input"
-                    min="1"
-                    aria-label="Cantidad del producto"
-                  />
-                  <button 
-                    className="btn btn-sm quantity-btn"
-                    onClick={incrementarCantidad}
-                    aria-label="Aumentar cantidad"
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
+              {/* Sin selector de cantidad; por defecto 1 */}
 
               {/* Botones de acción */}
               <div className="product-actions">

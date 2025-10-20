@@ -50,7 +50,10 @@ export const datosBeats = [
     genero: "Chill",
     precio: "Gratis",
     precioNumerico: 0,
-    descripcion: "Un beat chill relajante para momentos de tranquilidad y reflexión."
+    descripcion: "Un beat chill relajante para momentos de tranquilidad y reflexión.",
+    fuente: audio3,
+    imagen: img3,
+    enlaceProducto: "/producto/3",
   },
   {
      id: 4,

@@ -15,3 +15,18 @@ export function inicializarSlider(slidesLength, callback) {
   }, 4000);
   return () => clearInterval(interval);
 }
+
+// Normaliza un asset importado (string directo o módulo con default/src)
+export function resolveAsset(asset) {
+  if (!asset) return "";
+  if (typeof asset === "string") return asset;
+  if (typeof asset === "object") {
+    if (asset.default && typeof asset.default === "string") return asset.default;
+    if (asset.src && typeof asset.src === "string") return asset.src;
+  }
+  try {
+    return String(asset);
+  } catch {
+    return "";
+  }
+}

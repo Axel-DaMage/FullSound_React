@@ -136,3 +136,49 @@
 	color: var(--accent);
 	margin-bottom: 30px;
 }
+
+/* Mobile: convertir la tabla del carrito en tarjetas apiladas */
+@media (max-width: 768px) {
+	.table-cart,
+	.table-cart thead,
+	.table-cart tbody,
+	.table-cart th,
+	.table-cart td,
+	.table-cart tr {
+		display: block;
+		width: 100%;
+	}
+
+	.table-cart thead {
+		display: none;
+	}
+
+	.table-cart tbody tr {
+		background: transparent;
+		margin-bottom: 16px;
+		border-radius: 12px;
+		padding: 12px;
+		border: 2px solid var(--secondary);
+	}
+
+	.table-cart tbody td {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		border: none !important;
+		padding: 10px 6px;
+	}
+
+	.cart-product-img {
+		width: 72px;
+		height: 72px;
+	}
+
+	.cart-summary {
+		margin-top: 20px;
+	}
+
+	.btn-remove {
+		padding: 10px 14px;
+	}
+}

@@ -3,9 +3,11 @@ import { datosBeats, generosBeats } from "../utils/datosMusica";
 import Layout from "./Layout";
 
 import React, { useState } from "react";
+import { useCart } from "../utils/cartUtils";
 
 export default function Beats() {
   const [categoria, setCategoria] = useState("Todos");
+  const { addItem } = useCart();
 
   const beatsFiltrados = categoria === "Todos"
     ? datosBeats
@@ -46,16 +48,20 @@ export default function Beats() {
                           <source src={beat.fuente} type="audio/mpeg" />
                         </audio>
                       </div>
-                      <div className="card-button">
-                        {beat.enlaceProducto ? (
-                          <Link to={beat.enlaceProducto} className="site-btn btn-block mt-auto">
-                            <i className="fa fa-shopping-cart" /> Comprar
-                          </Link>
-                        ) : (
-                          <Link to="/carrito" className="site-btn btn-block mt-auto">
-                            <i className="fa fa-shopping-cart" /> Comprar
-                          </Link>
-                        )}
+                      <div className="card-button d-grid gap-2">
+                        <button
+                          type="button"
+                          className="site-btn"
+                          onClick={() => {
+                            addItem(beat, 1);
+                            try { if (window?.navigator?.vibrate) navigator.vibrate(30); } catch {}
+                          }}
+                        >
+                          <i className="fa fa-cart-plus" /> Agregar al carrito
+                        </button>
+                        <Link to={beat.enlaceProducto || "/carrito"} className="site-btn sb-c2">
+                          {beat.enlaceProducto ? 'Ver producto' : 'Ir al carrito'}
+                        </Link>
                       </div>
                     </div>
                   </div>

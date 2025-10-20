@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/29</span>
+                <span class='fraction'>0/36</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/29</span>
+                <span class='fraction'>0/36</span>
             </div>
         
             
@@ -95,21 +95,11 @@
 <a name='L30'></a><a href='#L30'>30</a>
 <a name='L31'></a><a href='#L31'>31</a>
 <a name='L32'></a><a href='#L32'>32</a>
-<a name='L33'></a><a href='#L33'>33</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -123,11 +113,29 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'<span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span></span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'</span></span></span>
 <span class="cstat-no" title="statement not covered" >import Inicio from './components/Inicio'</span>
 <span class="cstat-no" title="statement not covered" >import Beats from './components/Beats'</span>
 <span class="cstat-no" title="statement not covered" >import Carrito from './components/Carrito'</span>
@@ -136,8 +144,10 @@
 <span class="cstat-no" title="statement not covered" >import Registro from './components/Registro'</span>
 <span class="cstat-no" title="statement not covered" >import Producto from './components/Producto'</span>
 <span class="cstat-no" title="statement not covered" >import Creditos from './components/Creditos'</span>
+<span class="cstat-no" title="statement not covered" >import Main from './components/Main'</span>
 <span class="cstat-no" title="statement not covered" >import Preloader from './components/Preloader'</span>
-&nbsp;
+<span class="cstat-no" title="statement not covered" >import Terminos from './components/Terminos'</span>
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >function App() {</span>
 <span class="cstat-no" title="statement not covered" >  return (</span>
 <span class="cstat-no" title="statement not covered" >    &lt;&gt;</span>
@@ -150,14 +160,16 @@
 <span class="cstat-no" title="statement not covered" >          &lt;Route path="/admin" element={&lt;Administracion /&gt;} /&gt;</span>
 <span class="cstat-no" title="statement not covered" >          &lt;Route path="/login" element={&lt;Login /&gt;} /&gt;</span>
 <span class="cstat-no" title="statement not covered" >          &lt;Route path="/registro" element={&lt;Registro /&gt;} /&gt;</span>
+<span class="cstat-no" title="statement not covered" >          &lt;Route path="/terminos" element={&lt;Terminos /&gt;} /&gt;</span>
 <span class="cstat-no" title="statement not covered" >          &lt;Route path="/producto/:id" element={&lt;Producto /&gt;} /&gt;</span>
 <span class="cstat-no" title="statement not covered" >          &lt;Route path="/creditos" element={&lt;Creditos /&gt;} /&gt;</span>
+<span class="cstat-no" title="statement not covered" >          &lt;Route path="/main" element={&lt;Main /&gt;} /&gt;</span>
 <span class="cstat-no" title="statement not covered" >        &lt;/Routes&gt;</span>
 <span class="cstat-no" title="statement not covered" >      &lt;/Router&gt;</span>
 <span class="cstat-no" title="statement not covered" >    &lt;/&gt;</span>
-  )
+<span class="cstat-no" title="statement not covered" >  )</span>
 <span class="cstat-no" title="statement not covered" >}</span>
-&nbsp;
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >export default App</span>
 &nbsp;</pre></td></tr></table></pre>
 
@@ -166,7 +178,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-17T03:09:22.892Z
+                at 2025-10-20T02:15:17.702Z
             </div>
         <script src="../prettify.js"></script>
         <script>

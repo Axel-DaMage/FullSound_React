@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/utils/formUtils.js</title>
+    <title>Code coverage report for src/services/carritoService.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/utils</a> formUtils.js</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/services</a> carritoService.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/68</span>
+                <span class='fraction'>0/95</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/68</span>
+                <span class='fraction'>0/95</span>
             </div>
         
             
@@ -131,7 +131,61 @@
 <a name='L66'></a><a href='#L66'>66</a>
 <a name='L67'></a><a href='#L67'>67</a>
 <a name='L68'></a><a href='#L68'>68</a>
-<a name='L69'></a><a href='#L69'>69</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a>
+<a name='L82'></a><a href='#L82'>82</a>
+<a name='L83'></a><a href='#L83'>83</a>
+<a name='L84'></a><a href='#L84'>84</a>
+<a name='L85'></a><a href='#L85'>85</a>
+<a name='L86'></a><a href='#L86'>86</a>
+<a name='L87'></a><a href='#L87'>87</a>
+<a name='L88'></a><a href='#L88'>88</a>
+<a name='L89'></a><a href='#L89'>89</a>
+<a name='L90'></a><a href='#L90'>90</a>
+<a name='L91'></a><a href='#L91'>91</a>
+<a name='L92'></a><a href='#L92'>92</a>
+<a name='L93'></a><a href='#L93'>93</a>
+<a name='L94'></a><a href='#L94'>94</a>
+<a name='L95'></a><a href='#L95'>95</a>
+<a name='L96'></a><a href='#L96'>96</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -200,72 +254,99 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >/**</span></span></span>
-<span class="cstat-no" title="statement not covered" > * Utilidades para formularios y validaciones</span>
+<span class="cstat-no" title="statement not covered" > * API de Carrito - Gestión del carrito de compras</span>
 <span class="cstat-no" title="statement not covered" > */</span>
 <span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >import api from './api';</span>
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >/**</span>
-<span class="cstat-no" title="statement not covered" > * Valida que un correo tenga dominios permitidos</span>
-<span class="cstat-no" title="statement not covered" > * @param {string} correo - Correo electrónico a validar</span>
-<span class="cstat-no" title="statement not covered" > * @returns {boolean} True si el correo es válido</span>
+<span class="cstat-no" title="statement not covered" > * Obtiene el carrito actual del usuario</span>
+<span class="cstat-no" title="statement not covered" > * @returns {Promise&lt;Object&gt;} Carrito con items</span>
 <span class="cstat-no" title="statement not covered" > */</span>
-<span class="cstat-no" title="statement not covered" >export const validarCorreo = (correo) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  if (!correo) return false;</span>
-<span class="cstat-no" title="statement not covered" >  const correoTrim = correo.trim();</span>
-<span class="cstat-no" title="statement not covered" >  return correoTrim.endsWith('@gmail.com') || correoTrim.endsWith('@duocuc.cl');</span>
+<span class="cstat-no" title="statement not covered" >export const obtenerCarrito = async () =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  try {</span>
+<span class="cstat-no" title="statement not covered" >    const response = await api.get('/carrito');</span>
+<span class="cstat-no" title="statement not covered" >    return response.data;</span>
+<span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
+<span class="cstat-no" title="statement not covered" >    console.error('Error al obtener carrito:', error);</span>
+<span class="cstat-no" title="statement not covered" >    throw error;</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
 <span class="cstat-no" title="statement not covered" >};</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >/**</span>
-<span class="cstat-no" title="statement not covered" > * Valida la longitud de una contraseña</span>
-<span class="cstat-no" title="statement not covered" > * @param {string} password - Contraseña a validar</span>
-<span class="cstat-no" title="statement not covered" > * @param {number} minLength - Longitud mínima (default: 4)</span>
-<span class="cstat-no" title="statement not covered" > * @param {number} maxLength - Longitud máxima (default: 10)</span>
-<span class="cstat-no" title="statement not covered" > * @returns {boolean} True si la contraseña es válida</span>
+<span class="cstat-no" title="statement not covered" > * Agrega un producto al carrito</span>
+<span class="cstat-no" title="statement not covered" > * @param {Object} item - Producto a agregar</span>
+<span class="cstat-no" title="statement not covered" > * @param {number} item.beatId - ID del beat</span>
+<span class="cstat-no" title="statement not covered" > * @param {number} item.cantidad - Cantidad</span>
+<span class="cstat-no" title="statement not covered" > * @returns {Promise&lt;Object&gt;} Carrito actualizado</span>
 <span class="cstat-no" title="statement not covered" > */</span>
-<span class="cstat-no" title="statement not covered" >export const validarPassword = (password, minLength = 4, maxLength = 10) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  if (!password) return false;</span>
-<span class="cstat-no" title="statement not covered" >  const length = password.length;</span>
-<span class="cstat-no" title="statement not covered" >  return length &gt;= minLength &amp;&amp; length &lt;= maxLength;</span>
+<span class="cstat-no" title="statement not covered" >export const agregarAlCarrito = async (item) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  try {</span>
+<span class="cstat-no" title="statement not covered" >    const response = await api.post('/carrito/items', item);</span>
+<span class="cstat-no" title="statement not covered" >    return response.data;</span>
+<span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
+<span class="cstat-no" title="statement not covered" >    console.error('Error al agregar al carrito:', error);</span>
+<span class="cstat-no" title="statement not covered" >    throw error;</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
 <span class="cstat-no" title="statement not covered" >};</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >/**</span>
-<span class="cstat-no" title="statement not covered" > * Valida las credenciales de login</span>
-<span class="cstat-no" title="statement not covered" > * @param {string} correo - Correo electrónico</span>
-<span class="cstat-no" title="statement not covered" > * @param {string} password - Contraseña</span>
-<span class="cstat-no" title="statement not covered" > * @returns {object} Objeto con isValid y mensaje de error si aplica</span>
+<span class="cstat-no" title="statement not covered" > * Actualiza la cantidad de un item del carrito</span>
+<span class="cstat-no" title="statement not covered" > * @param {number|string} itemId - ID del item</span>
+<span class="cstat-no" title="statement not covered" > * @param {number} cantidad - Nueva cantidad</span>
+<span class="cstat-no" title="statement not covered" > * @returns {Promise&lt;Object&gt;} Carrito actualizado</span>
 <span class="cstat-no" title="statement not covered" > */</span>
-<span class="cstat-no" title="statement not covered" >export const validarCredenciales = (correo, password) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  if (!validarCorreo(correo)) {</span>
-<span class="cstat-no" title="statement not covered" >    return {</span>
-<span class="cstat-no" title="statement not covered" >      isValid: false,</span>
-<span class="cstat-no" title="statement not covered" >      error: 'El correo debe terminar con "@gmail.com" o con "@duocuc.cl".'</span>
-<span class="cstat-no" title="statement not covered" >    };</span>
+<span class="cstat-no" title="statement not covered" >export const actualizarCantidadItem = async (itemId, cantidad) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  try {</span>
+<span class="cstat-no" title="statement not covered" >    const response = await api.put(`/carrito/items/${itemId}`, { cantidad });</span>
+<span class="cstat-no" title="statement not covered" >    return response.data;</span>
+<span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
+<span class="cstat-no" title="statement not covered" >    console.error('Error al actualizar cantidad:', error);</span>
+<span class="cstat-no" title="statement not covered" >    throw error;</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
-<span class="cstat-no" title="statement not covered" >  </span>
-<span class="cstat-no" title="statement not covered" >  if (password.length === 0) {</span>
-<span class="cstat-no" title="statement not covered" >    return {</span>
-<span class="cstat-no" title="statement not covered" >      isValid: false,</span>
-<span class="cstat-no" title="statement not covered" >      error: 'Por favor ingresa tu contraseña.'</span>
-<span class="cstat-no" title="statement not covered" >    };</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
-<span class="cstat-no" title="statement not covered" >  </span>
-<span class="cstat-no" title="statement not covered" >  if (!validarPassword(password)) {</span>
-<span class="cstat-no" title="statement not covered" >    return {</span>
-<span class="cstat-no" title="statement not covered" >      isValid: false,</span>
-<span class="cstat-no" title="statement not covered" >      error: 'La contraseña debe tener entre 4 y 10 caracteres.'</span>
-<span class="cstat-no" title="statement not covered" >    };</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
-<span class="cstat-no" title="statement not covered" >  </span>
-<span class="cstat-no" title="statement not covered" >  return { isValid: true };</span>
 <span class="cstat-no" title="statement not covered" >};</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >/**</span>
-<span class="cstat-no" title="statement not covered" > * Obtiene el valor de un campo de formulario por ID</span>
-<span class="cstat-no" title="statement not covered" > * @param {string} fieldId - ID del campo</span>
-<span class="cstat-no" title="statement not covered" > * @returns {string} Valor del campo trimmed</span>
+<span class="cstat-no" title="statement not covered" > * Elimina un item del carrito</span>
+<span class="cstat-no" title="statement not covered" > * @param {number|string} itemId - ID del item</span>
+<span class="cstat-no" title="statement not covered" > * @returns {Promise&lt;Object&gt;} Carrito actualizado</span>
 <span class="cstat-no" title="statement not covered" > */</span>
-<span class="cstat-no" title="statement not covered" >export const getFieldValue = (fieldId) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  const element = document.getElementById(fieldId);</span>
-<span class="cstat-no" title="statement not covered" >  return element ? element.value.trim() : '';</span>
+<span class="cstat-no" title="statement not covered" >export const eliminarDelCarrito = async (itemId) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  try {</span>
+<span class="cstat-no" title="statement not covered" >    const response = await api.delete(`/carrito/items/${itemId}`);</span>
+<span class="cstat-no" title="statement not covered" >    return response.data;</span>
+<span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
+<span class="cstat-no" title="statement not covered" >    console.error('Error al eliminar del carrito:', error);</span>
+<span class="cstat-no" title="statement not covered" >    throw error;</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" >};</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >/**</span>
+<span class="cstat-no" title="statement not covered" > * Vacía completamente el carrito</span>
+<span class="cstat-no" title="statement not covered" > * @returns {Promise&lt;void&gt;}</span>
+<span class="cstat-no" title="statement not covered" > */</span>
+<span class="cstat-no" title="statement not covered" >export const vaciarCarrito = async () =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  try {</span>
+<span class="cstat-no" title="statement not covered" >    await api.delete('/carrito');</span>
+<span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
+<span class="cstat-no" title="statement not covered" >    console.error('Error al vaciar carrito:', error);</span>
+<span class="cstat-no" title="statement not covered" >    throw error;</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" >};</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >/**</span>
+<span class="cstat-no" title="statement not covered" > * Procesa el checkout del carrito</span>
+<span class="cstat-no" title="statement not covered" > * @param {Object} datosCompra - Datos de la compra</span>
+<span class="cstat-no" title="statement not covered" > * @returns {Promise&lt;Object&gt;} Datos de la orden creada</span>
+<span class="cstat-no" title="statement not covered" > */</span>
+<span class="cstat-no" title="statement not covered" >export const procesarCheckout = async (datosCompra) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  try {</span>
+<span class="cstat-no" title="statement not covered" >    const response = await api.post('/carrito/checkout', datosCompra);</span>
+<span class="cstat-no" title="statement not covered" >    return response.data;</span>
+<span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
+<span class="cstat-no" title="statement not covered" >    console.error('Error al procesar checkout:', error);</span>
+<span class="cstat-no" title="statement not covered" >    throw error;</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
 <span class="cstat-no" title="statement not covered" >};</span>
 &nbsp;</pre></td></tr></table></pre>
 

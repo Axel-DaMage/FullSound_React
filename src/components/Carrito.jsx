@@ -1,65 +1,75 @@
 import React from "react";
 import Layout from "./Layout";
-import img15 from "../assets/img/15.jpg";
-import img14 from "../assets/img/14.jpg";
+import { useCart } from "../utils/cartUtils";
+import { resolveAsset } from "../utils/ui";
 
 export default function Carrito() {
+  const { items, removeItem, updateQuantity, total } = useCart();
+
   return (
     <Layout activeItem="carrito">
       <section className="cart-section spad">
         <div className="container">
           <h2 className="mb-4 text-white text-center">Carrito de Compras</h2>
-          <div className="table-responsive mb-5">
-            <table className="table table-bordered table-cart" id="cart-table">
-              <thead>
-                <tr>
-                  <th>Producto</th>
-                  <th>Precio</th>
-                </tr>
-              </thead>              <tbody>
-                <tr>
-                  <td>
-                    <img
-                      src={img15}
-                      alt="Producto 1"
-                      className="cart-product-img"
-                    />
-                    <span>Álbum Jazz Clásico</span>
-                  </td>
-                  <td>$120.00</td>
-                </tr>
-                <tr>
-                  <td>
-                    <img
-                      src={img14}
-                      alt="Producto 2"
-                      className="cart-product-img"
-                    />
-                    <span>Single Electrónico</span>
-                  </td>
-                  <td>$30.00</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          {items.length === 0 ? (
+            <div className="empty-cart">
+              <h3>Tu carrito está vacío</h3>
+              <p>Agrega algunos beats desde la tienda para verlos aquí.</p>
+            </div>
+          ) : (
+            <div className="table-responsive mb-5">
+              <table className="table table-bordered table-cart" id="cart-table">
+                <thead>
+                  <tr>
+                    <th>Producto</th>
+                    <th className="text-center" style={{width: 140}}>Cantidad</th>
+                    <th className="text-right" style={{width: 140}}>Precio</th>
+                    <th style={{width: 120}}>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {items.map((it) => (
+                    <tr key={it.id}>
+                      <td>
+                        <img src={resolveAsset?.(it.imagen) || it.imagen} alt={it.titulo} className="cart-product-img" />
+                        <span style={{ marginLeft: 10 }}>{it.titulo}</span>
+                      </td>
+                      <td className="text-center">
+                        <input
+                          type="number"
+                          min={1}
+                          value={it.cantidad}
+                          onChange={(e) => updateQuantity(it.id, Number(e.target.value || 1))}
+                          style={{ width: 70, textAlign: 'center', borderRadius: 6 }}
+                        />
+                      </td>
+                      <td className="text-right">${ (Number(it.precioNumerico || 0) * Number(it.cantidad || 0)).toLocaleString('es-CL') }</td>
+                      <td>
+                        <button className="btn-remove" onClick={() => removeItem(it.id)}>Quitar</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
           <div className="row justify-content-center">
             <div className="col-md-6 col-lg-5">
               <div className="cart-summary p-4 rounded">
                 <h4>Resumen</h4>
                 <p>
-                  Subtotal: <span className="float-right">$150.00</span>
+                  Subtotal: <span className="float-right">${ total.toLocaleString('es-CL') }</span>
                 </p>
                 <p>
-                  Envío: <span className="float-right">$0.00</span>
+                  Envío: <span className="float-right">$0</span>
                 </p>
                 <hr />
                 <h5>
-                  Total: <span className="float-right">$150.00</span>
+                  Total: <span className="float-right">${ total.toLocaleString('es-CL') }</span>
                 </h5>
-                <div className="text-center mt-4">
-                  <button className="site-btn">
-                    Finalizar compra
-                  </button>
+                <div className="d-flex justify-content-center mt-4">
+                  <button className="site-btn">Finalizar compra</button>
                 </div>
               </div>
             </div>

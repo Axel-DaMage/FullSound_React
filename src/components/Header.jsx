@@ -8,11 +8,13 @@ import {
   limpiarUsuario,
   esAdmin 
 } from "../utils/rolesPermisos";
+import { useCart } from "../utils/cartUtils";
 
 export default function Header({ activeItem = "" }) {
   const [mobileActive, setMobileActive] = useState(false);
   const [usuario, setUsuario] = useState(null);
   const navigate = useNavigate();
+  const { items } = useCart();
   
   const toggleMobile = () => setMobileActive((v) => !v);
 
@@ -63,6 +65,15 @@ export default function Header({ activeItem = "" }) {
             </>
           )}
         </div>
+        <Link to="/carrito" className="login" style={{ position: 'relative', marginLeft: 12 }}>
+          <i className="fa fa-shopping-cart"></i>
+          <span className="cart-badge" style={{
+            position: 'absolute', top: -4, right: -10, background: 'var(--highlight)', color: 'var(--bg)',
+            borderRadius: 12, fontSize: 12, lineHeight: '16px', padding: '0 6px', minWidth: 18, textAlign: 'center'
+          }}>
+            {items.reduce((acc, it) => acc + (it.cantidad || 0), 0)}
+          </span>
+        </Link>
       </div>
       <ul className="main-menu">
         {menuItems.map((item) => {
