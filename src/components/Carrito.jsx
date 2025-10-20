@@ -1,3 +1,4 @@
+import React from "react";
 import Layout from "./Layout";
 import img15 from "../assets/img/15.jpg";
 import img14 from "../assets/img/14.jpg";
