@@ -26,7 +26,8 @@ export function addItemToCart(beat, cantidad = 1) {
   const items = readStorage();
   const idx = items.findIndex((i) => i.id === beat.id);
   if (idx >= 0) {
-    items[idx].cantidad = (items[idx].cantidad || 0) + cantidad;
+    // Si ya existe, no lo suma ni actualiza cantidad
+    return items;
   } else {
     items.push({
       id: beat.id,
@@ -34,7 +35,7 @@ export function addItemToCart(beat, cantidad = 1) {
       precioNumerico: beat.precioNumerico || 0,
       precio: beat.precio,
       imagen: beat.imagen,
-      cantidad,
+      cantidad: 1,
     });
   }
   writeStorage(items);

@@ -75,11 +75,16 @@
 	margin-top: auto;
 	display: flex;
 	justify-content: center;
+	gap: 12px;
 }
 
 .shop-section .card-button .site-btn {
 	width: auto;
-	min-width: 150px;
+	min-width: 50px;
+	padding: 7px 7px;
+	font-size: 13px;
+	font-weight: 500;
+	border-radius: 25px;
 }
 
 .shop-section .card-text strong {
@@ -169,7 +174,7 @@
 
 
 .site-btn {
-	background-color: var(--bg);
+	background-color: var(--fg);
 	color: var(--accent);
 	align-content: center;
 	text-align: center;

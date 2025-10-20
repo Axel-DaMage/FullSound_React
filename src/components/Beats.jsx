@@ -7,7 +7,7 @@ import { useCart } from "../utils/cartUtils";
 
 export default function Beats() {
   const [categoria, setCategoria] = useState("Todos");
-  const { addItem } = useCart();
+  const { addItem, items: cartItems } = useCart();
 
   const beatsFiltrados = categoria === "Todos"
     ? datosBeats
@@ -32,42 +32,48 @@ export default function Beats() {
             </select>
           </div>
           <div className="row">
-            {beatsFiltrados.map((beat, idx) => (
-              <div className="col-md-4 mb-4" key={idx}>
-                <div className="card h-100">
-                  <div className="card-body">
-                    <h5 className="card-title">{beat.titulo}</h5>
-                    <div className="card-content">
-                      <div className="card-info">
-                        <p className="card-text mb-1"><strong>Artista:</strong> {beat.artista}</p>
-                        <p className="card-text mb-1"><strong>Género:</strong> {beat.genero}</p>
-                        <p className="card-text mb-2"><strong>Precio:</strong> {beat.precio}</p>
-                      </div>
-                      <div className="card-audio">
-                        <audio controls className="w-100 mb-2">
-                          <source src={beat.fuente} type="audio/mpeg" />
-                        </audio>
-                      </div>
-                      <div className="card-button d-grid gap-2">
-                        <button
-                          type="button"
-                          className="site-btn"
-                          onClick={() => {
-                            addItem(beat, 1);
-                            try { if (window?.navigator?.vibrate) navigator.vibrate(30); } catch {}
-                          }}
-                        >
-                          <i className="fa fa-cart-plus" /> Agregar al carrito
-                        </button>
-                        <Link to={beat.enlaceProducto || "/carrito"} className="site-btn sb-c2">
-                          {beat.enlaceProducto ? 'Ver producto' : 'Ir al carrito'}
-                        </Link>
+            {beatsFiltrados.map((beat, idx) => {
+              const inCart = cartItems.some(item => item.id === beat.id);
+              return (
+                <div className="col-md-4 mb-4" key={idx}>
+                  <div className="card h-100">
+                    <div className="card-body">
+                      <h5 className="card-title">{beat.titulo}</h5>
+                      <div className="card-content">
+                        <div className="card-info">
+                          <p className="card-text mb-1"><strong>Artista:</strong> {beat.artista}</p>
+                          <p className="card-text mb-1"><strong>Género:</strong> {beat.genero}</p>
+                          <p className="card-text mb-2"><strong>Precio:</strong> {beat.precio}</p>
+                        </div>
+                        <div className="card-audio">
+                          <audio controls className="w-100 mb-2">
+                            <source src={beat.fuente} type="audio/mpeg" />
+                          </audio>
+                        </div>
+                        <div className="card-button d-grid gap-2">
+                          <button
+                            type="button"
+                            className="site-btn"
+                            onClick={() => {
+                              if (!inCart) {
+                                addItem(beat, 1);
+                                try { if (window?.navigator?.vibrate) navigator.vibrate(30); } catch {}
+                              }
+                            }}
+                            disabled={inCart}
+                          >
+                            <i className="fa fa-cart-plus" /> {inCart ? "Agregado" : "Agregar al carrito"}
+                          </button>
+                          <Link to={beat.enlaceProducto || "/carrito"} className="site-btn sb-c2">
+                            {beat.enlaceProducto ? 'Ver producto' : 'Ir al carrito'}
+                          </Link>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>

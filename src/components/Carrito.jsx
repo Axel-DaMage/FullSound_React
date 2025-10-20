@@ -22,7 +22,7 @@ export default function Carrito() {
                 <thead>
                   <tr>
                     <th>Producto</th>
-                    <th className="text-center" style={{width: 140}}>Cantidad</th>
+                    {/* <th className="text-center" style={{width: 140}}>Cantidad</th> */}
                     <th className="text-right" style={{width: 140}}>Precio</th>
                     <th style={{width: 120}}>Acciones</th>
                   </tr>
@@ -34,15 +34,7 @@ export default function Carrito() {
                         <img src={resolveAsset?.(it.imagen) || it.imagen} alt={it.titulo} className="cart-product-img" />
                         <span style={{ marginLeft: 10 }}>{it.titulo}</span>
                       </td>
-                      <td className="text-center">
-                        <input
-                          type="number"
-                          min={1}
-                          value={it.cantidad}
-                          onChange={(e) => updateQuantity(it.id, Number(e.target.value || 1))}
-                          style={{ width: 70, textAlign: 'center', borderRadius: 6 }}
-                        />
-                      </td>
+                      {/* Sin control de cantidad, solo se permite 1 por beat */}
                       <td className="text-right">${ (Number(it.precioNumerico || 0) * Number(it.cantidad || 0)).toLocaleString('es-CL') }</td>
                       <td>
                         <button className="btn-remove" onClick={() => removeItem(it.id)}>Quitar</button>
