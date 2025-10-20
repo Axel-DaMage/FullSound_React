@@ -103,7 +103,7 @@ export default function Login() {
                       </button>
                       <div className="text-center">
                         <p className="mb-0">
-                          ¿No tienes cuenta? <a href="/registro" className="text-primary">Regístrate aquí</a>
+                          ¿No tienes cuenta? <a href="/FullSound_React/registro" className="text-primary">Regístrate aquí</a>
                         </p>
                       </div>
                     </div>

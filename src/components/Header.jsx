@@ -115,7 +115,9 @@ export default function Header({ activeItem = "" }) {
         ) : (
           <>
             <Link to="/login">Iniciar sesión</Link>
-            <Link to="/registro">Crear cuenta</Link>
+            <Link to="/registro" className="register">
+              Crear cuenta
+            </Link>
           </>
         )}
       </div>
