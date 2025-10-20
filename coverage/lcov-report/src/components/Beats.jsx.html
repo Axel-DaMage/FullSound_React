@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">94.2% </span>
+                <span class="strong">91.89% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>65/69</span>
+                <span class='fraction'>68/74</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">42.85% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>3/6</span>
+                <span class='fraction'>3/7</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">94.2% </span>
+                <span class="strong">91.89% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>65/69</span>
+                <span class='fraction'>68/74</span>
             </div>
         
             
@@ -139,7 +139,13 @@
 <a name='L74'></a><a href='#L74'>74</a>
 <a name='L75'></a><a href='#L75'>75</a>
 <a name='L76'></a><a href='#L76'>76</a>
-<a name='L77'></a><a href='#L77'>77</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a>
+<a name='L82'></a><a href='#L82'>82</a>
+<a name='L83'></a><a href='#L83'>83</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -194,9 +200,14 @@
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">9x</span>
@@ -208,6 +219,7 @@
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -224,7 +236,7 @@ import { useCart } from "../utils/cartUtils";
 &nbsp;
 export default function Beats() {
   const [categoria, setCategoria] = useState("Todos");
-  const { addItem } = useCart();
+  const { addItem, items: cartItems } = useCart();
 &nbsp;
   const beatsFiltrados = categoria === "Todos"
     ? <span class="branch-0 cbranch-no" title="branch not covered" >datosBeats</span>
@@ -249,42 +261,48 @@ export default function Beats() {
             &lt;/select&gt;
           &lt;/div&gt;
           &lt;div className="row"&gt;
-            {beatsFiltrados.map((beat, idx) =&gt; (
-              &lt;div className="col-md-4 mb-4" key={idx}&gt;
-                &lt;div className="card h-100"&gt;
-                  &lt;div className="card-body"&gt;
-                    &lt;h5 className="card-title"&gt;{beat.titulo}&lt;/h5&gt;
-                    &lt;div className="card-content"&gt;
-                      &lt;div className="card-info"&gt;
-                        &lt;p className="card-text mb-1"&gt;&lt;strong&gt;Artista:&lt;/strong&gt; {beat.artista}&lt;/p&gt;
-                        &lt;p className="card-text mb-1"&gt;&lt;strong&gt;Género:&lt;/strong&gt; {beat.genero}&lt;/p&gt;
-                        &lt;p className="card-text mb-2"&gt;&lt;strong&gt;Precio:&lt;/strong&gt; {beat.precio}&lt;/p&gt;
-                      &lt;/div&gt;
-                      &lt;div className="card-audio"&gt;
-                        &lt;audio controls className="w-100 mb-2"&gt;
-                          &lt;source src={beat.fuente} type="audio/mpeg" /&gt;
-                        &lt;/audio&gt;
-                      &lt;/div&gt;
-                      &lt;div className="card-button d-grid gap-2"&gt;
-                        &lt;button
-                          type="button"
-                          className="site-btn"
-                          onClick={<span class="fstat-no" title="function not covered" >() =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >                            addItem(beat, 1);</span>
-<span class="cstat-no" title="statement not covered" >                            try { if (window?.navigator?.vibrate) navigator.vibrate(30); } catch {}</span>
-<span class="cstat-no" title="statement not covered" >                          }}</span>
-                        &gt;
-                          &lt;i className="fa fa-cart-plus" /&gt; Agregar al carrito
-                        &lt;/button&gt;
-                        &lt;Link to={beat.<span class="branch-0 cbranch-no" title="branch not covered" >enlaceProducto || "/carrito"} c</span>lassName="site-btn sb-c2"&gt;
-                          {beat.enlaceProducto ? <span class="branch-0 cbranch-no" title="branch not covered" >'Ver producto' : 'Ir al carrito'}</span>
-                        &lt;/Link&gt;
+            {beatsFiltrados.map((beat, idx) =&gt; {
+              const inCart = cartItems.some(item =&gt; item.id === beat.id);
+              return (
+                &lt;div className="col-md-4 mb-4" key={idx}&gt;
+                  &lt;div className="card h-100"&gt;
+                    &lt;div className="card-body"&gt;
+                      &lt;h5 className="card-title"&gt;{beat.titulo}&lt;/h5&gt;
+                      &lt;div className="card-content"&gt;
+                        &lt;div className="card-info"&gt;
+                          &lt;p className="card-text mb-1"&gt;&lt;strong&gt;Artista:&lt;/strong&gt; {beat.artista}&lt;/p&gt;
+                          &lt;p className="card-text mb-1"&gt;&lt;strong&gt;Género:&lt;/strong&gt; {beat.genero}&lt;/p&gt;
+                          &lt;p className="card-text mb-2"&gt;&lt;strong&gt;Precio:&lt;/strong&gt; {beat.precio}&lt;/p&gt;
+                        &lt;/div&gt;
+                        &lt;div className="card-audio"&gt;
+                          &lt;audio controls className="w-100 mb-2"&gt;
+                            &lt;source src={beat.fuente} type="audio/mpeg" /&gt;
+                          &lt;/audio&gt;
+                        &lt;/div&gt;
+                        &lt;div className="card-button d-grid gap-2"&gt;
+                          &lt;button
+                            type="button"
+                            className="site-btn"
+                            onClick={<span class="fstat-no" title="function not covered" >() =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >                              if (!inCart) {</span>
+<span class="cstat-no" title="statement not covered" >                                addItem(beat, 1);</span>
+<span class="cstat-no" title="statement not covered" >                                try { if (window?.navigator?.vibrate) navigator.vibrate(30); } catch {}</span>
+<span class="cstat-no" title="statement not covered" >                              }</span>
+<span class="cstat-no" title="statement not covered" >                            }}</span>
+                            disabled={inCart}
+                          &gt;
+                            &lt;i className="fa fa-cart-plus" /&gt; {<span class="branch-0 cbranch-no" title="branch not covered" >inCart ? "Agregado" : "</span>Agregar al carrito"}
+                          &lt;/button&gt;
+                          &lt;Link to={beat.<span class="branch-0 cbranch-no" title="branch not covered" >enlaceProducto || "/carrito"} c</span>lassName="site-btn sb-c2"&gt;
+                            {beat.enlaceProducto ? <span class="branch-0 cbranch-no" title="branch not covered" >'Ver producto' : 'Ir al carrito'}</span>
+                          &lt;/Link&gt;
+                        &lt;/div&gt;
                       &lt;/div&gt;
                     &lt;/div&gt;
                   &lt;/div&gt;
                 &lt;/div&gt;
-              &lt;/div&gt;
-            ))}
+              );
+            })}
           &lt;/div&gt;
         &lt;/div&gt;
       &lt;/section&gt;
@@ -298,7 +316,7 @@ export default function Beats() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-20T02:15:17.702Z
+                at 2025-10-20T03:41:27.681Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

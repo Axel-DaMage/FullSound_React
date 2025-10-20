@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/36</span>
+                <span class='fraction'>0/29</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/36</span>
+                <span class='fraction'>0/29</span>
             </div>
         
             
@@ -100,6 +100,11 @@
 <a name='L35'></a><a href='#L35'>35</a>
 <a name='L36'></a><a href='#L36'>36</a>
 <a name='L37'></a><a href='#L37'>37</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -107,6 +112,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -114,6 +120,9 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -121,26 +130,17 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >import React, { useEffect, useState } from "react";</span></span></span>
-<span class="cstat-no" title="statement not covered" ></span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { useEffect, useState } from "react";<span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span></span>
+&nbsp;
 <span class="cstat-no" title="statement not covered" >export default function Preloader() {</span>
 <span class="cstat-no" title="statement not covered" >  const [isLoading, setIsLoading] = useState(true);</span>
 <span class="cstat-no" title="statement not covered" >  const [fadeOut, setFadeOut] = useState(false);</span>
-<span class="cstat-no" title="statement not covered" ></span>
+&nbsp;
 <span class="cstat-no" title="statement not covered" >  useEffect(() =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    const handleLoad = () =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >      setFadeOut(true);</span>
@@ -148,7 +148,7 @@
 <span class="cstat-no" title="statement not covered" >        setIsLoading(false);</span>
 <span class="cstat-no" title="statement not covered" >      }, 400);</span>
 <span class="cstat-no" title="statement not covered" >    };</span>
-<span class="cstat-no" title="statement not covered" ></span>
+&nbsp;
 <span class="cstat-no" title="statement not covered" >    if (document.readyState === 'complete') {</span>
 <span class="cstat-no" title="statement not covered" >      handleLoad();</span>
 <span class="cstat-no" title="statement not covered" >    } else {</span>
@@ -156,9 +156,9 @@
 <span class="cstat-no" title="statement not covered" >      return () =&gt; window.removeEventListener('load', handleLoad);</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
 <span class="cstat-no" title="statement not covered" >  }, []);</span>
-<span class="cstat-no" title="statement not covered" ></span>
+&nbsp;
 <span class="cstat-no" title="statement not covered" >  if (!isLoading) return null;</span>
-<span class="cstat-no" title="statement not covered" ></span>
+&nbsp;
 <span class="cstat-no" title="statement not covered" >  return (</span>
 <span class="cstat-no" title="statement not covered" >    &lt;div </span>
 <span class="cstat-no" title="statement not covered" >      id="preloder" </span>
@@ -166,10 +166,10 @@
 <span class="cstat-no" title="statement not covered" >        opacity: fadeOut ? 0 : 1,</span>
 <span class="cstat-no" title="statement not covered" >        transition: 'opacity 0.4s ease-out'</span>
 <span class="cstat-no" title="statement not covered" >      }}</span>
-<span class="cstat-no" title="statement not covered" >    &gt;</span>
+    &gt;
 <span class="cstat-no" title="statement not covered" >      &lt;div className="loader"&gt;&lt;/div&gt;</span>
 <span class="cstat-no" title="statement not covered" >    &lt;/div&gt;</span>
-<span class="cstat-no" title="statement not covered" >  );</span>
+  );
 <span class="cstat-no" title="statement not covered" >}</span>
 &nbsp;</pre></td></tr></table></pre>
 
@@ -178,7 +178,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-20T02:15:17.702Z
+                at 2025-10-20T03:41:27.681Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
