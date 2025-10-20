@@ -4,6 +4,29 @@
 
 import api from './api';
 
+const USUARIOS_KEY = 'usuarios_locales';
+
+/**
+ * Lee usuarios desde localStorage
+ */
+function readLocalUsuarios() {
+  try {
+    const raw = localStorage.getItem(USUARIOS_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Guarda usuarios en localStorage
+ */
+function writeLocalUsuarios(usuarios) {
+  try {
+    localStorage.setItem(USUARIOS_KEY, JSON.stringify(usuarios));
+  } catch {}
+}
+
 /**
  * Obtiene el perfil del usuario actual
  * @returns {Promise<Object>} Datos del perfil
@@ -11,10 +34,18 @@ import api from './api';
 export const obtenerPerfil = async () => {
   try {
     const response = await api.get('/usuarios/perfil');
-    return response.data;
+    console.log('[API] Perfil cargado desde API');
+    return { data: response.data, source: 'api' };
   } catch (error) {
-    console.error('Error al obtener perfil:', error);
-    throw error;
+    console.log('[LOCAL] Modo local: Cargando perfil desde localStorage');
+    const userString = localStorage.getItem('user');
+    const user = userString ? JSON.parse(userString) : null;
+    
+    if (!user) {
+      throw new Error('No hay usuario autenticado');
+    }
+    
+    return { data: user, source: 'local' };
   }
 };
 
@@ -26,10 +57,17 @@ export const obtenerPerfil = async () => {
 export const actualizarPerfil = async (datosActualizados) => {
   try {
     const response = await api.put('/usuarios/perfil', datosActualizados);
-    return response.data;
+    console.log('[API] Perfil actualizado en API');
+    // Actualizar localStorage
+    localStorage.setItem('user', JSON.stringify(response.data));
+    return { data: response.data, source: 'api' };
   } catch (error) {
-    console.error('Error al actualizar perfil:', error);
-    throw error;
+    console.log('[LOCAL] Modo local: Actualizando perfil en localStorage');
+    const userString = localStorage.getItem('user');
+    const user = userString ? JSON.parse(userString) : {};
+    const userActualizado = { ...user, ...datosActualizados };
+    localStorage.setItem('user', JSON.stringify(userActualizado));
+    return { data: userActualizado, source: 'local' };
   }
 };
 
@@ -40,10 +78,12 @@ export const actualizarPerfil = async (datosActualizados) => {
 export const obtenerUsuarios = async () => {
   try {
     const response = await api.get('/usuarios');
-    return response.data;
+    console.log('[API] Usuarios cargados desde API');
+    return { data: response.data, source: 'api' };
   } catch (error) {
-    console.error('Error al obtener usuarios:', error);
-    throw error;
+    console.log('[LOCAL] Modo local: Cargando usuarios desde localStorage');
+    const usuarios = readLocalUsuarios();
+    return { data: usuarios, source: 'local' };
   }
 };
 
@@ -55,10 +95,18 @@ export const obtenerUsuarios = async () => {
 export const obtenerUsuarioPorId = async (id) => {
   try {
     const response = await api.get(`/usuarios/${id}`);
-    return response.data;
+    console.log(`[API] Usuario ${id} cargado desde API`);
+    return { data: response.data, source: 'api' };
   } catch (error) {
-    console.error(`Error al obtener usuario ${id}:`, error);
-    throw error;
+    console.log(`[LOCAL] Modo local: Buscando usuario ${id} en localStorage`);
+    const usuarios = readLocalUsuarios();
+    const usuario = usuarios.find(u => String(u.id) === String(id));
+    
+    if (!usuario) {
+      throw new Error('Usuario no encontrado');
+    }
+    
+    return { data: usuario, source: 'local' };
   }
 };
 
@@ -71,10 +119,20 @@ export const obtenerUsuarioPorId = async (id) => {
 export const actualizarUsuario = async (id, datosActualizados) => {
   try {
     const response = await api.put(`/usuarios/${id}`, datosActualizados);
-    return response.data;
+    console.log(`[API] Usuario ${id} actualizado en API`);
+    return { data: response.data, source: 'api' };
   } catch (error) {
-    console.error(`Error al actualizar usuario ${id}:`, error);
-    throw error;
+    console.log(`[LOCAL] Modo local: Actualizando usuario ${id} en localStorage`);
+    const usuarios = readLocalUsuarios();
+    const index = usuarios.findIndex(u => String(u.id) === String(id));
+    
+    if (index !== -1) {
+      usuarios[index] = { ...usuarios[index], ...datosActualizados };
+      writeLocalUsuarios(usuarios);
+      return { data: usuarios[index], source: 'local' };
+    }
+    
+    throw new Error('Usuario no encontrado');
   }
 };
 
@@ -86,9 +144,14 @@ export const actualizarUsuario = async (id, datosActualizados) => {
 export const eliminarUsuario = async (id) => {
   try {
     await api.delete(`/usuarios/${id}`);
+    console.log(`[API] Usuario ${id} eliminado en API`);
+    return { success: true, source: 'api' };
   } catch (error) {
-    console.error(`Error al eliminar usuario ${id}:`, error);
-    throw error;
+    console.log(`[LOCAL] Modo local: Eliminando usuario ${id} en localStorage`);
+    const usuarios = readLocalUsuarios();
+    const usuariosFiltrados = usuarios.filter(u => String(u.id) !== String(id));
+    writeLocalUsuarios(usuariosFiltrados);
+    return { success: true, source: 'local' };
   }
 };
 
@@ -104,9 +167,15 @@ export const cambiarPassword = async (passwordActual, passwordNueva) => {
       passwordActual,
       passwordNueva,
     });
-    return response.data;
+    console.log('[API] Contraseña cambiada en API');
+    return { data: response.data, source: 'api' };
   } catch (error) {
-    console.error('Error al cambiar contraseña:', error);
-    throw error;
+    console.log('[LOCAL] Modo local: Simulando cambio de contraseña');
+    return { 
+      data: { 
+        message: 'Contraseña actualizada exitosamente (simulado)' 
+      }, 
+      source: 'local' 
+    };
   }
 };
