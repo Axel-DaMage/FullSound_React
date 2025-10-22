@@ -1,0 +1,383 @@
+INFORME ERS - FULLSOUND REACT
+
+Fecha: 22/10/2025
+Proyecto: FullSound_React
+Repositorio: https://github.com/Axel-DaMage/FullSound_React (rama main)
+
+============================================================
+0. PORTADA
+============================================================
+Título: Especificación de Requisitos de Software (ERS) y Guía Técnica del Proyecto FullSound React
+Autores: Equipo de desarrollo FullSound
+Asignatura: Ingeniería de Software / Desarrollo Web
+Profesor: [Completar]
+Institución: [Completar]
+Fecha: 22 de octubre de 2025
+
+============================================================
+ÍNDICE
+============================================================
+1. Introducción
+2. Descripción general del producto
+3. Requisitos específicos
+   3.1 Requisitos funcionales
+   3.2 Requisitos no funcionales
+   3.3 Interfaces externas
+   3.4 Requisitos de datos
+4. Arquitectura y diseño de alto nivel
+5. Casos de uso (texto estructurado)
+6. Plan y estrategia de pruebas
+7. Procedimientos de ejecución y despliegue
+8. Guía de contribución, estilo y convenciones
+9. Roadmap y mejoras futuras
+10. Anexos (endpoints, modelos, comandos, mapeo de archivos)
+
+============================================================
+1. INTRODUCCIÓN
+============================================================
+1.1 Propósito
+Este documento consolida la especificación de requisitos de software (ERS), la arquitectura, los flujos funcionales, el plan de pruebas y los procedimientos de ejecución del proyecto FullSound_React. Su propósito es servir como referencia integral para estudiantes, desarrolladores y evaluadores.
+
+1.2 Alcance
+FullSound es una aplicación web de tienda de beats musicales con:
+- Catálogo de beats filtrable por género.
+- Carrito de compras y proceso de checkout simulado.
+- Autenticación de usuarios y detección automática de rol administrador.
+- Panel de administración con CRUD de beats y gestión de datos.
+- Operación en dos modos: consumo de API (axios) y modo local (fallback con localStorage) de forma transparente.
+
+1.3 Definiciones y abreviaturas
+- ERS: Especificación de Requisitos de Software.
+- API: Interfaz de Programación de Aplicaciones (backend REST).
+- Fallback local: uso de almacenamiento local cuando la API no está disponible.
+- Dual-mode: funcionamiento con API o localStorage de forma automática.
+- CRUD: Crear, Leer, Actualizar, Eliminar.
+
+1.4 Referencias internas del proyecto
+- Código fuente: carpeta src/.
+- Servicios HTTP: src/services/.
+- Utilidades: src/utils/.
+- Componentes de UI: src/components/.
+- Pruebas: src/tests/.
+- Documentos técnicos complementarios: AXIOS_IMPLEMENTATION.md.
+
+1.5 Visión general del documento
+El documento está organizado desde la visión general y requisitos hasta el diseño técnico, pruebas y operación, con anexos prácticos.
+
+============================================================
+2. DESCRIPCIÓN GENERAL DEL PRODUCTO
+============================================================
+2.1 Perspectiva del producto
+Aplicación SPA (Single Page Application) desarrollada con React y Vite. Consume servicios mediante axios cuando hay backend disponible; en ausencia de backend, opera con datos locales persistidos en localStorage, manteniendo la funcionalidad y una UX consistente.
+
+2.2 Funciones principales del producto
+- Navegación: Inicio, Beats, Producto, Carrito, Login, Registro, Administración, Créditos.
+- Catálogo: listado de beats, filtro por género, visualización de detalles, reproducción de audio.
+- Carrito: agregar, actualizar cantidades, eliminar, vaciar, checkout simulado.
+- Autenticación: login, registro, cierre de sesión, verificación de token.
+- Roles: detección automática de administrador por dominio del correo (@admin.cl).
+- Administración: panel para CRUD de beats (crear, editar, eliminar, listar) y carga de géneros.
+- Operación Dual-mode: API primero; si falla, fallback a localStorage.
+
+2.3 Tipos de usuarios
+- Visitante: navega el catálogo sin autenticación.
+- Usuario: puede autenticarse, gestionar su carrito y simular checkout.
+- Administrador: además, accede al panel de administración y gestiona el catálogo.
+
+2.4 Restricciones
+- Dependencias: Node.js y npm para desarrollo; navegador moderno.
+- Formato de datos: JSON; rutas y estado en frontend.
+- Seguridad: tokens simulados en modo local. En modo API, se espera JWT o similar.
+
+2.5 Supuestos y dependencias externas
+- Si no existe backend disponible, el sistema debe seguir funcionando en modo local sin errores.
+- Cuando el backend esté disponible, axios debe obtener datos reales y sincronizarlos con el localStorage cuando sea pertinente.
+
+============================================================
+3. REQUISITOS ESPECÍFICOS
+============================================================
+3.1 Requisitos funcionales (RF)
+RF-01 Autenticación de usuarios: login y registro con validaciones de entrada.
+RF-02 Detección de rol administrador por dominio del correo (@admin.cl).
+RF-03 Gestión de catálogo de beats: listar, filtrar por género, ver detalle, reproducir audio.
+RF-04 Carrito: agregar beats, actualizar cantidades, eliminar items, vaciar carrito, ver total.
+RF-05 Checkout: proceso simulado con generación de orden local.
+RF-06 Administración: CRUD de beats accesible solo para administradores.
+RF-07 Modo dual (API/Local): todos los servicios deben intentar primero API y, ante falla, operar en local.
+RF-08 Persistencia local: uso de localStorage para beats, carrito, usuario, órdenes y usuarios locales.
+RF-09 Ruteo: navegación SPA con React Router.
+RF-10 Notificaciones: mensajes claros de éxito/estado sin exponer errores técnicos al usuario.
+
+3.2 Requisitos no funcionales (RNF)
+RNF-01 Usabilidad: interfaz consistente, textos claros, acciones accesibles.
+RNF-02 Rendimiento: tiempos de respuesta aceptables (< 300 ms en modo local; dependiente de API en modo remoto).
+RNF-03 Confiabilidad: operación sin backend disponible; datos locales persistentes.
+RNF-04 Mantenibilidad: separación por capas (componentes, servicios, utils), logs con etiquetas [API], [LOCAL], [WARNING], [ERROR], [INFO].
+RNF-05 Seguridad: en modo local, limitarse a simulaciones y no exponer secretos; en modo API, utilizar tokens y manejo de 401/403.
+RNF-06 Compatibilidad: navegadores modernos; desarrollo con Vite.
+RNF-07 Pruebas: cobertura básica con Vitest y Testing Library.
+RNF-08 Accesibilidad: textos alternativos, roles semánticos básicos, controles accesibles.
+
+3.3 Interfaces externas
+- API REST esperada (ver Anexo A): /auth, /beats, /generos, /carrito, /usuarios.
+- Almacenamiento local: localStorage (claves en Anexo B).
+- Interfaz de usuario: React + CSS propios y recursos en assets/.
+
+3.4 Requisitos de datos
+- Modelos principales: Beat, Usuario, ItemCarrito, Orden.
+- Estructuras de datos detalladas en Anexo B.
+- Claves localStorage: fs_beats_local, fs_carrito_local, usuarios_locales, ordenes_locales, token, user.
+
+============================================================
+4. ARQUITECTURA Y DISEÑO DE ALTO NIVEL
+============================================================
+4.1 Tecnologías y dependencias
+- React 18, Vite, React Router DOM 6, Axios 1.x, Vitest, Testing Library.
+- Estructura principal: src/components, src/services, src/utils, src/tests.
+
+4.2 Patrón de operación dual (axios + fallback local)
+- Instancia axios configurada en src/services/api.js con interceptores.
+- Servicios (beatsService, authService, carritoService, usuariosService) intentan consumir API y, si hay error de red o estatus no manejable, retornan datos desde localStorage manteniendo estructura consistente: { data: ..., source: 'api' | 'local' }.
+- Logs con etiquetas textuales para depuración sin emojis.
+
+4.3 Componentes relevantes
+- Layout, Header, Footer: estructura y navegación.
+- Inicio, Beats, Producto, Carrito: vistas de usuario.
+- Login, Registro: autenticación y creación de sesión.
+- Administracion, AdminBeats: panel de administración y CRUD de beats.
+- Preloader, Carrusel, Creditos: componentes auxiliares.
+
+4.4 Servicios y utilidades
+- api.js: axios con baseURL (VITE_API_URL) y manejo de errores global.
+- beatsService.js: CRUD beats (API/local), géneros, filtros.
+- authService.js: login/registro/logout/verificación y recuperación/restablecimiento con fallback local.
+- carritoService.js: carrito y checkout con sincronización local.
+- usuariosService.js: perfil y gestión de usuarios (admin) con fallback.
+- utils/authValidation.js: validación de correo (cualquier dominio) y password (mínimo 8 caracteres), reglas simplificadas.
+- utils/rolesPermisos.js: almacenamiento y lectura del usuario, detección de rol por dominio @admin.cl.
+
+4.5 Ruteo y protección
+- React Router; rutas públicas y ruta de administración condicionada por rol.
+- En modo local, el rol se deriva del correo del usuario autenticado.
+
+============================================================
+5. CASOS DE USO (TEXTO ESTRUCTURADO)
+============================================================
+5.1 CU-01 Iniciar sesión
+Actor: Usuario
+Precondiciones: Cuenta existente o simulación local permitida.
+Flujo básico:
+  1. El usuario ingresa correo y contraseña.
+  2. El sistema valida formato básico (correo válido; contraseña >= 8).
+  3. Intento de login en API; si falla, se simula y se genera token local.
+  4. El sistema almacena token y usuario en localStorage y redirige.
+Flujos alternos:
+  A1. Credenciales inválidas: se informa mensaje y se permanece en la vista.
+
+5.2 CU-02 Registrar usuario
+Actor: Visitante
+Precondiciones: Ninguna.
+Flujo básico:
+  1. Visitante completa formulario.
+  2. Validaciones locales y envío a API; si falla, registro simulado local.
+  3. Usuario queda disponible en usuarios_locales (modo local).
+
+5.3 CU-03 Navegar catálogo de beats
+Actor: Usuario/Visitante
+Flujo básico:
+  1. Cargar lista de beats desde API; si falla, usar fs_beats_local o datos estáticos iniciales.
+  2. Filtrar por género y visualizar.
+
+5.4 CU-04 Gestionar carrito
+Actor: Usuario/Visitante
+Flujo básico:
+  1. Agregar beat al carrito, persistir en localStorage.
+  2. Actualizar cantidad y recalcular total.
+  3. Eliminar o vaciar carrito.
+
+5.5 CU-05 Checkout simulado
+Actor: Usuario
+Flujo básico:
+  1. Confirmar datos de compra.
+  2. Generar orden local y vaciar carrito.
+
+5.6 CU-06 Administrar beats (Admin)
+Actor: Administrador
+Precondiciones: Usuario con correo @admin.cl.
+Flujo básico:
+  1. Listar beats.
+  2. Crear/editar/eliminar beats (API o local) y recargar listado.
+
+============================================================
+6. PLAN Y ESTRATEGIA DE PRUEBAS
+============================================================
+6.1 Alcance de pruebas
+- Pruebas unitarias y de componentes con Vitest y Testing Library.
+- Enfoque en vistas principales: Header, Footer, Inicio, Beats, Producto, Carrito, Login, Registro.
+
+6.2 Cómo ejecutar pruebas
+- Comando: npm test -- --run
+- Resultado esperado: 10/10 pruebas pasando (según estado actual del repo).
+
+6.3 Casos clave
+- Renderizado de textos clave en cada vista.
+- Comportamiento asíncrono (esperas con waitFor en Beats.test.jsx).
+- Validaciones de formularios.
+
+6.4 Métricas
+- Cobertura básica disponible en carpeta coverage/.
+
+============================================================
+7. PROCEDIMIENTOS DE EJECUCIÓN Y DESPLIEGUE
+============================================================
+7.1 Requisitos previos
+- Windows, macOS o Linux.
+- Node.js LTS y npm.
+
+7.2 Variables de entorno (opcional)
+- VITE_API_URL: URL base del backend (por defecto http://localhost:3000). Si no se define o no responde, se activa el modo local automáticamente.
+
+7.3 Instalación y ejecución (desarrollo)
+1) Instalar dependencias:
+   npm install
+2) Ejecutar servidor de desarrollo:
+   npm run dev
+3) Abrir en el navegador:
+   Sugerido por Vite (normalmente http://localhost:5173)
+
+7.4 Compilación para producción
+1) Generar build:
+   npm run build
+2) Previsualizar build:
+   npm run preview
+
+7.5 Notas de operación
+- En modo API, axios registra eventos con etiquetas [API], [WARNING], [INFO], [ERROR].
+- Si el backend no está disponible, el sistema informa [LOCAL] y continúa con localStorage sin interrumpir la UX.
+
+============================================================
+8. GUÍA DE CONTRIBUCIÓN, ESTILO Y CONVENCIONES
+============================================================
+8.1 Estilo de código
+- React con componentes funcionales y hooks.
+- Servicios segregados por dominio (beats, auth, carrito, usuarios).
+- Logs con etiquetas textuales; no usar emojis.
+
+8.2 Convenciones de commits y ramas
+- Rama main estable; feature branches por cambios significativos.
+- Mensajes claros y descriptivos.
+
+8.3 Pruebas y CI (si aplica)
+- Ejecutar npm test antes de abrir PR.
+
+============================================================
+9. ROADMAP Y MEJORAS FUTURAS
+============================================================
+- Integración real con backend (autenticación JWT, endpoints seguros).
+- Sincronización completa API <-> localStorage (resolución de conflictos).
+- Pasarela de pago real en checkout.
+- Gestión avanzada de usuarios (roles dinámicos, permisos granulares).
+- Accesibilidad extendida (WCAG AA).
+- Internacionalización (i18n) y localización.
+- Reportes de ventas y analíticas.
+
+============================================================
+10. ANEXOS
+============================================================
+ANEXO A: Endpoints API esperados
+Auth
+- POST /auth/login
+- POST /auth/register
+- POST /auth/logout
+- GET  /auth/verify
+- POST /auth/forgot-password
+- POST /auth/reset-password
+
+Beats
+- GET    /beats
+- GET    /beats/:id
+- POST   /beats
+- PUT    /beats/:id
+- DELETE /beats/:id
+- GET    /generos
+
+Carrito
+- GET    /carrito
+- POST   /carrito/items
+- PUT    /carrito/items/:id
+- DELETE /carrito/items/:id
+- DELETE /carrito
+- POST   /carrito/checkout
+
+Usuarios
+- GET    /usuarios/perfil
+- PUT    /usuarios/perfil
+- GET    /usuarios
+- GET    /usuarios/:id
+- PUT    /usuarios/:id
+- DELETE /usuarios/:id
+- POST   /usuarios/cambiar-password
+
+ANEXO B: Modelos y almacenamiento local
+Claves localStorage
+- fs_beats_local: Array de beats persistidos localmente.
+- fs_carrito_local: { items: Array, total: number }.
+- usuarios_locales: Array de usuarios registrados en modo local.
+- ordenes_locales: Array de órdenes generadas en modo local.
+- token: token de sesión; en modo local: token_local_<timestamp>.
+- user: objeto de usuario autenticado.
+
+Modelo Beat (representativo)
+{
+  id: number,
+  nombre: string,
+  artista: string,
+  genero: string,
+  precio: number,
+  imagen?: string,
+  audio?: string,
+  descripcion?: string
+}
+
+Modelo Usuario (representativo)
+{
+  id: number,
+  nombre: string,
+  correo: string,
+  rol: 'admin' | 'usuario'
+}
+
+Item de Carrito (representativo)
+{
+  id: number,
+  beatId: number,
+  nombre: string,
+  precio: number,
+  cantidad: number
+}
+
+Orden (representativo)
+{
+  id: number,
+  items: Array<ItemCarrito>,
+  total: number,
+  fecha: string,
+  estado: string
+}
+
+ANEXO C: Mapeo de archivos relevantes
+- src/components/: Header.jsx, Footer.jsx, Inicio.jsx, Beats.jsx, Producto.jsx, Carrito.jsx, Login.jsx, Registro.jsx, Administracion.jsx, AdminBeats.jsx, Layout.jsx, etc.
+- src/services/: api.js, beatsService.js, authService.js, carritoService.js, usuariosService.js.
+- src/utils/: authValidation.js, rolesPermisos.js, datosMusica.js y otras utilidades.
+- src/tests/: pruebas unitarias y de componentes.
+- public/ y assets/: recursos estáticos.
+
+ANEXO D: Comandos útiles
+Instalación: npm install
+Desarrollo:   npm run dev
+Build:        npm run build
+Preview:      npm run preview
+Pruebas:      npm test -- --run
+
+Notas finales
+Este documento ERS sirve como guía académica y técnica para comprender, ejecutar y evolucionar FullSound_React, facilitando su mantenimiento, evaluación y ampliación futura.
