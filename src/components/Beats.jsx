@@ -95,7 +95,7 @@ export default function Beats() {
                         <div className="card-info">
                           <p className="card-text mb-1"><strong>Artista:</strong> {beat.artista}</p>
                           <p className="card-text mb-1"><strong>Género:</strong> {beat.genero}</p>
-                          <p className="card-text mb-2"><strong>Precio:</strong> {beat.precio}</p>
+                          <p className="card-text mb-2"><strong>Precio:</strong> ${Number(beat.precioNumerico || beat.precio).toLocaleString('es-CL')}</p>
                         </div>
                         <div className="card-audio">
                           {beat.fuente || beat.audio ? (

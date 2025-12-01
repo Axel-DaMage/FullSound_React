@@ -5,6 +5,18 @@
 
 import api from './api';
 
+const SUPABASE_PROJECT_URL = import.meta.env.VITE_SUPABASE_PROJECT_URL || 'https://kivpcepyhfpqjfoycwel.supabase.co';
+const IMAGES_BUCKET = import.meta.env.VITE_SUPABASE_BUCKET_IMAGES || 'Imagenes';
+const AUDIO_BUCKET = import.meta.env.VITE_SUPABASE_BUCKET_AUDIO || 'audios';
+
+function getSupabaseUrl(bucket, path) {
+  if (!path) return null;
+  if (path.startsWith('http')) return path; // Already a full URL
+  // Remove leading slash if present to avoid double slashes
+  const cleanPath = path.startsWith('/') ? path.substring(1) : path;
+  return `${SUPABASE_PROJECT_URL}/storage/v1/object/public/${bucket}/${cleanPath}`;
+}
+
 // Función para convertir los datos del backend al formato esperado por el frontend
 function transformBeatFromBackend(backendBeat) {
   return {
@@ -15,12 +27,12 @@ function transformBeatFromBackend(backendBeat) {
     precio: backendBeat.precio, // El backend devuelve precio como Integer (centavos o valor directo)
     precioNumerico: backendBeat.precio,
     descripcion: backendBeat.descripcion,
-    imagen: backendBeat.imagenUrl,
-    imagenUrl: backendBeat.imagenUrl,
-    fuente: backendBeat.audioUrl || backendBeat.audioDemoUrl, // Audio completo o demo
-    audio: backendBeat.audioUrl,
-    audioUrl: backendBeat.audioUrl,
-    audioDemoUrl: backendBeat.audioDemoUrl,
+    imagen: getSupabaseUrl(IMAGES_BUCKET, backendBeat.imagenUrl),
+    imagenUrl: getSupabaseUrl(IMAGES_BUCKET, backendBeat.imagenUrl),
+    fuente: getSupabaseUrl(AUDIO_BUCKET, backendBeat.audioUrl || backendBeat.audioDemoUrl), // Audio completo o demo
+    audio: getSupabaseUrl(AUDIO_BUCKET, backendBeat.audioUrl),
+    audioUrl: getSupabaseUrl(AUDIO_BUCKET, backendBeat.audioUrl),
+    audioDemoUrl: getSupabaseUrl(AUDIO_BUCKET, backendBeat.audioDemoUrl),
     bpm: backendBeat.bpm,
     tonalidad: backendBeat.tonalidad,
     duracion: backendBeat.duracion,

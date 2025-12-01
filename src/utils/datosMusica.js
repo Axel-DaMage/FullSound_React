@@ -1,22 +1,9 @@
-// Import audio files
-import audio1 from '../assets/audio/1.mp3';
-import audio2 from '../assets/audio/2.mp3';
-import audio3 from '../assets/audio/3.mp3';
-import audio4 from '../assets/audio/4.mp3';
-import audio5 from '../assets/audio/5.mp3';
-import audio6 from '../assets/audio/6.mp3';
-import audio7 from '../assets/audio/7.mp3';
-import audio8 from '../assets/audio/8.mp3';
-import img1 from '../assets/img/1.jpg';
-import img2 from '../assets/img/2.jpg';
-import img3 from '../assets/img/3.jpg';
-import img4 from '../assets/img/4.jpg';
-import img6 from '../assets/img/6.jpg';
-import img7 from '../assets/img/7.jpg';
-import img8 from '../assets/img/8.jpg';
-import img10 from '../assets/img/10.jpg';
-import img11 from '../assets/img/11.jpg';
-import img16 from '../assets/img/16.jpg';
+const SUPABASE_PROJECT_URL = import.meta.env.VITE_SUPABASE_PROJECT_URL || 'https://kivpcepyhfpqjfoycwel.supabase.co';
+const IMAGES_BUCKET = import.meta.env.VITE_SUPABASE_BUCKET_IMAGES || 'imagenes';
+const AUDIO_BUCKET = import.meta.env.VITE_SUPABASE_BUCKET_AUDIO || 'audios';
+
+const getImageUrl = (filename) => `${SUPABASE_PROJECT_URL}/storage/v1/object/public/${IMAGES_BUCKET}/${filename}`;
+const getAudioUrl = (filename) => `${SUPABASE_PROJECT_URL}/storage/v1/object/public/${AUDIO_BUCKET}/${filename}`;
 
 export const datosBeats = [
   {
@@ -27,8 +14,8 @@ export const datosBeats = [
     precio: "$250.000",
     precioNumerico: 250000,
     descripcion: "Disfruta de un clásico de la Electrónica en este beat exclusivo, ideal para ambientar cualquier momento.",
-    fuente: audio1,
-    imagen: img16,
+    fuente: getAudioUrl('1.mp3'),
+    imagen: getImageUrl('16.jpg'),
     enlaceProducto: "/producto/1",
   },
   {
@@ -39,8 +26,8 @@ export const datosBeats = [
     precio: "$999.999",
     precioNumerico: 999999,
     descripcion: "Un beat pop pegajoso perfecto para crear hits modernos y comerciales.",
-    fuente: audio2,
-    imagen: img2,
+    fuente: getAudioUrl('2.mp3'),
+    imagen: getImageUrl('2.jpg'),
     enlaceProducto: "/producto/2",
   },
   {
@@ -51,8 +38,8 @@ export const datosBeats = [
     precio: "Gratis",
     precioNumerico: 0,
     descripcion: "Un beat chill relajante para momentos de tranquilidad y reflexión.",
-    fuente: audio3,
-    imagen: img3,
+    fuente: getAudioUrl('3.mp3'),
+    imagen: getImageUrl('3.jpg'),
     enlaceProducto: "/producto/3",
   },
   {
@@ -63,8 +50,8 @@ export const datosBeats = [
      precio: "$500.000",
      precioNumerico: 500000,
      descripcion: "Un beat funky con mucho groove para animar cualquier fiesta.",
-     fuente: audio4,
-     imagen: img4,
+     fuente: getAudioUrl('4.mp3'),
+     imagen: getImageUrl('4.jpg'),
      enlaceProducto: "/producto/4",
     },
      {
@@ -75,8 +62,8 @@ export const datosBeats = [
        precio: "$750.000",
        precioNumerico: 750000,
        descripcion: "Un beat jazzístico perfecto para una tarde relajada en el parque.",
-       fuente: audio5,
-       imagen: img6,
+       fuente: getAudioUrl('5.mp3'),
+       imagen: getImageUrl('6.jpg'),
        enlaceProducto: "/producto/5",
      },
      {
@@ -87,8 +74,8 @@ export const datosBeats = [
        precio: "$1.000.000",
        precioNumerico: 1000000,
        descripcion: "Un beat rockero lleno de energía y poder para los amantes del rock.",
-       fuente: audio6,
-       imagen: img7,
+       fuente: getAudioUrl('6.mp3'),
+       imagen: getImageUrl('7.jpg'),
        enlaceProducto: "/producto/6",
      },
      {
@@ -99,8 +86,8 @@ export const datosBeats = [
        precio: "$1.500.000",
        precioNumerico: 1500000,
        descripcion: "Un beat clásico con la majestuosidad de una sinfonía de Beethoven.",
-       fuente: audio7,
-       imagen: img8,
+       fuente: getAudioUrl('7.mp3'),
+       imagen: getImageUrl('8.jpg'),
        enlaceProducto: "/producto/7",
      },
      {
@@ -111,8 +98,8 @@ export const datosBeats = [
        precio: "$2.000.000",
        precioNumerico: 2000000,
        descripcion: "Un beat hip hop con mucho flow y estilo para los amantes del género.",
-       fuente: audio8,
-       imagen: img10,
+       fuente: getAudioUrl('8.mp3'),
+       imagen: getImageUrl('10.jpg'),
        enlaceProducto: "/producto/8",
      },
      {
@@ -123,8 +110,8 @@ export const datosBeats = [
        precio: "$1.200.000",
        precioNumerico: 1200000,
        descripcion: "Un beat reggae con las raíces del legendario Bob Marley.",
-       fuente: audio1,
-       imagen: img11,
+       fuente: getAudioUrl('1.mp3'),
+       imagen: getImageUrl('11.jpg'),
        enlaceProducto: "/producto/9",
      },
    ];
@@ -136,7 +123,7 @@ export const datosSlides = [
     prefijoTitulo: "Escucha",
     sufijoTitulo: "Lo nuevo",
     texto: "Descubre beats exclusivos y productores emergentes.",
-    imagen: img16,
+    imagen: getImageUrl('16.jpg'),
     alt: "Slide 1",
   },
   {
@@ -144,7 +131,7 @@ export const datosSlides = [
     prefijoTitulo: "Explora",
     sufijoTitulo: "Nuestro catálogo",
     texto: "Beats de todos los géneros listos para tu próximo proyecto.",
-    imagen: img10,
+    imagen: getImageUrl('10.jpg'),
     alt: "Slide 2",
   },
   {
@@ -152,7 +139,7 @@ export const datosSlides = [
     prefijoTitulo: "Conecta",
     sufijoTitulo: "Con artistas",
     texto: "Comparte, colabora y crea música desde cualquier lugar.",
-    imagen: img11,
+    imagen: getImageUrl('11.jpg'),
     alt: "Slide 3",
   },
 ];

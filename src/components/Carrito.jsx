@@ -1,7 +1,6 @@
 import React from "react";
 import Layout from "./Layout";
 import { useCart } from "../utils/cartUtils";
-import { resolveAsset } from "../utils/ui";
 
 export default function Carrito() {
   const { items, removeItem, updateQuantity, total } = useCart();
@@ -31,7 +30,7 @@ export default function Carrito() {
                   {items.map((it) => (
                     <tr key={it.id}>
                       <td>
-                        <img src={resolveAsset?.(it.imagen) || it.imagen} alt={it.titulo} className="cart-product-img" />
+                        <img src={it.imagen} alt={it.titulo} className="cart-product-img" />
                         <span style={{ marginLeft: 10 }}>{it.titulo}</span>
                       </td>
                       {/* Sin control de cantidad, solo se permite 1 por beat */}
