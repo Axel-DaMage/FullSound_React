@@ -28,40 +28,56 @@ export default function Registro() {
     e.preventDefault();
 
     // Validar formulario completo
-    const validacion = validarFormularioRegistro(
-      form.nombre,
-      form.correo,
-      form.password,
-      form.confirmPassword,
-      form.terminos
-    );
+    const validacion = validarFormularioRegistro(form);
 
     if (!validacion.isValid) {
-      alert(validacion.error);
+      // Mostrar el primer error encontrado
+      const primerError = Object.values(validacion.errors)[0];
+      alert(primerError || 'Por favor completa todos los campos correctamente');
       return;
     }
 
     setIsLoading(true);
 
     try {
+      // Determinar el rol según el correo
+      const esAdmin = esCorreoAdmin(form.correo);
+      const rolAsignado = esAdmin ? 'administrador' : 'cliente';
+      
+      console.log('[REGISTRO] Correo:', form.correo);
+      console.log('[REGISTRO] Es admin?', esAdmin);
+      console.log('[REGISTRO] Rol asignado:', rolAsignado);
+      
       // Llamar al servicio de registro del backend
       const userData = {
         nombreUsuario: form.nombre,
         correo: form.correo,
-        contraseña: form.password
+        contraseña: form.password,
+        rol: rolAsignado
       };
 
-      const { data: registerResponse, source } = await registrar(userData);
+      console.log('[REGISTRO] Enviando datos completos:', userData);
+      console.log('[REGISTRO] Datos enviados (password oculto):', { ...userData, contraseña: '[OCULTA]' });
       
-      console.log(`[REGISTRO] Usuario registrado exitosamente (${source})`, registerResponse);
+      const registerResult = await registrar(userData);
+      console.log('[REGISTRO] Respuesta completa del registro:', registerResult);
+      
+      const { data: registerResponse } = registerResult;
+      console.log('[REGISTRO] Usuario registrado exitosamente', registerResponse);
 
       // Después de registrar exitosamente, hacer login automático
       const loginCredentials = {
-        nombreUsuario: form.correo,
+        nombreUsuario: form.nombre,
         contraseña: form.password
       };
 
       const { data: loginData } = await login(loginCredentials);
+      
+      // Verificar que loginData existe y tiene user
+      if (!loginData || !loginData.user) {
+        throw new Error('Error al iniciar sesión después del registro');
+      }
+      
       const usuario = loginData.user;
       guardarUsuario(usuario);
 
@@ -74,8 +90,19 @@ export default function Registro() {
         navigate('/beats');
       }
     } catch (error) {
-      console.error('[REGISTRO] Error al registrar usuario:', error);
-      alert('Error al crear la cuenta. El usuario o correo ya pueden estar registrados.');
+      console.error('[REGISTRO] Error completo:', error);
+      
+      // Extraer mensaje de error más específico
+      let errorMsg = 'Error al crear la cuenta.';
+      
+      if (error.response) {
+        // Error de respuesta del servidor
+        errorMsg = error.response.data?.message || error.response.data || errorMsg;
+      } else if (error.message) {
+        errorMsg = error.message;
+      }
+      
+      alert(errorMsg);
     } finally {
       setIsLoading(false);
     }

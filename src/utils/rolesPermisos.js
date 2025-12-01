@@ -7,6 +7,9 @@
  */
 export const ROLES = {
   ADMIN: 'admin',
+  ADMINISTRADOR: 'administrador',
+  CLIENTE: 'cliente',
+  PRODUCTOR: 'productor',
   USER: 'user'
 };
 
@@ -45,12 +48,28 @@ export const tieneRol = (usuario, rol) => {
 };
 
 /**
+ * Normaliza el nombre del rol (administrador -> admin)
+ * @param {string} rol - Rol a normalizar
+ * @returns {string}
+ */
+export const normalizarRol = (rol) => {
+  if (!rol) return 'cliente';
+  const rolLower = rol.toLowerCase();
+  if (rolLower === 'administrador') return 'admin';
+  if (rolLower === 'cliente') return 'user';
+  if (rolLower === 'productor') return 'productor';
+  return rolLower;
+};
+
+/**
  * Verifica si el usuario es administrador
  * @param {Object} usuario - Objeto del usuario
  * @returns {boolean}
  */
 export const esAdmin = (usuario) => {
-  return tieneRol(usuario, ROLES.ADMIN);
+  if (!usuario || !usuario.rol) return false;
+  const rol = usuario.rol.toLowerCase();
+  return rol === 'admin' || rol === 'administrador';
 };
 
 /**

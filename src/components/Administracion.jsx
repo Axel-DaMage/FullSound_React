@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "./Layout";
 import AdminBeats from "./AdminBeats";
+import AdminUsuarios from "./AdminUsuarios";
+import EstadisticasAdmin from "./EstadisticasAdmin";
 import { 
   obtenerUsuarioActual, 
   requiereAdmin 
@@ -49,32 +51,7 @@ export default function Administracion() {
             </div>
           </div>
           
-          <div className="row justify-content-center mb-5">
-            <div className="col-md-3">
-              <div className="stats-card">
-                <div className="stats-number" id="totalBeats">9</div>
-                <div>Total de Beats</div>
-              </div>
-            </div>
-            <div className="col-md-3">
-              <div className="stats-card">
-                <div className="stats-number" id="totalUsers">5</div>
-                <div>Usuarios Registrados</div>
-              </div>
-            </div>
-            <div className="col-md-3">
-              <div className="stats-card">
-                <div className="stats-number" id="activeUsers">4</div>
-                <div>Usuarios Activos</div>
-              </div>
-            </div>
-            <div className="col-md-3">
-              <div className="stats-card">
-                <div className="stats-number" id="totalSales">$1,354,999</div>
-                <div>Ventas Totales</div>
-              </div>
-            </div>
-          </div>
+          <EstadisticasAdmin />
 
           <div className="row mb-4">
             <div className="col-12">
@@ -84,17 +61,7 @@ export default function Administracion() {
 
           <div className="row">
             <div className="col-12">
-              <div className="card bg-dark text-white">
-                <div className="card-header">
-                  <h3 className="mb-0">Gestión de Usuarios</h3>
-                </div>
-                <div className="card-body">
-                  <p className="text-muted">Administra los usuarios registrados en la plataforma.</p>
-                  <div className="alert alert-info">
-                    <strong>Próximamente:</strong> Funcionalidad de gestión de usuarios en desarrollo.
-                  </div>
-                </div>
-              </div>
+              <AdminUsuarios />
             </div>
           </div>
         </div>

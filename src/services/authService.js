@@ -27,14 +27,16 @@ export const login = async (credentials) => {
     localStorage.setItem('token', response.data.token);
     
     // Transformar la respuesta al formato esperado por el frontend
+    const rolBackend = response.data.roles?.[0] || 'cliente';
     const user = {
       id: response.data.usuarioId,
       nombre: response.data.nombreUsuario,
       correo: response.data.correo,
-      rol: response.data.roles?.[0] || 'cliente', // Primer rol o 'cliente' por defecto
+      rol: rolBackend, // Mantener el rol original del backend
       roles: response.data.roles
     };
     
+    console.log('[API] Usuario autenticado:', { ...user, contraseña: '[OCULTA]' });
     localStorage.setItem('user', JSON.stringify(user));
     
     return { data: { user, token: response.data.token }, source: 'api' };
@@ -52,12 +54,17 @@ export const login = async (credentials) => {
  * @returns {Promise<Object>} Usuario creado
  */
 export const registrar = async (userData) => {
-  // El backend espera: { nombreUsuario, correo, contraseña }
+  // El backend espera: { nombreUsuario, correo, contraseña, rol (opcional), nombre, apellido }
   const registerData = {
     nombreUsuario: userData.nombreUsuario || userData.nombre || userData.correo?.split('@')[0],
     correo: userData.correo || userData.email,
-    contraseña: userData.contraseña || userData.password
+    contraseña: userData.contraseña || userData.password,
+    rol: userData.rol, // Rol opcional para especificar tipo de usuario
+    nombre: userData.nombre,
+    apellido: userData.apellido
   };
+  
+  console.log('[API] Datos de registro enviados:', { ...registerData, contraseña: '[OCULTA]' });
   
   const response = await api.post('/auth/register', registerData);
   console.log('[API] Usuario registrado en la base de datos');

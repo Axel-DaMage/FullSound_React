@@ -37,13 +37,15 @@ export default function Login() {
     try {
       // Llamar al servicio de autenticación del backend
       const credentials = {
-        nombreUsuario: form.correo,
+        nombreUsuario: form.correo, // Puede ser correo o nombre de usuario
         contraseña: form.password
       };
       
-      const { data, source } = await login(credentials);
+      console.log('[LOGIN] Intentando autenticar:', { nombreUsuario: credentials.nombreUsuario });
       
-      console.log(`[LOGIN] Autenticación exitosa (${source})`, data);
+      const { data } = await login(credentials);
+      
+      console.log('[LOGIN] Autenticación exitosa desde la base de datos', data);
       
       // El servicio ya guarda el token y usuario en localStorage
       // Obtener el usuario guardado
@@ -51,7 +53,10 @@ export default function Login() {
       guardarUsuario(usuario);
 
       // Redirigir según el rol
-      if (usuario.rol === 'administrador' || usuario.rol === 'admin') {
+      const rolLower = usuario.rol?.toLowerCase();
+      console.log('[LOGIN] Rol del usuario:', rolLower);
+      
+      if (rolLower === 'administrador' || rolLower === 'admin') {
         alert('Bienvenido Administrador');
         navigate('/admin');
       } else {
@@ -61,8 +66,16 @@ export default function Login() {
 
       return true;
     } catch (error) {
-      console.error('[LOGIN] Error en autenticación:', error);
-      alert('Error al iniciar sesión. Verifica tus credenciales.');
+      console.error('[LOGIN] Error completo:', error);
+      
+      let errorMsg = 'Error al iniciar sesión. Verifica tus credenciales.';
+      if (error.response?.data?.message) {
+        errorMsg = error.response.data.message;
+      } else if (error.message) {
+        errorMsg = error.message;
+      }
+      
+      alert(errorMsg);
       return false;
     } finally {
       setIsLoading(false);
@@ -79,18 +92,18 @@ export default function Login() {
                   <h2 className="text-center mb-4">Iniciar Sesión</h2>
                   <form onSubmit={handleLogin}>
                     <div className="form-group">
-                      <label htmlFor="correo">Correo electrónico</label>
+                      <label htmlFor="correo">Usuario o Correo electrónico</label>
                       <input
-                        type="email"
+                        type="text"
                         className="form-control"
                         id="correo"
-                        placeholder="Ingresa tu correo"
+                        placeholder="Ingresa tu usuario o correo"
                         value={form.correo}
                         onChange={onChange}
                         required
                       />
                       <small className="form-text text-muted">
-                        {esCorreoAdmin(form.correo) && '✓ Correo de administrador detectado'}
+                        Puedes usar tu nombre de usuario o correo electrónico
                       </small>
                     </div>
                     <div className="form-group">
