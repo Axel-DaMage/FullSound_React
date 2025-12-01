@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Layout from "./Layout";
 import { 
-  validarFormularioRegistro, 
-  obtenerRolPorCorreo,
+  validarFormularioRegistro,
   esCorreoAdmin 
 } from "../utils/authValidation";
+import { registrar, login } from "../services/authService";
 import { guardarUsuario } from "../utils/rolesPermisos";
 
 export default function Registro() {
@@ -17,13 +17,14 @@ export default function Registro() {
     confirmPassword: "",
     terminos: false,
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const onChange = (e) => {
     const { id, value, checked, type } = e.target;
     setForm((f) => ({ ...f, [id]: type === "checkbox" ? checked : value }));
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
 
     // Validar formulario completo
@@ -40,29 +41,43 @@ export default function Registro() {
       return;
     }
 
-    // Determinar rol del usuario basado en el correo
-    const rol = obtenerRolPorCorreo(form.correo);
+    setIsLoading(true);
 
-    // Simular creación de usuario (en producción se enviará al backend)
-    const usuario = {
-      nombre: form.nombre,
-      correo: form.correo,
-      rol: rol,
-      id: Date.now(),
-      fechaRegistro: new Date().toISOString()
-    };
+    try {
+      // Llamar al servicio de registro del backend
+      const userData = {
+        nombreUsuario: form.nombre,
+        correo: form.correo,
+        contraseña: form.password
+      };
 
-    // Guardar token y usuario en localStorage
-    localStorage.setItem('token', `token_simulado_${Date.now()}`);
-    guardarUsuario(usuario);
+      const { data: registerResponse, source } = await registrar(userData);
+      
+      console.log(`[REGISTRO] Usuario registrado exitosamente (${source})`, registerResponse);
 
-    // Mostrar mensaje de éxito
-    if (rol === 'admin') {
-      alert('¡Cuenta de administrador creada exitosamente! Serás redirigido al panel de administración.');
-      navigate('/admin');
-    } else {
-      alert('¡Cuenta creada exitosamente! Serás redirigido a la tienda de beats.');
-      navigate('/beats');
+      // Después de registrar exitosamente, hacer login automático
+      const loginCredentials = {
+        nombreUsuario: form.correo,
+        contraseña: form.password
+      };
+
+      const { data: loginData } = await login(loginCredentials);
+      const usuario = loginData.user;
+      guardarUsuario(usuario);
+
+      // Mostrar mensaje de éxito y redirigir según el rol
+      if (usuario.rol === 'administrador' || usuario.rol === 'admin') {
+        alert('¡Cuenta de administrador creada exitosamente! Serás redirigido al panel de administración.');
+        navigate('/admin');
+      } else {
+        alert('¡Cuenta creada exitosamente! Serás redirigido a la tienda de beats.');
+        navigate('/beats');
+      }
+    } catch (error) {
+      console.error('[REGISTRO] Error al registrar usuario:', error);
+      alert('Error al crear la cuenta. El usuario o correo ya pueden estar registrados.');
+    } finally {
+      setIsLoading(false);
     }
   };
     return (
@@ -146,8 +161,8 @@ export default function Registro() {
                       </label>
                     </div>
                     <div className="d-flex flex-column gap-3 mt-4">
-                      <button type="submit" className="site-btn btn-block">
-                        Crear Cuenta
+                      <button type="submit" className="site-btn btn-block" disabled={isLoading}>
+                        {isLoading ? 'Creando cuenta...' : 'Crear Cuenta'}
                       </button><div className="text-center">
                         <p className="mb-0">
                           ¿Ya tienes cuenta? <Link to="/login" className="text-primary">Inicia sesión aquí</Link>

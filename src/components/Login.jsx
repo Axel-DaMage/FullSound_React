@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import Layout from "./Layout";
 import { 
   validarCredenciales, 
-  obtenerRolPorCorreo, 
   esCorreoAdmin 
 } from "../utils/authValidation";
 import { guardarUsuario } from "../utils/rolesPermisos";
+import { login } from "../services/authService";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -14,13 +14,14 @@ export default function Login() {
     correo: "",
     password: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const onChange = (e) => {
     const { id, value } = e.target;
     setForm((f) => ({ ...f, [id]: value }));
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     // Validar credenciales
@@ -31,31 +32,41 @@ export default function Login() {
       return false;
     }
 
-    // Determinar rol del usuario basado en el correo
-    const rol = obtenerRolPorCorreo(form.correo);
-    
-    // Simular datos del usuario (en producción vendrán del backend)
-    const usuario = {
-      nombre: form.correo.split('@')[0], // Nombre temporal del correo
-      correo: form.correo,
-      rol: rol,
-      id: Date.now() // ID temporal
-    };
+    setIsLoading(true);
 
-    // Guardar token y usuario en localStorage
-    localStorage.setItem('token', `token_simulado_${Date.now()}`);
-    guardarUsuario(usuario);
+    try {
+      // Llamar al servicio de autenticación del backend
+      const credentials = {
+        nombreUsuario: form.correo,
+        contraseña: form.password
+      };
+      
+      const { data, source } = await login(credentials);
+      
+      console.log(`[LOGIN] Autenticación exitosa (${source})`, data);
+      
+      // El servicio ya guarda el token y usuario en localStorage
+      // Obtener el usuario guardado
+      const usuario = data.user;
+      guardarUsuario(usuario);
 
-    // Redirigir según el rol
-    if (rol === 'admin') {
-      alert('Bienvenido Administrador');
-      navigate('/admin');
-    } else {
-      alert('Inicio de sesión exitoso');
-      navigate('/beats');
+      // Redirigir según el rol
+      if (usuario.rol === 'administrador' || usuario.rol === 'admin') {
+        alert('Bienvenido Administrador');
+        navigate('/admin');
+      } else {
+        alert('Inicio de sesión exitoso');
+        navigate('/beats');
+      }
+
+      return true;
+    } catch (error) {
+      console.error('[LOGIN] Error en autenticación:', error);
+      alert('Error al iniciar sesión. Verifica tus credenciales.');
+      return false;
+    } finally {
+      setIsLoading(false);
     }
-
-    return true;
   };
   
   return (
@@ -98,8 +109,9 @@ export default function Login() {
                       <button
                         type="submit"
                         className="site-btn btn-block"
+                        disabled={isLoading}
                       >
-                        Iniciar Sesión
+                        {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
                       </button>
                       <div className="text-center">
                         <p className="mb-0">

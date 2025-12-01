@@ -6,12 +6,13 @@
 import axios from 'axios';
 
 // URL base del backend - ajustar según el entorno
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+// Apunta al backend Spring Boot en puerto 8080
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
 
 // Instancia de axios configurada
 const api = axios.create({
   baseURL: BASE_URL,
-  timeout: 10000,
+  timeout: 30000, // Aumentado a 30 segundos para consultas a base de datos
   headers: {
     'Content-Type': 'application/json',
   },
