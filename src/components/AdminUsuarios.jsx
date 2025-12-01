@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { obtenerUsuarios, actualizarUsuario, eliminarUsuario } from '../services/usuariosService';
+import api from '../services/api';
 
 export default function AdminUsuarios() {
   const [usuarios, setUsuarios] = useState([]);
@@ -58,12 +59,13 @@ export default function AdminUsuarios() {
 
   const guardarUsuario = async (id) => {
     try {
-      const usuarioActualizado = {
-        ...formEdit,
-        id
+      // Solo enviar los campos que pueden ser actualizados
+      const datosActualizar = {
+        nombreUsuario: formEdit.nombreUsuario,
+        correo: formEdit.correo
       };
       
-      await actualizarUsuario(id, usuarioActualizado);
+      await actualizarUsuario(id, datosActualizar);
       alert('Usuario actualizado correctamente');
       setEditando(null);
       cargarUsuarios(); // Recargar lista
@@ -84,10 +86,13 @@ export default function AdminUsuarios() {
     if (!confirmacion) return;
 
     try {
-      await actualizarUsuario(usuario.id, {
-        ...usuario,
-        activo: nuevoEstado
-      });
+      if (nuevoEstado) {
+        // Usar el endpoint PATCH para activar
+        await api.patch(`/usuarios/${usuario.id}/activate`);
+      } else {
+        // Usar el endpoint DELETE para desactivar
+        await api.delete(`/usuarios/${usuario.id}`);
+      }
       alert(`Usuario ${nuevoEstado ? 'activado' : 'desactivado'} correctamente`);
       cargarUsuarios();
     } catch (error) {
