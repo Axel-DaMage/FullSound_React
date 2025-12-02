@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import Layout from "./Layout";
 import { useCart } from "../utils/cartUtils";
 
 export default function Carrito() {
   const { items, removeItem, updateQuantity, total } = useCart();
+  const [mostrarMensaje, setMostrarMensaje] = useState(false);
+
+  const finalizarCompra = () => {
+    setMostrarMensaje(true);
+    setTimeout(() => setMostrarMensaje(false), 2000);
+  };
 
   return (
     <Layout activeItem="carrito">
@@ -60,8 +66,13 @@ export default function Carrito() {
                   Total: <span className="float-right">${ total.toLocaleString('es-CL') }</span>
                 </h5>
                 <div className="d-flex justify-content-center mt-4">
-                  <button className="site-btn">Finalizar compra</button>
+                  <button className="site-btn" onClick={finalizarCompra}>Finalizar compra</button>
                 </div>
+                {mostrarMensaje && (
+                  <div className="text-center mt-3">
+                    <h4 style={{color: '#00bcd4'}}>¡Compra finalizada!</h4>
+                  </div>
+                )}
               </div>
             </div>
           </div>
