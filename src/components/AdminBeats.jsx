@@ -8,12 +8,12 @@ export default function AdminBeats() {
   const [mostrarForm, setMostrarForm] = useState(false);
   const [beatEditando, setBeatEditando] = useState(null);
   const [form, setForm] = useState({
-    nombre: '',
+    titulo: '',
     artista: '',
     genero: '',
     precio: '',
-    imagen: '',
-    audio: '',
+    imagenUrl: '',
+    audioUrl: '',
     descripcion: ''
   });
 
@@ -50,19 +50,19 @@ export default function AdminBeats() {
 
   const handleNuevo = () => {
     setBeatEditando(null);
-    setForm({ nombre: '', artista: '', genero: generos[0] || '', precio: '', imagen: '', audio: '', descripcion: '' });
+    setForm({ titulo: '', artista: '', genero: generos[0] || '', precio: '', imagenUrl: '', audioUrl: '', descripcion: '' });
     setMostrarForm(true);
   };
 
   const handleEditar = (beat) => {
     setBeatEditando(beat);
     setForm({
-      nombre: beat.nombre || '',
+      titulo: beat.titulo || '',
       artista: beat.artista || '',
       genero: beat.genero || '',
       precio: beat.precio || '',
-      imagen: beat.imagen || '',
-      audio: beat.audio || '',
+      imagenUrl: beat.imagenUrl || beat.imagen || '',
+      audioUrl: beat.audioUrl || beat.audio || '',
       descripcion: beat.descripcion || ''
     });
     setMostrarForm(true);
@@ -71,7 +71,7 @@ export default function AdminBeats() {
   const handleCancelar = () => {
     setMostrarForm(false);
     setBeatEditando(null);
-    setForm({ nombre: '', artista: '', genero: '', precio: '', imagen: '', audio: '', descripcion: '' });
+    setForm({ titulo: '', artista: '', genero: '', precio: '', imagenUrl: '', audioUrl: '', descripcion: '' });
   };
 
   const handleChange = (e) => {
@@ -82,7 +82,7 @@ export default function AdminBeats() {
   const handleGuardar = async (e) => {
     e.preventDefault();
     
-    if (!form.nombre || !form.artista || !form.genero || !form.precio) {
+    if (!form.titulo || !form.artista || !form.genero || !form.precio) {
       alert('Por favor completa todos los campos obligatorios');
       return;
     }
@@ -92,9 +92,7 @@ export default function AdminBeats() {
         await actualizarBeat(beatEditando.id, form);
         alert('Beat actualizado exitosamente');
       } else {
-        // Asigna un id único al nuevo beat
-        const nuevoBeat = { ...form, id: Date.now() };
-        await crearBeat(nuevoBeat);
+        await crearBeat(form);
         alert('Beat creado exitosamente');
       }
       
@@ -144,8 +142,8 @@ export default function AdminBeats() {
               <div className="row">
                 <div className="col-md-6">
                   <div className="form-group">
-                    <label>Nombre *</label>
-                    <input type="text" className="form-control" name="nombre" value={form.nombre} onChange={handleChange} required />
+                    <label>Título *</label>
+                    <input type="text" className="form-control" name="titulo" value={form.titulo} onChange={handleChange} required />
                   </div>
                 </div>
                 <div className="col-md-6">
@@ -171,14 +169,14 @@ export default function AdminBeats() {
                 </div>
                 <div className="col-md-4">
                   <div className="form-group">
-                    <label>URL Imagen</label>
-                    <input type="text" className="form-control" name="imagen" value={form.imagen} onChange={handleChange} />
+                    <label>URL Imagen (Supabase)</label>
+                    <input type="text" className="form-control" name="imagenUrl" value={form.imagenUrl} onChange={handleChange} placeholder="ruta/imagen.jpg" />
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
-                    <label>URL Audio</label>
-                    <input type="text" className="form-control" name="audio" value={form.audio} onChange={handleChange} />
+                    <label>URL Audio (Supabase)</label>
+                    <input type="text" className="form-control" name="audioUrl" value={form.audioUrl} onChange={handleChange} placeholder="ruta/audio.mp3" />
                   </div>
                 </div>
                 <div className="col-md-12">
@@ -203,7 +201,7 @@ export default function AdminBeats() {
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Nombre</th>
+                <th>Título</th>
                 <th>Artista</th>
                 <th>Género</th>
                 <th>Precio</th>
@@ -225,7 +223,7 @@ export default function AdminBeats() {
                 beats.map((beat) => (
                   <tr key={beat.id}>
                     <td>{beat.id}</td>
-                    <td>{beat.nombre || beat.titulo}</td>
+                    <td>{beat.titulo}</td>
                     <td>{beat.artista}</td>
                     <td>{beat.genero}</td>
                     <td>{formatearPrecio(beat.precio)}</td>
@@ -233,7 +231,7 @@ export default function AdminBeats() {
                       <button className="btn btn-sm btn-primary mr-2" onClick={() => handleEditar(beat)} title="Editar">
                         <i className="fa fa-edit"></i>
                       </button>
-                      <button className="btn btn-sm btn-danger" onClick={() => handleEliminar(beat.id, beat.nombre || beat.titulo)} title="Eliminar">
+                      <button className="btn btn-sm btn-danger" onClick={() => handleEliminar(beat.id, beat.titulo)} title="Eliminar">
                         <i className="fa fa-trash"></i>
                       </button>
                     </td>

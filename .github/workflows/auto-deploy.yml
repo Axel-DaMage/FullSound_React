@@ -1,0 +1,90 @@
+name: 🚀 Auto Deploy con IP Dinámica de EC2
+
+on:
+  # Trigger manual desde GitHub
+  workflow_dispatch:
+  # Trigger automático cada hora (mientras el lab esté activo)
+  schedule:
+    - cron: '0 * * * *'  # Cada hora
+  # Trigger en cada push
+  push:
+    branches: [ main ]
+
+env:
+  AWS_REGION: us-east-1
+
+jobs:
+  detect-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout código
+      uses: actions/checkout@v4
+
+    - name: ⚙️ Configurar Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: 🔐 Configurar credenciales AWS
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: 🔍 Detectar IP de EC2
+      id: get-ip
+      run: |
+        # Buscar la instancia EC2 activa (puedes filtrar por tag si lo tienes)
+        EC2_IP=$(aws ec2 describe-instances \
+          --filters "Name=instance-state-name,Values=running" \
+          --query "Reservations[0].Instances[0].PublicIpAddress" \
+          --output text)
+        
+        if [ "$EC2_IP" == "None" ] || [ -z "$EC2_IP" ]; then
+          echo "❌ No se encontró ninguna instancia EC2 activa"
+          exit 1
+        fi
+        
+        echo "✅ IP detectada: $EC2_IP"
+        echo "EC2_IP=$EC2_IP" >> $GITHUB_OUTPUT
+        echo "VITE_API_URL=http://$EC2_IP:8080/api" >> $GITHUB_ENV
+
+    - name: 📝 Crear archivo .env.production
+      run: |
+        cat > .env.production << EOF
+        # Auto-generado por GitHub Actions
+        # IP detectada automáticamente: ${{ steps.get-ip.outputs.EC2_IP }}
+        VITE_API_URL=http://${{ steps.get-ip.outputs.EC2_IP }}:8080/api
+        VITE_SUPABASE_PROJECT_URL=https://kivpcepyhfpqjfoycwel.supabase.co
+        VITE_SUPABASE_BUCKET_IMAGES=Imagenes
+        VITE_SUPABASE_BUCKET_AUDIO=audios
+        VITE_APP_NAME=FullSound
+        EOF
+        
+        echo "📄 Contenido de .env.production:"
+        cat .env.production
+
+    - name: 📦 Instalar dependencias
+      run: npm ci
+
+    - name: 🏗️ Build del proyecto
+      run: npm run build
+
+    - name: 🚀 Deploy a Vercel
+      uses: amondnet/vercel-action@v25
+      with:
+        vercel-token: ${{ secrets.VERCEL_TOKEN }}
+        vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+        vercel-args: '--prod'
+        working-directory: ./
+
+    - name: ✅ Resumen
+      run: |
+        echo "🎉 Deployment completado!"
+        echo "📍 IP del backend: ${{ steps.get-ip.outputs.EC2_IP }}"
+        echo "🌐 Frontend desplegado en Vercel"
