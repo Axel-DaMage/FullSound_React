@@ -1,13 +1,28 @@
 /**
  * Configuración de Axios para consumo de APIs
  * Archivo base para comunicación con el backend
+ * Soporta: Local Spring Boot, AWS EC2, y Supabase
  */
 
 import axios from 'axios';
+import { getAvailableBackend } from '../config/environment';
 
-// URL base del backend - ajustar según el entorno
-// Apunta al backend Spring Boot en puerto 8080
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
+// Inicializar con la URL por defecto
+let BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
+
+// Intentar obtener un backend disponible al iniciar
+(async () => {
+  try {
+    const availableUrl = await getAvailableBackend();
+    if (availableUrl !== BASE_URL) {
+      BASE_URL = availableUrl;
+      api.defaults.baseURL = BASE_URL;
+      console.log(`[API] Backend URL actualizada a: ${BASE_URL}`);
+    }
+  } catch (error) {
+    console.warn('[API] No se pudo verificar disponibilidad de backends, usando URL por defecto');
+  }
+})();
 
 // Instancia de axios configurada
 const api = axios.create({

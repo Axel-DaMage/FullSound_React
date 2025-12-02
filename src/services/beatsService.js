@@ -4,18 +4,10 @@
  */
 
 import api from './api';
+import { SUPABASE_CONFIG, getSupabaseUrl } from '../config/environment';
 
-const SUPABASE_PROJECT_URL = import.meta.env.VITE_SUPABASE_PROJECT_URL || 'https://kivpcepyhfpqjfoycwel.supabase.co';
-const IMAGES_BUCKET = import.meta.env.VITE_SUPABASE_BUCKET_IMAGES || 'Imagenes';
-const AUDIO_BUCKET = import.meta.env.VITE_SUPABASE_BUCKET_AUDIO || 'audios';
-
-function getSupabaseUrl(bucket, path) {
-  if (!path) return null;
-  if (path.startsWith('http')) return path; // Already a full URL
-  // Remove leading slash if present to avoid double slashes
-  const cleanPath = path.startsWith('/') ? path.substring(1) : path;
-  return `${SUPABASE_PROJECT_URL}/storage/v1/object/public/${bucket}/${cleanPath}`;
-}
+const IMAGES_BUCKET = SUPABASE_CONFIG.buckets.images;
+const AUDIO_BUCKET = SUPABASE_CONFIG.buckets.audio;
 
 // Función para convertir los datos del backend al formato esperado por el frontend
 function transformBeatFromBackend(backendBeat) {
