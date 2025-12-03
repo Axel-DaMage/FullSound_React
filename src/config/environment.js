@@ -1,6 +1,7 @@
 /**
  * Configuración de Entorno - FullSound
- * Soporta múltiples backends: Local, AWS EC2, y Supabase
+ * En PRODUCCIÓN: El frontend se sirve desde el mismo backend Spring Boot en AWS
+ * En DESARROLLO: El frontend se conecta a localhost:8080
  */
 
 // Detectar el entorno
@@ -10,56 +11,44 @@ const isProduction = import.meta.env.PROD;
 // Configuración de backends disponibles
 export const BACKENDS = {
   LOCAL: 'local',
-  AWS: 'aws',
+  PRODUCTION: 'production', // Frontend servido por Spring Boot
   SUPABASE: 'supabase'
 };
 
 // URLs de los backends
 const BACKEND_URLS = {
   [BACKENDS.LOCAL]: 'http://localhost:8080/api',
-  [BACKENDS.AWS]: import.meta.env.VITE_AWS_BACKEND_URL || 'http://54.227.183.6:8080/api',
+  [BACKENDS.PRODUCTION]: '/api', // Ruta relativa - mismo servidor
   [BACKENDS.SUPABASE]: import.meta.env.VITE_SUPABASE_BACKEND_URL || 'https://kivpcepyhfpqjfoycwel.supabase.co/rest/v1'
 };
 
 // Backend activo (configurado por variable de entorno o automático)
 const getActiveBackend = () => {
-  // 1. Si está definido en variables de entorno, usar ese
-  const envBackend = import.meta.env.VITE_ACTIVE_BACKEND;
-  if (envBackend && BACKEND_URLS[envBackend]) {
-    console.log(`[ENV] Backend configurado desde .env: ${envBackend}`);
-    return envBackend;
-  }
-
-  // 2. Si hay API_URL definida, úsala directamente
-  const customApiUrl = import.meta.env.VITE_API_URL;
-  if (customApiUrl) {
-    console.log(`[ENV] Usando API_URL personalizada: ${customApiUrl}`);
-    return 'custom';
-  }
-
-  // 3. Auto-detectar basado en el entorno
+  // En desarrollo, siempre usar backend local
   if (isDevelopment) {
-    console.log('[ENV] Modo desarrollo: Intentando backend local');
+    console.log('[ENV] Modo desarrollo: Usando backend local');
     return BACKENDS.LOCAL;
   }
 
-  // 4. En producción, intentar AWS primero
-  console.log('[ENV] Modo producción: Usando backend AWS');
-  return BACKENDS.AWS;
+  // En producción, el frontend está servido por Spring Boot, usar ruta relativa
+  console.log('[ENV] Modo producción: Usando rutas relativas (frontend servido por Spring Boot)');
+  return BACKENDS.PRODUCTION;
 };
 
 const activeBackend = getActiveBackend();
 
 // Obtener la URL del backend activo
 export const getBackendUrl = () => {
-  if (activeBackend === 'custom') {
-    return import.meta.env.VITE_API_URL;
-  }
   return BACKEND_URLS[activeBackend];
 };
 
-// Verificar disponibilidad del backend
+// Verificar disponibilidad del backend (solo para desarrollo)
 export const checkBackendAvailability = async (backendUrl) => {
+  // En producción no es necesario verificar (mismo servidor)
+  if (isProduction) {
+    return true;
+  }
+  
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 3000);
@@ -80,39 +69,26 @@ export const checkBackendAvailability = async (backendUrl) => {
   }
 };
 
-// Fallback automático entre backends
+// Obtener backend disponible (en producción siempre retorna la ruta configurada)
 export const getAvailableBackend = async () => {
   const preferredUrl = getBackendUrl();
   
-  console.log(`[ENV] Verificando backend preferido: ${preferredUrl}`);
+  // En producción, el backend siempre está disponible (mismo servidor)
+  if (isProduction) {
+    console.log('[ENV] ✅ Producción: Backend en el mismo servidor');
+    return preferredUrl;
+  }
   
-  // Intentar el backend preferido
+  console.log(`[ENV] Verificando backend de desarrollo: ${preferredUrl}`);
+  
+  // Verificar disponibilidad en desarrollo
   const isAvailable = await checkBackendAvailability(preferredUrl);
   if (isAvailable) {
-    console.log(`[ENV] ✅ Backend ${activeBackend} disponible`);
+    console.log('[ENV] ✅ Backend de desarrollo disponible');
     return preferredUrl;
   }
 
-  // Intentar fallbacks en orden
-  console.warn(`[ENV] ⚠️ Backend ${activeBackend} no disponible, intentando fallbacks...`);
-  
-  const fallbackOrder = [BACKENDS.AWS, BACKENDS.LOCAL, BACKENDS.SUPABASE];
-  
-  for (const backend of fallbackOrder) {
-    if (backend === activeBackend) continue; // Ya lo intentamos
-    
-    const url = BACKEND_URLS[backend];
-    console.log(`[ENV] Intentando fallback: ${backend} (${url})`);
-    
-    const available = await checkBackendAvailability(url);
-    if (available) {
-      console.log(`[ENV] ✅ Fallback exitoso a ${backend}`);
-      return url;
-    }
-  }
-
-  // Si todo falla, devolver la URL preferida de todos modos
-  console.error('[ENV] ❌ Ningún backend disponible, usando configurado por defecto');
+  console.error('[ENV] ❌ Backend de desarrollo no disponible');
   return preferredUrl;
 };
 

@@ -6,7 +6,10 @@
 import axios from 'axios';
 
 // URL base del backend - ajustar según el entorno
-const BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:8080/api' : '/api');
+// En producción, el frontend se sirve desde el mismo backend, usar ruta relativa
+const BASE_URL = import.meta.env.DEV 
+  ? (import.meta.env.VITE_API_URL || 'http://localhost:8080/api')
+  : '/api'; // Ruta relativa en producción (frontend servido por Spring Boot)
 
 // Instancia de axios configurada
 const api = axios.create({
