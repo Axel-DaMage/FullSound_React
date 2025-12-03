@@ -15,7 +15,7 @@ function App() {
   return (
     <>
       <Preloader />
-      <Router basename="/FullSound_React">
+      <Router>
         <Routes>
           <Route path="/" element={<Inicio />} />
           <Route path="/beats" element={<Beats />} />
