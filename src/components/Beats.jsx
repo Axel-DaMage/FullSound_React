@@ -55,9 +55,7 @@ export default function Beats() {
               <h4 className="alert-heading">Error de Conexión</h4>
               <p>{error}</p>
               <hr />
-              <p className="mb-0">
-                Asegúrate de que el backend esté ejecutándose en <strong>http://localhost:8080</strong>
-              </p>
+              <p className="mb-0">Por favor, intenta nuevamente más tarde.</p>
             </div>
           )}
 
