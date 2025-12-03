@@ -1,21 +1,45 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import Layout from "./Layout";
-import {
-  buscarProductoPorId,
-  obtenerProductosRelacionados,
-} from "../utils/productUtils";
 import { useCart } from "../utils/cartUtils";
+import { obtenerBeatPorId, obtenerBeats } from "../services/beatsService";
 
 export default function Producto() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [producto, setProducto] = useState(null);
+  const [productosRelacionados, setProductosRelacionados] = useState([]);
   const [cantidad] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const productoEncontrado = buscarProductoPorId(id);
-    setProducto(productoEncontrado);
+    async function cargarProducto() {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        // Obtener el beat específico desde la base de datos
+        const { data: beatData } = await obtenerBeatPorId(id);
+        setProducto(beatData);
+        
+        // Obtener todos los beats para filtrar los relacionados
+        const { data: todosBeats } = await obtenerBeats();
+        const relacionados = todosBeats
+          .filter((beat) => beat.id !== beatData.id && beat.genero === beatData.genero)
+          .slice(0, 3);
+        setProductosRelacionados(relacionados);
+      } catch (err) {
+        console.error('[ERROR] No se pudo cargar el producto:', err);
+        setError('No se pudo cargar el producto. Verifica que el backend esté ejecutándose.');
+      } finally {
+        setLoading(false);
+      }
+    }
+    
+    if (id) {
+      cargarProducto();
+    }
   }, [id]);
 
   const { addItem } = useCart();
@@ -31,17 +55,35 @@ export default function Producto() {
 
   // Cantidad fija en 1 (sin selector, acorde al proyecto)
 
-  if (!producto) {
+  if (loading) {
     return (
       <Layout>
-        <div className="container product-loading">
-          <h2>Cargando producto...</h2>
+        <div className="container product-loading text-center py-5">
+          <div className="spinner-border" role="status">
+            <span className="sr-only">Cargando producto...</span>
+          </div>
+          <p className="mt-3">Cargando producto desde la base de datos...</p>
         </div>
       </Layout>
     );
   }
 
-  const productosRelacionados = obtenerProductosRelacionados(producto.id, producto.genero);
+  if (error || !producto) {
+    return (
+      <Layout>
+        <div className="container py-5">
+          <div className="alert alert-danger text-center" role="alert">
+            <h4 className="alert-heading">Error al cargar el producto</h4>
+            <p>{error || 'Producto no encontrado'}</p>
+            <hr />
+            <Link to="/beats" className="btn btn-primary">
+              Volver a Beats
+            </Link>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout activeItem="beats">
@@ -105,7 +147,7 @@ export default function Producto() {
                 <p className="mb-4">
                   <strong className="product-price-label">Precio:</strong>{" "}
                   <span className="h3 product-price">
-                    {producto.precio}
+                    ${Number(producto.precioNumerico || producto.precio).toLocaleString('es-CL')}
                   </span>
                 </p>
               </div>
@@ -168,7 +210,7 @@ export default function Producto() {
                           <h5 className="card-title related-product-title">{beat.titulo}</h5>
                           <p className="card-text related-product-artist">{beat.artista}</p>
                           <p className="card-text related-product-price">
-                            <strong>{beat.precio}</strong>
+                            <strong>${Number(beat.precioNumerico || beat.precio).toLocaleString('es-CL')}</strong>
                           </p>
                           <Link 
                             to={`/producto/${beat.id}`} 

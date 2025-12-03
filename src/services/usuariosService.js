@@ -1,52 +1,31 @@
 /**
  * API de Usuarios - Gestión de perfiles y usuarios
+ * Conectado al backend Spring Boot + PostgreSQL (Supabase)
  */
 
 import api from './api';
-
-const USUARIOS_KEY = 'usuarios_locales';
-
-/**
- * Lee usuarios desde localStorage
- */
-function readLocalUsuarios() {
-  try {
-    const raw = localStorage.getItem(USUARIOS_KEY);
-    return raw ? JSON.parse(raw) : [];
-  } catch {
-    return [];
-  }
-}
-
-/**
- * Guarda usuarios en localStorage
- */
-function writeLocalUsuarios(usuarios) {
-  try {
-    localStorage.setItem(USUARIOS_KEY, JSON.stringify(usuarios));
-  } catch {}
-}
 
 /**
  * Obtiene el perfil del usuario actual
  * @returns {Promise<Object>} Datos del perfil
  */
 export const obtenerPerfil = async () => {
-  try {
-    const response = await api.get('/usuarios/perfil');
-    console.log('[API] Perfil cargado desde API');
-    return { data: response.data, source: 'api' };
-  } catch (error) {
-    console.log('[LOCAL] Modo local: Cargando perfil desde localStorage');
-    const userString = localStorage.getItem('user');
-    const user = userString ? JSON.parse(userString) : null;
-    
-    if (!user) {
-      throw new Error('No hay usuario autenticado');
-    }
-    
-    return { data: user, source: 'local' };
-  }
+  const response = await api.get('/usuarios/me');
+  console.log('[API] Perfil cargado desde la base de datos');
+  
+  // Transformar respuesta del backend al formato del frontend
+  return {
+    data: {
+      id: response.data.id,
+      nombre: response.data.nombreUsuario,
+      correo: response.data.correo,
+      activo: response.data.activo,
+      rol: response.data.roles?.[0] || 'cliente',
+      roles: response.data.roles,
+      createdAt: response.data.createdAt
+    },
+    source: 'api'
+  };
 };
 
 /**
@@ -55,20 +34,28 @@ export const obtenerPerfil = async () => {
  * @returns {Promise<Object>} Perfil actualizado
  */
 export const actualizarPerfil = async (datosActualizados) => {
-  try {
-    const response = await api.put('/usuarios/perfil', datosActualizados);
-    console.log('[API] Perfil actualizado en API');
-    // Actualizar localStorage
-    localStorage.setItem('user', JSON.stringify(response.data));
-    return { data: response.data, source: 'api' };
-  } catch (error) {
-    console.log('[LOCAL] Modo local: Actualizando perfil en localStorage');
-    const userString = localStorage.getItem('user');
-    const user = userString ? JSON.parse(userString) : {};
-    const userActualizado = { ...user, ...datosActualizados };
-    localStorage.setItem('user', JSON.stringify(userActualizado));
-    return { data: userActualizado, source: 'local' };
-  }
+  // Transformar datos al formato esperado por el backend
+  const updateData = {
+    nombreUsuario: datosActualizados.nombre || datosActualizados.nombreUsuario,
+    correo: datosActualizados.correo,
+    contraseña: datosActualizados.contraseña
+  };
+  
+  const response = await api.put('/usuarios/me', updateData);
+  console.log('[API] Perfil actualizado en la base de datos');
+  
+  // Actualizar localStorage con los datos actualizados
+  const user = {
+    id: response.data.id,
+    nombre: response.data.nombreUsuario,
+    correo: response.data.correo,
+    activo: response.data.activo,
+    rol: response.data.roles?.[0] || 'cliente',
+    roles: response.data.roles
+  };
+  localStorage.setItem('user', JSON.stringify(user));
+  
+  return { data: user, source: 'api' };
 };
 
 /**
@@ -76,15 +63,28 @@ export const actualizarPerfil = async (datosActualizados) => {
  * @returns {Promise<Array>} Lista de usuarios
  */
 export const obtenerUsuarios = async () => {
-  try {
-    const response = await api.get('/usuarios');
-    console.log('[API] Usuarios cargados desde API');
-    return { data: response.data, source: 'api' };
-  } catch (error) {
-    console.log('[LOCAL] Modo local: Cargando usuarios desde localStorage');
-    const usuarios = readLocalUsuarios();
-    return { data: usuarios, source: 'local' };
-  }
+  const response = await api.get('/usuarios');
+  console.log('[API] Usuarios cargados desde la base de datos');
+  console.log('[API] Respuesta completa:', response.data);
+  
+  // Transformar respuesta al formato del frontend
+  const usuarios = response.data.map(u => {
+    console.log('[API] Mapeando usuario:', u);
+    return {
+      id: u.id,
+      nombreUsuario: u.nombreUsuario, // Agregar este campo
+      nombre: u.nombreUsuario,
+      apellido: u.apellido || '', // Agregar apellido
+      correo: u.correo,
+      activo: u.activo,
+      rol: u.roles?.[0] || 'cliente',
+      roles: u.roles,
+      createdAt: u.createdAt
+    };
+  });
+  
+  console.log('[API] Usuarios transformados:', usuarios);
+  return { data: usuarios, source: 'api' };
 };
 
 /**
@@ -93,21 +93,24 @@ export const obtenerUsuarios = async () => {
  * @returns {Promise<Object>} Datos del usuario
  */
 export const obtenerUsuarioPorId = async (id) => {
-  try {
-    const response = await api.get(`/usuarios/${id}`);
-    console.log(`[API] Usuario ${id} cargado desde API`);
-    return { data: response.data, source: 'api' };
-  } catch (error) {
-    console.log(`[LOCAL] Modo local: Buscando usuario ${id} en localStorage`);
-    const usuarios = readLocalUsuarios();
-    const usuario = usuarios.find(u => String(u.id) === String(id));
-    
-    if (!usuario) {
-      throw new Error('Usuario no encontrado');
-    }
-    
-    return { data: usuario, source: 'local' };
-  }
+  const response = await api.get(`/usuarios/${id}`);
+  console.log(`[API] Usuario ${id} cargado desde la base de datos`);
+  
+  // Transformar respuesta al formato del frontend
+  return {
+    data: {
+      id: response.data.id,
+      nombreUsuario: response.data.nombreUsuario,
+      nombre: response.data.nombreUsuario,
+      apellido: response.data.apellido || '',
+      correo: response.data.correo,
+      activo: response.data.activo,
+      rol: response.data.roles?.[0] || 'cliente',
+      roles: response.data.roles,
+      createdAt: response.data.createdAt
+    },
+    source: 'api'
+  };
 };
 
 /**
@@ -117,42 +120,45 @@ export const obtenerUsuarioPorId = async (id) => {
  * @returns {Promise<Object>} Usuario actualizado
  */
 export const actualizarUsuario = async (id, datosActualizados) => {
-  try {
-    const response = await api.put(`/usuarios/${id}`, datosActualizados);
-    console.log(`[API] Usuario ${id} actualizado en API`);
-    return { data: response.data, source: 'api' };
-  } catch (error) {
-    console.log(`[LOCAL] Modo local: Actualizando usuario ${id} en localStorage`);
-    const usuarios = readLocalUsuarios();
-    const index = usuarios.findIndex(u => String(u.id) === String(id));
-    
-    if (index !== -1) {
-      usuarios[index] = { ...usuarios[index], ...datosActualizados };
-      writeLocalUsuarios(usuarios);
-      return { data: usuarios[index], source: 'local' };
-    }
-    
-    throw new Error('Usuario no encontrado');
-  }
+  // Transformar datos al formato esperado por el backend
+  const updateData = {
+    nombreUsuario: datosActualizados.nombre || datosActualizados.nombreUsuario,
+    correo: datosActualizados.correo,
+    contraseña: datosActualizados.contraseña,
+    activo: datosActualizados.activo
+  };
+  
+  const response = await api.put(`/usuarios/${id}`, updateData);
+  console.log(`[API] Usuario ${id} actualizado en la base de datos`);
+  
+  // Transformar respuesta al formato del frontend
+  return {
+    data: {
+      id: response.data.id,
+      nombre: response.data.nombreUsuario,
+      correo: response.data.correo,
+      activo: response.data.activo,
+      rol: response.data.roles?.[0] || 'cliente',
+      roles: response.data.roles
+    },
+    source: 'api'
+  };
 };
 
 /**
- * Elimina un usuario (solo admin)
+ * Elimina (desactiva) un usuario (solo admin)
  * @param {number|string} id - ID del usuario
- * @returns {Promise<void>}
+ * @returns {Promise<Object>}
  */
 export const eliminarUsuario = async (id) => {
-  try {
-    await api.delete(`/usuarios/${id}`);
-    console.log(`[API] Usuario ${id} eliminado en API`);
-    return { success: true, source: 'api' };
-  } catch (error) {
-    console.log(`[LOCAL] Modo local: Eliminando usuario ${id} en localStorage`);
-    const usuarios = readLocalUsuarios();
-    const usuariosFiltrados = usuarios.filter(u => String(u.id) !== String(id));
-    writeLocalUsuarios(usuariosFiltrados);
-    return { success: true, source: 'local' };
-  }
+  console.log(`[API] Eliminando usuario con ID: ${id}`);
+  console.log(`[API] URL completa: /usuarios/${id}`);
+  
+  const response = await api.delete(`/usuarios/${id}`);
+  console.log(`[API] Usuario ${id} desactivado en la base de datos`);
+  console.log(`[API] Respuesta del servidor:`, response.data);
+  
+  return { success: true, source: 'api' };
 };
 
 /**
@@ -162,20 +168,10 @@ export const eliminarUsuario = async (id) => {
  * @returns {Promise<Object>}
  */
 export const cambiarPassword = async (passwordActual, passwordNueva) => {
-  try {
-    const response = await api.post('/usuarios/cambiar-password', {
-      passwordActual,
-      passwordNueva,
-    });
-    console.log('[API] Contraseña cambiada en API');
-    return { data: response.data, source: 'api' };
-  } catch (error) {
-    console.log('[LOCAL] Modo local: Simulando cambio de contraseña');
-    return { 
-      data: { 
-        message: 'Contraseña actualizada exitosamente (simulado)' 
-      }, 
-      source: 'local' 
-    };
-  }
+  const response = await api.post('/usuarios/cambiar-password', {
+    passwordActual,
+    passwordNueva,
+  });
+  console.log('[API] Contraseña actualizada en la base de datos');
+  return { data: response.data, source: 'api' };
 };

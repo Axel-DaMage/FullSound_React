@@ -1,35 +1,64 @@
 /**
  * API de Beats - Endpoints para gestión de beats musicales
+ * Conectado al backend Spring Boot + PostgreSQL (Supabase)
  */
 
 import api from './api';
-import { datosBeats } from '../utils/datosMusica';
+import { SUPABASE_CONFIG, getSupabaseUrl } from '../config/environment';
 
-const STORAGE_KEY = 'fs_beats_local';
+const IMAGES_BUCKET = SUPABASE_CONFIG.buckets.images;
+const AUDIO_BUCKET = SUPABASE_CONFIG.buckets.audio;
 
-function readLocalBeats() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    let beats = raw ? JSON.parse(raw) : [...datosBeats];
-    // Asegura que los beats estáticos tengan precio numérico
-    beats = beats.map(b => {
-      if (b.precioNumerico !== undefined) {
-        return { ...b, precio: b.precioNumerico };
-      }
-      return b;
-    });
-    return beats;
-  } catch {
-    // Si hay error, retorna los beats estáticos con precio numérico
-    return [...datosBeats].map(b => ({ ...b, precio: b.precioNumerico !== undefined ? b.precioNumerico : b.precio }));
-  }
+// Función para convertir los datos del backend al formato esperado por el frontend
+function transformBeatFromBackend(backendBeat) {
+  return {
+    id: backendBeat.idBeat || backendBeat.id,
+    titulo: backendBeat.titulo,
+    artista: backendBeat.artista,
+    genero: backendBeat.genero,
+    precio: backendBeat.precio, // El backend devuelve precio como Integer (centavos o valor directo)
+    precioNumerico: backendBeat.precio,
+    descripcion: backendBeat.descripcion,
+    imagen: getSupabaseUrl(IMAGES_BUCKET, backendBeat.imagenUrl),
+    imagenUrl: getSupabaseUrl(IMAGES_BUCKET, backendBeat.imagenUrl),
+    fuente: getSupabaseUrl(AUDIO_BUCKET, backendBeat.audioUrl || backendBeat.audioDemoUrl), // Audio completo o demo
+    audio: getSupabaseUrl(AUDIO_BUCKET, backendBeat.audioUrl),
+    audioUrl: getSupabaseUrl(AUDIO_BUCKET, backendBeat.audioUrl),
+    audioDemoUrl: getSupabaseUrl(AUDIO_BUCKET, backendBeat.audioDemoUrl),
+    bpm: backendBeat.bpm,
+    tonalidad: backendBeat.tonalidad,
+    duracion: backendBeat.duracion,
+    estado: backendBeat.estado,
+    slug: backendBeat.slug,
+    etiquetas: backendBeat.etiquetas,
+    reproducciones: backendBeat.reproducciones,
+    createdAt: backendBeat.createdAt,
+    updatedAt: backendBeat.updatedAt,
+    enlaceProducto: `/producto/${backendBeat.idBeat || backendBeat.id}`
+  };
 }
 
-function writeLocalBeats(beats) {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(beats));
-  } catch {}
+// Función para convertir del formato frontend al backend
+function transformBeatToBackend(frontendBeat) {
+  return {
+    titulo: frontendBeat.titulo,
+    artista: frontendBeat.artista,
+    genero: frontendBeat.genero,
+    precio: frontendBeat.precioNumerico || frontendBeat.precio,
+    descripcion: frontendBeat.descripcion,
+    imagenUrl: frontendBeat.imagenUrl || frontendBeat.imagen,
+    audioUrl: frontendBeat.audioUrl || frontendBeat.fuente,
+    audioDemoUrl: frontendBeat.audioDemoUrl,
+    bpm: frontendBeat.bpm || 120,
+    tonalidad: frontendBeat.tonalidad || 'C',
+    duracion: frontendBeat.duracion || 180,
+    estado: frontendBeat.estado || 'DISPONIBLE',
+    slug: frontendBeat.slug || frontendBeat.titulo?.toLowerCase().replace(/\s+/g, '-'),
+    etiquetas: frontendBeat.etiquetas || ''
+  };
 }
+
+
 
 /**
  * Obtiene todos los beats
@@ -37,23 +66,11 @@ function writeLocalBeats(beats) {
  * @returns {Promise<Array>} Lista de beats
  */
 export const obtenerBeats = async (filters = {}) => {
-  try {
-    const params = new URLSearchParams(filters).toString();
-    const response = await api.get(`/beats${params ? `?${params}` : ''}`);
-    console.log('[API] Beats cargados desde API');
-    return { data: response.data, source: 'api' };
-  } catch (error) {
-    console.log('[LOCAL] Modo local: Cargando beats desde localStorage');
-    let beats = readLocalBeats();
-    // Aplicar filtros si existen
-    if (filters.genero) {
-      beats = beats.filter(b => b.genero === filters.genero);
-    }
-    if (filters.artista) {
-      beats = beats.filter(b => b.artista === filters.artista);
-    }
-    return { data: beats, source: 'local' };
-  }
+  const params = new URLSearchParams(filters).toString();
+  const response = await api.get(`/beats${params ? `?${params}` : ''}`);
+  console.log('[API] Beats cargados desde la base de datos');
+  const beatsTransformados = response.data.map(transformBeatFromBackend);
+  return { data: beatsTransformados, source: 'api' };
 };
 
 /**
@@ -62,17 +79,10 @@ export const obtenerBeats = async (filters = {}) => {
  * @returns {Promise<Object>} Datos del beat
  */
 export const obtenerBeatPorId = async (id) => {
-  try {
-    const response = await api.get(`/beats/${id}`);
-    console.log(`[API] Beat ${id} cargado desde API`);
-    return { data: response.data, source: 'api' };
-  } catch (error) {
-    console.log(`[LOCAL] Modo local: Buscando beat ${id} en localStorage`);
-    const beats = readLocalBeats();
-    const beat = beats.find(b => String(b.id) === String(id));
-    if (!beat) throw new Error('Beat no encontrado');
-    return { data: beat, source: 'local' };
-  }
+  const response = await api.get(`/beats/${id}`);
+  console.log(`[API] Beat ${id} cargado desde la base de datos`);
+  const beatTransformado = transformBeatFromBackend(response.data);
+  return { data: beatTransformado, source: 'api' };
 };
 
 /**
@@ -81,34 +91,11 @@ export const obtenerBeatPorId = async (id) => {
  * @returns {Promise<Object>} Beat creado
  */
 export const crearBeat = async (beatData) => {
-  try {
-    const response = await api.post('/beats', beatData);
-    console.log('[API] Beat creado en API');
-    // Sincronizar con localStorage
-    const beats = readLocalBeats();
-    beats.push(response.data);
-    writeLocalBeats(beats);
-    return { data: response.data, source: 'api' };
-  } catch (error) {
-    console.log('[LOCAL] Modo local: Creando beat en localStorage');
-    const beats = readLocalBeats();
-    // Encuentra el id máximo actual
-    const maxId = beats.reduce((max, b) => {
-      const idNum = typeof b.id === 'number' ? b.id : parseInt(b.id, 10);
-      return idNum > max ? idNum : max;
-    }, 0);
-    const newId = maxId + 1;
-    // Asegura que el precio sea numérico
-    let precioNum = beatData.precio;
-    if (typeof precioNum === 'string') {
-      precioNum = parseFloat(precioNum.replace(/[^\d.]/g, ''));
-      if (isNaN(precioNum)) precioNum = 0;
-    }
-    const beatFinal = { ...beatData, id: newId, precio: precioNum, precioNumerico: precioNum };
-    beats.push(beatFinal);
-    writeLocalBeats(beats);
-    return { data: beatFinal, source: 'local' };
-  }
+  const backendData = transformBeatToBackend(beatData);
+  const response = await api.post('/beats', backendData);
+  console.log('[API] Beat creado en la base de datos');
+  const beatTransformado = transformBeatFromBackend(response.data);
+  return { data: beatTransformado, source: 'api' };
 };
 
 /**
@@ -118,21 +105,11 @@ export const crearBeat = async (beatData) => {
  * @returns {Promise<Object>} Beat actualizado
  */
 export const actualizarBeat = async (id, beatData) => {
-  try {
-    const response = await api.put(`/beats/${id}`, beatData);
-    console.log(`[API] Beat ${id} actualizado en API`);
-    // Sincronizar con localStorage
-    let beats = readLocalBeats();
-    beats = beats.map(b => String(b.id) === String(id) ? { ...b, ...response.data } : b);
-    writeLocalBeats(beats);
-    return { data: response.data, source: 'api' };
-  } catch (error) {
-    console.log(`[LOCAL] Modo local: Actualizando beat ${id} en localStorage`);
-    let beats = readLocalBeats();
-    beats = beats.map(b => String(b.id) === String(id) ? { ...b, ...beatData } : b);
-    writeLocalBeats(beats);
-    return { data: { id, ...beatData }, source: 'local' };
-  }
+  const backendData = transformBeatToBackend(beatData);
+  const response = await api.put(`/beats/${id}`, backendData);
+  console.log(`[API] Beat ${id} actualizado en la base de datos`);
+  const beatTransformado = transformBeatFromBackend(response.data);
+  return { data: beatTransformado, source: 'api' };
 };
 
 /**
@@ -141,21 +118,9 @@ export const actualizarBeat = async (id, beatData) => {
  * @returns {Promise<void>}
  */
 export const eliminarBeat = async (id) => {
-  try {
-    await api.delete(`/beats/${id}`);
-    console.log(`[API] Beat ${id} eliminado en API`);
-    // Sincronizar con localStorage
-    let beats = readLocalBeats();
-    beats = beats.filter(b => String(b.id) !== String(id));
-    writeLocalBeats(beats);
-    return { success: true, source: 'api' };
-  } catch (error) {
-    console.log(`[LOCAL] Modo local: Eliminando beat ${id} en localStorage`);
-    let beats = readLocalBeats();
-    beats = beats.filter(b => String(b.id) !== String(id));
-    writeLocalBeats(beats);
-    return { success: true, source: 'local' };
-  }
+  await api.delete(`/beats/${id}`);
+  console.log(`[API] Beat ${id} eliminado de la base de datos`);
+  return { success: true, source: 'api' };
 };
 
 /**
@@ -164,16 +129,11 @@ export const eliminarBeat = async (id) => {
  * @returns {Promise<Array>} Lista de beats del género
  */
 export const obtenerBeatsPorGenero = async (genero) => {
-  try {
-    const response = await api.get(`/beats?genero=${genero}`);
-    console.log(`[API] Beats del género ${genero} cargados desde API`);
-    return { data: response.data, source: 'api' };
-  } catch (error) {
-    console.log(`[LOCAL] Modo local: Filtrando beats por género ${genero}`);
-    const beats = readLocalBeats();
-    const beatsFiltrados = beats.filter(b => b.genero === genero);
-    return { data: beatsFiltrados, source: 'local' };
-  }
+  // Usar el endpoint de búsqueda con el término del género
+  const response = await api.get(`/beats/search?q=${genero}`);
+  console.log(`[API] Beats del género ${genero} cargados desde la base de datos`);
+  const beatsTransformados = response.data.map(transformBeatFromBackend);
+  return { data: beatsTransformados, source: 'api' };
 };
 
 /**
@@ -181,15 +141,9 @@ export const obtenerBeatsPorGenero = async (genero) => {
  * @returns {Promise<Array>} Lista de géneros
  */
 export const obtenerGeneros = async () => {
-  try {
-    const response = await api.get('/generos');
-    console.log('[API] Géneros cargados desde API');
-    return { data: response.data, source: 'api' };
-  } catch (error) {
-    console.log('[LOCAL] Modo local: Usando géneros predeterminados');
-    const beats = readLocalBeats();
-    // Extraer géneros únicos de los beats locales
-    const generosUnicos = [...new Set(beats.map(b => b.genero))];
-    return { data: generosUnicos, source: 'local' };
-  }
+  // Obtener todos los beats y extraer géneros únicos
+  const response = await api.get('/beats');
+  console.log('[API] Géneros cargados desde la base de datos');
+  const generosUnicos = [...new Set(response.data.map(b => b.genero).filter(Boolean))];
+  return { data: generosUnicos, source: 'api' };
 };

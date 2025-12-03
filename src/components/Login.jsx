@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import Layout from "./Layout";
 import { 
   validarCredenciales, 
-  obtenerRolPorCorreo, 
   esCorreoAdmin 
 } from "../utils/authValidation";
 import { guardarUsuario } from "../utils/rolesPermisos";
+import { login } from "../services/authService";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -14,13 +14,14 @@ export default function Login() {
     correo: "",
     password: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const onChange = (e) => {
     const { id, value } = e.target;
     setForm((f) => ({ ...f, [id]: value }));
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     // Validar credenciales
@@ -31,31 +32,54 @@ export default function Login() {
       return false;
     }
 
-    // Determinar rol del usuario basado en el correo
-    const rol = obtenerRolPorCorreo(form.correo);
-    
-    // Simular datos del usuario (en producción vendrán del backend)
-    const usuario = {
-      nombre: form.correo.split('@')[0], // Nombre temporal del correo
-      correo: form.correo,
-      rol: rol,
-      id: Date.now() // ID temporal
-    };
+    setIsLoading(true);
 
-    // Guardar token y usuario en localStorage
-    localStorage.setItem('token', `token_simulado_${Date.now()}`);
-    guardarUsuario(usuario);
+    try {
+      // Llamar al servicio de autenticación del backend
+      const credentials = {
+        nombreUsuario: form.correo, // Puede ser correo o nombre de usuario
+        contraseña: form.password
+      };
+      
+      console.log('[LOGIN] Intentando autenticar:', { nombreUsuario: credentials.nombreUsuario });
+      
+      const { data } = await login(credentials);
+      
+      console.log('[LOGIN] Autenticación exitosa desde la base de datos', data);
+      
+      // El servicio ya guarda el token y usuario en localStorage
+      // Obtener el usuario guardado
+      const usuario = data.user;
+      guardarUsuario(usuario);
 
-    // Redirigir según el rol
-    if (rol === 'admin') {
-      alert('Bienvenido Administrador');
-      navigate('/admin');
-    } else {
-      alert('Inicio de sesión exitoso');
-      navigate('/beats');
+      // Redirigir según el rol
+      const rolLower = usuario.rol?.toLowerCase();
+      console.log('[LOGIN] Rol del usuario:', rolLower);
+      
+      if (rolLower === 'administrador' || rolLower === 'admin') {
+        alert('Bienvenido Administrador');
+        navigate('/admin');
+      } else {
+        alert('Inicio de sesión exitoso');
+        navigate('/beats');
+      }
+
+      return true;
+    } catch (error) {
+      console.error('[LOGIN] Error completo:', error);
+      
+      let errorMsg = 'Error al iniciar sesión. Verifica tus credenciales.';
+      if (error.response?.data?.message) {
+        errorMsg = error.response.data.message;
+      } else if (error.message) {
+        errorMsg = error.message;
+      }
+      
+      alert(errorMsg);
+      return false;
+    } finally {
+      setIsLoading(false);
     }
-
-    return true;
   };
   
   return (
@@ -68,18 +92,18 @@ export default function Login() {
                   <h2 className="text-center mb-4">Iniciar Sesión</h2>
                   <form onSubmit={handleLogin}>
                     <div className="form-group">
-                      <label htmlFor="correo">Correo electrónico</label>
+                      <label htmlFor="correo">Usuario o Correo electrónico</label>
                       <input
-                        type="email"
+                        type="text"
                         className="form-control"
                         id="correo"
-                        placeholder="Ingresa tu correo"
+                        placeholder="Ingresa tu usuario o correo"
                         value={form.correo}
                         onChange={onChange}
                         required
                       />
                       <small className="form-text text-muted">
-                        {esCorreoAdmin(form.correo) && '✓ Correo de administrador detectado'}
+                        Puedes usar tu nombre de usuario o correo electrónico
                       </small>
                     </div>
                     <div className="form-group">
@@ -98,8 +122,9 @@ export default function Login() {
                       <button
                         type="submit"
                         className="site-btn btn-block"
+                        disabled={isLoading}
                       >
-                        Iniciar Sesión
+                        {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
                       </button>
                       <div className="text-center">
                         <p className="mb-0">

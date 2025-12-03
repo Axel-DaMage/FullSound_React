@@ -1,17 +1,19 @@
 /**
  * Configuración de Axios para consumo de APIs
  * Archivo base para comunicación con el backend
+ * Soporta: Local Spring Boot, AWS EC2, y Supabase
  */
 
 import axios from 'axios';
+import { getAvailableBackend } from '../config/environment';
 
 // URL base del backend - ajustar según el entorno
-const BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:8080' : '');
+const BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:8080/api' : '/api');
 
 // Instancia de axios configurada
 const api = axios.create({
   baseURL: BASE_URL,
-  timeout: 10000,
+  timeout: 30000, // Aumentado a 30 segundos para consultas a base de datos
   headers: {
     'Content-Type': 'application/json',
   },

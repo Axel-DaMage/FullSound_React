@@ -36,7 +36,7 @@ export function addItemToCart(beat, cantidad = 1) {
       titulo,
       precioNumerico: beat.precioNumerico || beat.precio || 0,
       precio: beat.precio,
-      imagen: beat.imagen,
+      imagen: beat.imagen || beat.imagenUrl,
       cantidad: 1,
     });
   }

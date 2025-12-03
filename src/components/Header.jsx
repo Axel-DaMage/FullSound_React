@@ -18,11 +18,32 @@ export default function Header({ activeItem = "" }) {
   
   const toggleMobile = () => setMobileActive((v) => !v);
 
-  useEffect(() => {
-    // Verificar si hay un usuario autenticado al cargar el header
+  // Actualizar usuario cuando cambie el localStorage
+  const actualizarUsuario = () => {
     if (estaAutenticado()) {
-      setUsuario(obtenerUsuarioActual());
+      const usuarioActual = obtenerUsuarioActual();
+      console.log('[HEADER] Usuario actualizado:', usuarioActual);
+      setUsuario(usuarioActual);
+    } else {
+      console.log('[HEADER] No hay usuario autenticado');
+      setUsuario(null);
     }
+  };
+
+  useEffect(() => {
+    // Verificar usuario al cargar
+    actualizarUsuario();
+
+    // Escuchar cambios en localStorage (para actualizar cuando se inicie/cierre sesión)
+    window.addEventListener('storage', actualizarUsuario);
+    
+    // También verificar periódicamente (para cambios en la misma pestaña)
+    const interval = setInterval(actualizarUsuario, 1000);
+
+    return () => {
+      window.removeEventListener('storage', actualizarUsuario);
+      clearInterval(interval);
+    };
   }, []);
 
   const handleLogout = (e) => {

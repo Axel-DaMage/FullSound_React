@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Layout from "./Layout";
 import { 
-  validarFormularioRegistro, 
-  obtenerRolPorCorreo,
+  validarFormularioRegistro,
   esCorreoAdmin 
 } from "../utils/authValidation";
+import { registrar, login } from "../services/authService";
 import { guardarUsuario } from "../utils/rolesPermisos";
 
 export default function Registro() {
@@ -17,52 +17,94 @@ export default function Registro() {
     confirmPassword: "",
     terminos: false,
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const onChange = (e) => {
     const { id, value, checked, type } = e.target;
     setForm((f) => ({ ...f, [id]: type === "checkbox" ? checked : value }));
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
 
     // Validar formulario completo
-    const validacion = validarFormularioRegistro(
-      form.nombre,
-      form.correo,
-      form.password,
-      form.confirmPassword,
-      form.terminos
-    );
+    const validacion = validarFormularioRegistro(form);
 
     if (!validacion.isValid) {
-      alert(validacion.error);
+      // Mostrar el primer error encontrado
+      const primerError = Object.values(validacion.errors)[0];
+      alert(primerError || 'Por favor completa todos los campos correctamente');
       return;
     }
 
-    // Determinar rol del usuario basado en el correo
-    const rol = obtenerRolPorCorreo(form.correo);
+    setIsLoading(true);
 
-    // Simular creación de usuario (en producción se enviará al backend)
-    const usuario = {
-      nombre: form.nombre,
-      correo: form.correo,
-      rol: rol,
-      id: Date.now(),
-      fechaRegistro: new Date().toISOString()
-    };
+    try {
+      // Determinar el rol según el correo
+      const esAdmin = esCorreoAdmin(form.correo);
+      const rolAsignado = esAdmin ? 'administrador' : 'cliente';
+      
+      console.log('[REGISTRO] Correo:', form.correo);
+      console.log('[REGISTRO] Es admin?', esAdmin);
+      console.log('[REGISTRO] Rol asignado:', rolAsignado);
+      
+      // Llamar al servicio de registro del backend
+      const userData = {
+        nombreUsuario: form.nombre,
+        correo: form.correo,
+        contraseña: form.password,
+        rol: rolAsignado
+      };
 
-    // Guardar token y usuario en localStorage
-    localStorage.setItem('token', `token_simulado_${Date.now()}`);
-    guardarUsuario(usuario);
+      console.log('[REGISTRO] Enviando datos completos:', userData);
+      console.log('[REGISTRO] Datos enviados (password oculto):', { ...userData, contraseña: '[OCULTA]' });
+      
+      const registerResult = await registrar(userData);
+      console.log('[REGISTRO] Respuesta completa del registro:', registerResult);
+      
+      const { data: registerResponse } = registerResult;
+      console.log('[REGISTRO] Usuario registrado exitosamente', registerResponse);
 
-    // Mostrar mensaje de éxito
-    if (rol === 'admin') {
-      alert('¡Cuenta de administrador creada exitosamente! Serás redirigido al panel de administración.');
-      navigate('/admin');
-    } else {
-      alert('¡Cuenta creada exitosamente! Serás redirigido a la tienda de beats.');
-      navigate('/beats');
+      // Después de registrar exitosamente, hacer login automático
+      const loginCredentials = {
+        nombreUsuario: form.nombre,
+        contraseña: form.password
+      };
+
+      const { data: loginData } = await login(loginCredentials);
+      
+      // Verificar que loginData existe y tiene user
+      if (!loginData || !loginData.user) {
+        throw new Error('Error al iniciar sesión después del registro');
+      }
+      
+      const usuario = loginData.user;
+      guardarUsuario(usuario);
+
+      // Mostrar mensaje de éxito y redirigir según el rol
+      if (usuario.rol === 'administrador' || usuario.rol === 'admin') {
+        alert('¡Cuenta de administrador creada exitosamente! Serás redirigido al panel de administración.');
+        navigate('/admin');
+      } else {
+        alert('¡Cuenta creada exitosamente! Serás redirigido a la tienda de beats.');
+        navigate('/beats');
+      }
+    } catch (error) {
+      console.error('[REGISTRO] Error completo:', error);
+      
+      // Extraer mensaje de error más específico
+      let errorMsg = 'Error al crear la cuenta.';
+      
+      if (error.response) {
+        // Error de respuesta del servidor
+        errorMsg = error.response.data?.message || error.response.data || errorMsg;
+      } else if (error.message) {
+        errorMsg = error.message;
+      }
+      
+      alert(errorMsg);
+    } finally {
+      setIsLoading(false);
     }
   };
     return (
@@ -146,8 +188,8 @@ export default function Registro() {
                       </label>
                     </div>
                     <div className="d-flex flex-column gap-3 mt-4">
-                      <button type="submit" className="site-btn btn-block">
-                        Crear Cuenta
+                      <button type="submit" className="site-btn btn-block" disabled={isLoading}>
+                        {isLoading ? 'Creando cuenta...' : 'Crear Cuenta'}
                       </button><div className="text-center">
                         <p className="mb-0">
                           ¿Ya tienes cuenta? <Link to="/login" className="text-primary">Inicia sesión aquí</Link>

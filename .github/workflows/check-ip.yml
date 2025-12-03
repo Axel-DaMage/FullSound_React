@@ -1,0 +1,75 @@
+name: 📡 Verificar y Notificar IP de EC2
+
+# Verifica cada hora si la IP cambió y notifica
+on:
+  schedule:
+    - cron: '*/30 * * * *'  # Cada 30 minutos
+  workflow_dispatch:
+
+jobs:
+  check-ip:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout
+      uses: actions/checkout@v4
+
+    - name: 🔐 Configurar AWS
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+        aws-region: us-east-1
+
+    - name: 🔍 Obtener IP actual
+      id: current-ip
+      run: |
+        CURRENT_IP=$(aws ec2 describe-instances \
+          --filters "Name=instance-state-name,Values=running" \
+          --query "Reservations[0].Instances[0].PublicIpAddress" \
+          --output text)
+        
+        echo "CURRENT_IP=$CURRENT_IP" >> $GITHUB_OUTPUT
+        echo "📍 IP actual: $CURRENT_IP"
+
+    - name: 📄 Leer IP guardada
+      id: saved-ip
+      run: |
+        if [ -f .env.production ]; then
+          SAVED_IP=$(grep VITE_API_URL .env.production | cut -d'/' -f3 | cut -d':' -f1)
+          echo "SAVED_IP=$SAVED_IP" >> $GITHUB_OUTPUT
+          echo "💾 IP guardada: $SAVED_IP"
+        else
+          echo "SAVED_IP=none" >> $GITHUB_OUTPUT
+        fi
+
+    - name: 🔄 Actualizar si cambió
+      if: steps.current-ip.outputs.CURRENT_IP != steps.saved-ip.outputs.SAVED_IP
+      run: |
+        echo "⚠️ ¡La IP cambió!"
+        echo "Antigua: ${{ steps.saved-ip.outputs.SAVED_IP }}"
+        echo "Nueva: ${{ steps.current-ip.outputs.CURRENT_IP }}"
+        
+        # Actualizar .env.production
+        cat > .env.production << EOF
+        # Auto-actualizado: $(date)
+        # IP anterior: ${{ steps.saved-ip.outputs.SAVED_IP }}
+        # IP nueva: ${{ steps.current-ip.outputs.CURRENT_IP }}
+        VITE_API_URL=http://${{ steps.current-ip.outputs.CURRENT_IP }}:8080/api
+        VITE_SUPABASE_PROJECT_URL=https://kivpcepyhfpqjfoycwel.supabase.co
+        VITE_SUPABASE_BUCKET_IMAGES=Imagenes
+        VITE_SUPABASE_BUCKET_AUDIO=audios
+        VITE_APP_NAME=FullSound
+        EOF
+        
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git add .env.production
+        git commit -m "🚨 IP cambió: ${{ steps.saved-ip.outputs.SAVED_IP }} → ${{ steps.current-ip.outputs.CURRENT_IP }}"
+        git push
+
+    - name: ✅ Sin cambios
+      if: steps.current-ip.outputs.CURRENT_IP == steps.saved-ip.outputs.SAVED_IP
+      run: |
+        echo "✅ La IP no ha cambiado: ${{ steps.current-ip.outputs.CURRENT_IP }}"
