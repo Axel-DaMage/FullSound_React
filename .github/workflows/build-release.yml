@@ -1,0 +1,73 @@
+name: Build and Release Frontend
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'index.html'
+      - 'package.json'
+      - 'vite.config.js'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build frontend
+        run: npm run build
+
+      - name: Create build archive
+        run: |
+          cd dist
+          zip -r ../frontend-build.zip .
+          cd ..
+          echo "Build archive created: frontend-build.zip"
+          ls -lh frontend-build.zip
+
+      - name: Generate version tag
+        id: version
+        run: |
+          VERSION="v$(date +%Y%m%d-%H%M%S)"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Generated version: $VERSION"
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.version.outputs.version }}
+          name: Frontend Build ${{ steps.version.outputs.version }}
+          body: |
+            Automated frontend build from commit ${{ github.sha }}
+            
+            Branch: ${{ github.ref_name }}
+            Commit: ${{ github.event.head_commit.message }}
+          files: frontend-build.zip
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update latest tag
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git tag -fa latest -m "Latest frontend build"
+          git push origin latest --force
