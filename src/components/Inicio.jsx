@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Layout from "./Layout";
 import { Link } from "react-router-dom";
 import imgConcept1 from "../assets/img/concept/1.jpg";
@@ -8,6 +8,22 @@ import imgConcept4 from "../assets/img/concept/4.jpg";
 import Carrusel from "./Carrusel";
 
 export default function Inicio() {
+  const [suscrito, setSuscrito] = useState(false);
+
+  const handleSuscripcion = (e) => {
+    e.preventDefault();
+    const email = e.target.email.value;
+    const emailPattern = /^[^\s@]+@[^\s@]+\.(com|cl)$/i;
+    
+    if (!emailPattern.test(email)) {
+      alert("Por favor ingresa un correo válido con dominio .com o .cl");
+      return;
+    }
+    
+    setSuscrito(true);
+    setTimeout(() => setSuscrito(false), 3000);
+  };
+
   return (
     <Layout activeItem="inicio">
       <Carrusel />
@@ -115,6 +131,30 @@ export default function Inicio() {
               <div className="concept-item">
                 <img src={imgConcept4} alt="Musica" />
                 <h5>Transmisiones en vivo</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="subscription-section spad">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-lg-8">
+              <div className="section-title">
+                <h2>Suscríbete a nuestras novedades</h2>
+              </div>
+              <div className="subscription-form text-center">
+                 <p>Recibe las últimas noticias, lanzamientos de beats y ofertas especiales directamente en tu correo.</p>
+                 <form action="#" onSubmit={handleSuscripcion}>
+                    <input type="email" name="email" placeholder="Tu correo electrónico" required />
+                    <button className="site-btn">Suscribirse</button>
+                 </form>
+                 {suscrito && (
+                   <div className="mt-3">
+                     <h4 style={{color: '#00bcd4'}}>¡Suscrito!</h4>
+                   </div>
+                 )}
               </div>
             </div>
           </div>

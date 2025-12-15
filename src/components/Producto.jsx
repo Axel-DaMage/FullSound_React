@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import Layout from "./Layout";
 import { useCart } from "../utils/cartUtils";
 import { obtenerBeatPorId, obtenerBeats } from "../services/beatsService";
+import WaveformPlayer from "./WaveformPlayer";
 
 export default function Producto() {
   const { id } = useParams();
@@ -140,6 +141,14 @@ export default function Producto() {
                     {producto.genero}
                   </span>
                 </p>
+                {producto.emocion && (
+                  <p className="mb-2">
+                    <strong className="product-emotion">Emoción:</strong>{" "}
+                    <span className="product-emotion-badge">
+                      {producto.emocion}
+                    </span>
+                  </p>
+                )}
                 <p className="mb-3">
                   <strong className="product-description">Descripción:</strong>{" "}
                   <span className="product-description-value">{producto.descripcion}</span>
@@ -154,14 +163,15 @@ export default function Producto() {
 
               {/* Reproductor de audio */}
               <div className="audio-preview-section">
-                <div className="audio-preview-label">
+                <div className="audio-preview-label mb-2">
                   <i className="fa fa-music" /> Vista previa:
                 </div>
-                <audio controls className="w-100 audio-preview-player">
-                  <source src={producto.fuente} type="audio/mpeg" />
-                  <track kind="captions" srcLang="es" label="Spanish" />
-                  Tu navegador no soporta el elemento de audio.
-                </audio>
+                <WaveformPlayer 
+                  audioUrl={producto.fuente}
+                  height={100}
+                  waveColor="#00bcd4"
+                  progressColor="#0097a7"
+                />
               </div>
 
               {/* Sin selector de cantidad; por defecto 1 */}

@@ -1,12 +1,20 @@
 import React, { useState } from "react";
 import Layout from "./Layout";
 import { useCart } from "../utils/cartUtils";
+import { useNavigate } from "react-router-dom";
+import { estaAutenticado } from "../services/authService";
 
 export default function Carrito() {
-  const { items, removeItem, updateQuantity, total } = useCart();
+  const { items, removeItem, total } = useCart();
   const [mostrarMensaje, setMostrarMensaje] = useState(false);
+  const navigate = useNavigate();
 
   const finalizarCompra = () => {
+    if (!estaAutenticado()) {
+      alert("Debes iniciar sesión para realizar una compra.");
+      navigate("/login");
+      return;
+    }
     setMostrarMensaje(true);
     setTimeout(() => setMostrarMensaje(false), 2000);
   };

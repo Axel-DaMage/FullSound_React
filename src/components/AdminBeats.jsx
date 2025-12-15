@@ -14,7 +14,10 @@ export default function AdminBeats() {
     precio: '',
     imagenUrl: '',
     audioUrl: '',
-    descripcion: ''
+    descripcion: '',
+    emocion: '',
+    imagenFile: null,
+    audioFile: null
   });
 
   useEffect(() => {
@@ -50,7 +53,7 @@ export default function AdminBeats() {
 
   const handleNuevo = () => {
     setBeatEditando(null);
-    setForm({ titulo: '', artista: '', genero: generos[0] || '', precio: '', imagenUrl: '', audioUrl: '', descripcion: '' });
+    setForm({ titulo: '', artista: '', genero: generos[0] || '', precio: '', imagenUrl: '', audioUrl: '', descripcion: '', emocion: '', imagenFile: null, audioFile: null });
     setMostrarForm(true);
   };
 
@@ -63,7 +66,10 @@ export default function AdminBeats() {
       precio: beat.precio || '',
       imagenUrl: beat.imagenUrl || beat.imagen || '',
       audioUrl: beat.audioUrl || beat.audio || '',
-      descripcion: beat.descripcion || ''
+      descripcion: beat.descripcion || '',
+      emocion: beat.emocion || '',
+      imagenFile: null,
+      audioFile: null
     });
     setMostrarForm(true);
   };
@@ -71,12 +77,19 @@ export default function AdminBeats() {
   const handleCancelar = () => {
     setMostrarForm(false);
     setBeatEditando(null);
-    setForm({ titulo: '', artista: '', genero: '', precio: '', imagenUrl: '', audioUrl: '', descripcion: '' });
+    setForm({ titulo: '', artista: '', genero: '', precio: '', imagenUrl: '', audioUrl: '', descripcion: '', emocion: '', imagenFile: null, audioFile: null });
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+    if (files && files[0]) {
+      setForm(prev => ({ ...prev, [name]: files[0] }));
+    }
   };
 
   const handleGuardar = async (e) => {
@@ -88,11 +101,31 @@ export default function AdminBeats() {
     }
 
     try {
+      const formData = new FormData();
+      formData.append('titulo', form.titulo);
+      formData.append('artista', form.artista);
+      formData.append('genero', form.genero);
+      formData.append('precio', form.precio);
+      formData.append('descripcion', form.descripcion || '');
+      formData.append('emocion', form.emocion || '');
+      
+      if (form.imagenFile) {
+        formData.append('imagen', form.imagenFile);
+      } else if (form.imagenUrl) {
+        formData.append('imagenUrl', form.imagenUrl);
+      }
+      
+      if (form.audioFile) {
+        formData.append('audio', form.audioFile);
+      } else if (form.audioUrl) {
+        formData.append('audioUrl', form.audioUrl);
+      }
+
       if (beatEditando) {
-        await actualizarBeat(beatEditando.id, form);
+        await actualizarBeat(beatEditando.id, formData);
         alert('Beat actualizado exitosamente');
       } else {
-        await crearBeat(form);
+        await crearBeat(formData);
         alert('Beat creado exitosamente');
       }
       
@@ -169,14 +202,36 @@ export default function AdminBeats() {
                 </div>
                 <div className="col-md-4">
                   <div className="form-group">
-                    <label>URL Imagen (Supabase)</label>
-                    <input type="text" className="form-control" name="imagenUrl" value={form.imagenUrl} onChange={handleChange} placeholder="ruta/imagen.jpg" />
+                    <label>Emoción del Audio</label>
+                    <select className="form-control" name="emocion" value={form.emocion} onChange={handleChange}>
+                      <option value="">Seleccionar...</option>
+                      <option value="Feliz">Feliz</option>
+                      <option value="Triste">Triste</option>
+                      <option value="Energético">Energético</option>
+                      <option value="Relajado">Relajado</option>
+                      <option value="Romántico">Romántico</option>
+                      <option value="Agresivo">Agresivo</option>
+                      <option value="Melancólico">Melancólico</option>
+                      <option value="Motivacional">Motivacional</option>
+                    </select>
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
-                    <label>URL Audio (Supabase)</label>
-                    <input type="text" className="form-control" name="audioUrl" value={form.audioUrl} onChange={handleChange} placeholder="ruta/audio.mp3" />
+                    <label>Imagen del Producto</label>
+                    <input type="file" className="form-control" name="imagenFile" onChange={handleFileChange} accept="image/*" />
+                    <small className="form-text text-muted">O ingresa URL: </small>
+                    <input type="text" className="form-control mt-1" name="imagenUrl" value={form.imagenUrl} onChange={handleChange} placeholder="https://ejemplo.com/imagen.jpg" />
+                    {form.imagenFile && <small className="text-success d-block mt-1">Archivo seleccionado: {form.imagenFile.name}</small>}
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div className="form-group">
+                    <label>Archivo de Audio</label>
+                    <input type="file" className="form-control" name="audioFile" onChange={handleFileChange} accept="audio/*" />
+                    <small className="form-text text-muted">O ingresa URL: </small>
+                    <input type="text" className="form-control mt-1" name="audioUrl" value={form.audioUrl} onChange={handleChange} placeholder="https://ejemplo.com/audio.mp3" />
+                    {form.audioFile && <small className="text-success d-block mt-1">Archivo seleccionado: {form.audioFile.name}</small>}
                   </div>
                 </div>
                 <div className="col-md-12">
@@ -204,6 +259,7 @@ export default function AdminBeats() {
                 <th>Título</th>
                 <th>Artista</th>
                 <th>Género</th>
+                <th>Emoción</th>
                 <th>Precio</th>
                 <th>Acciones</th>
               </tr>
@@ -211,13 +267,13 @@ export default function AdminBeats() {
             <tbody>
               {cargando ? (
                 <tr>
-                  <td colSpan="6" className="text-center text-muted">
+                  <td colSpan="7" className="text-center text-muted">
                     <i className="fa fa-spinner fa-spin mr-2"></i>Cargando beats...
                   </td>
                 </tr>
               ) : beats.length === 0 ? (
                 <tr>
-                  <td colSpan="6" className="text-center text-muted">No hay beats disponibles</td>
+                  <td colSpan="7" className="text-center text-muted">No hay beats disponibles</td>
                 </tr>
               ) : (
                 beats.map((beat) => (
@@ -226,6 +282,7 @@ export default function AdminBeats() {
                     <td>{beat.titulo}</td>
                     <td>{beat.artista}</td>
                     <td>{beat.genero}</td>
+                    <td>{beat.emocion || '-'}</td>
                     <td>{formatearPrecio(beat.precio)}</td>
                     <td>
                       <button className="btn btn-sm btn-primary mr-2" onClick={() => handleEditar(beat)} title="Editar">

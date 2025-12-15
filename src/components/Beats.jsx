@@ -3,11 +3,14 @@ import Layout from "./Layout";
 import React, { useState, useEffect } from "react";
 import { useCart } from "../utils/cartUtils";
 import { obtenerBeats } from "../services/beatsService";
+import WaveformPlayer from "./WaveformPlayer";
 
 export default function Beats() {
   const [categoria, setCategoria] = useState("Todos");
+  const [emocionFiltro, setEmocionFiltro] = useState("Todas");
   const [beats, setBeats] = useState([]);
   const [generos, setGeneros] = useState([]);
+  const [emociones, setEmociones] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { addItem, items: cartItems } = useCart();
@@ -21,6 +24,8 @@ export default function Beats() {
         setBeats(data);
         // Extrae géneros únicos
         setGeneros(Array.from(new Set(data.map(b => b.genero).filter(Boolean))));
+        // Extrae emociones únicas
+        setEmociones(Array.from(new Set(data.map(b => b.emocion).filter(Boolean))));
       } catch (err) {
         console.error('[ERROR] No se pudieron cargar los beats:', err);
         setError('No se pudo conectar con el servidor. Por favor, verifica que el backend esté ejecutándose.');
@@ -31,9 +36,9 @@ export default function Beats() {
     cargarBeats();
   }, []);
 
-  const beatsFiltrados = categoria === "Todos"
-    ? beats
-    : beats.filter(beat => beat.genero === categoria);
+  const beatsFiltrados = beats
+    .filter(beat => categoria === "Todos" || beat.genero === categoria)
+    .filter(beat => emocionFiltro === "Todas" || beat.emocion === emocionFiltro);
 
   return (
     <Layout activeItem="beats">
@@ -68,7 +73,7 @@ export default function Beats() {
 
           {!loading && !error && beats.length > 0 && (
             <>
-              <div className="mb-4 d-flex justify-content-center">
+              <div className="mb-4 d-flex justify-content-center gap-3 flex-wrap">
                 <select
                   className="site-btn"
                   value={categoria}
@@ -78,6 +83,17 @@ export default function Beats() {
                   <option value="Todos">Todos los géneros</option>
                   {generos.map((gen) => (
                     <option key={gen} value={gen}>{gen}</option>
+                  ))}
+                </select>
+                <select
+                  className="site-btn"
+                  value={emocionFiltro}
+                  onChange={e => setEmocionFiltro(e.target.value)}
+                  style={{ minWidth: 220, padding: '16px 20px', fontSize: 16, border: 'none', borderRadius: 50, cursor: 'pointer', textTransform: 'uppercase', fontWeight: 600, textAlign: 'center' }}
+                >
+                  <option value="Todas">Todas las emociones</option>
+                  {emociones.map((emo) => (
+                    <option key={emo} value={emo}>{emo}</option>
                   ))}
                 </select>
               </div>
@@ -93,13 +109,17 @@ export default function Beats() {
                         <div className="card-info">
                           <p className="card-text mb-1"><strong>Artista:</strong> {beat.artista}</p>
                           <p className="card-text mb-1"><strong>Género:</strong> {beat.genero}</p>
+                          {beat.emocion && <p className="card-text mb-1"><strong>Emoción:</strong> {beat.emocion}</p>}
                           <p className="card-text mb-2"><strong>Precio:</strong> ${Number(beat.precioNumerico || beat.precio).toLocaleString('es-CL')}</p>
                         </div>
                         <div className="card-audio">
                           {beat.fuente || beat.audio ? (
-                            <audio controls className="w-100 mb-2">
-                              <source src={beat.fuente || beat.audio} type="audio/mpeg" />
-                            </audio>
+                            <WaveformPlayer 
+                              audioUrl={beat.fuente || beat.audio}
+                              height={60}
+                              waveColor="#00bcd4"
+                              progressColor="#0097a7"
+                            />
                           ) : null}
                         </div>
                         <div className="card-button d-grid gap-2">

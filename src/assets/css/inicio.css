@@ -105,6 +105,10 @@
 	margin-bottom: 40px;
 }
 
+.subscription-form {
+	text-align: center;
+}
+
 .subscription-form input[type="email"] {
 	width: 100%;
 	padding: 15px 20px;

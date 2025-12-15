@@ -123,7 +123,7 @@ export const datosSlides = [
     prefijoTitulo: "Escucha",
     sufijoTitulo: "Lo nuevo",
     texto: "Descubre beats exclusivos y productores emergentes.",
-    imagen: getImageUrl('16.jpg'),
+    imagen: getImageUrl('1.jpg'),
     alt: "Slide 1",
   },
   {
@@ -131,7 +131,7 @@ export const datosSlides = [
     prefijoTitulo: "Explora",
     sufijoTitulo: "Nuestro catálogo",
     texto: "Beats de todos los géneros listos para tu próximo proyecto.",
-    imagen: getImageUrl('10.jpg'),
+    imagen: getImageUrl('2.jpg'),
     alt: "Slide 2",
   },
   {
@@ -139,7 +139,7 @@ export const datosSlides = [
     prefijoTitulo: "Conecta",
     sufijoTitulo: "Con artistas",
     texto: "Comparte, colabora y crea música desde cualquier lugar.",
-    imagen: getImageUrl('11.jpg'),
+    imagen: getImageUrl('3.jpg'),
     alt: "Slide 3",
   },
 ];
