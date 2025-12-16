@@ -1,5 +1,10 @@
+// Importar imágenes locales para el carrusel
+import img1 from '../assets/img/1.jpg';
+import img2 from '../assets/img/2.jpg';
+import img3 from '../assets/img/3.jpg';
+
 const SUPABASE_PROJECT_URL = import.meta.env.VITE_SUPABASE_PROJECT_URL || 'https://kivpcepyhfpqjfoycwel.supabase.co';
-const IMAGES_BUCKET = import.meta.env.VITE_SUPABASE_BUCKET_IMAGES || 'imagenes';
+const IMAGES_BUCKET = import.meta.env.VITE_SUPABASE_BUCKET_IMAGES || 'Imagenes';
 const AUDIO_BUCKET = import.meta.env.VITE_SUPABASE_BUCKET_AUDIO || 'audios';
 
 const getImageUrl = (filename) => `${SUPABASE_PROJECT_URL}/storage/v1/object/public/${IMAGES_BUCKET}/${filename}`;
@@ -123,7 +128,7 @@ export const datosSlides = [
     prefijoTitulo: "Escucha",
     sufijoTitulo: "Lo nuevo",
     texto: "Descubre beats exclusivos y productores emergentes.",
-    imagen: getImageUrl('1.jpg'),
+    imagen: img1,
     alt: "Slide 1",
   },
   {
@@ -131,7 +136,7 @@ export const datosSlides = [
     prefijoTitulo: "Explora",
     sufijoTitulo: "Nuestro catálogo",
     texto: "Beats de todos los géneros listos para tu próximo proyecto.",
-    imagen: getImageUrl('2.jpg'),
+    imagen: img2,
     alt: "Slide 2",
   },
   {
@@ -139,7 +144,7 @@ export const datosSlides = [
     prefijoTitulo: "Conecta",
     sufijoTitulo: "Con artistas",
     texto: "Comparte, colabora y crea música desde cualquier lugar.",
-    imagen: getImageUrl('3.jpg'),
+    imagen: img3,
     alt: "Slide 3",
   },
 ];
