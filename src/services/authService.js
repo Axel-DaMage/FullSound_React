@@ -54,9 +54,10 @@ export const login = async (credentials) => {
  * @returns {Promise<Object>} Usuario creado
  */
 export const registrar = async (userData) => {
-  // El backend espera: { nombreUsuario, correo, contraseña, rol (opcional), nombre, apellido }
+  // El backend espera: { nombreUsuario, correo, contraseña, rol (opcional), nombre, apellido, rut }
   const registerData = {
     nombreUsuario: userData.nombreUsuario || userData.nombre || userData.correo?.split('@')[0],
+    rut: userData.rut,
     correo: userData.correo || userData.email,
     contraseña: userData.contraseña || userData.password,
     rol: userData.rol, // Rol opcional para especificar tipo de usuario

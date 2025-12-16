@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import Layout from "./Layout";
 import { 
   validarFormularioRegistro,
-  esCorreoAdmin 
+  esCorreoAdmin,
+  formatearRut
 } from "../utils/authValidation";
 import { registrar, login } from "../services/authService";
 import { guardarUsuario } from "../utils/rolesPermisos";
@@ -12,6 +13,7 @@ export default function Registro() {
   const navigate = useNavigate();
   const [form, setForm] = useState({
     nombre: "",
+    rut: "",
     correo: "",
     password: "",
     confirmPassword: "",
@@ -21,7 +23,13 @@ export default function Registro() {
 
   const onChange = (e) => {
     const { id, value, checked, type } = e.target;
-    setForm((f) => ({ ...f, [id]: type === "checkbox" ? checked : value }));
+    
+    // Formatear RUT automáticamente mientras se escribe
+    if (id === 'rut' && type !== 'checkbox') {
+      setForm((f) => ({ ...f, [id]: formatearRut(value) }));
+    } else {
+      setForm((f) => ({ ...f, [id]: type === "checkbox" ? checked : value }));
+    }
   };
 
   const onSubmit = async (e) => {
@@ -51,6 +59,7 @@ export default function Registro() {
       // Llamar al servicio de registro del backend
       const userData = {
         nombreUsuario: form.nombre,
+        rut: form.rut,
         correo: form.correo,
         contraseña: form.password,
         rol: rolAsignado
@@ -127,6 +136,22 @@ export default function Registro() {
                         onChange={onChange}
                         required
                       />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="rut">RUT</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="rut"
+                        placeholder="12.345.678-9"
+                        value={form.rut}
+                        onChange={onChange}
+                        maxLength="12"
+                        required
+                      />
+                      <small className="form-text text-muted">
+                        Formato: XX.XXX.XXX-X
+                      </small>
                     </div>
                     <div className="form-group">
                       <label htmlFor="correo">Correo electrónico</label>

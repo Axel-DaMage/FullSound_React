@@ -86,6 +86,104 @@ export const validarNombre = (nombre) => {
 };
 
 /**
+ * Formatea un RUT chileno al formato XX.XXX.XXX-X
+ * @param {string} rut - RUT sin formato
+ * @returns {string} RUT formateado
+ */
+export const formatearRut = (rut) => {
+  if (!rut) return '';
+  
+  // Remover todo excepto números y K/k
+  let valor = rut.replace(/[^0-9kK]/g, '');
+  
+  // Limitar a 9 caracteres (8 números + 1 dígito verificador)
+  if (valor.length > 9) {
+    valor = valor.slice(0, 9);
+  }
+  
+  // Si solo hay un carácter o menos, devolverlo sin formatear
+  if (valor.length <= 1) {
+    return valor;
+  }
+  
+  // Separar dígito verificador si hay suficientes caracteres
+  let resultado = '';
+  
+  if (valor.length > 1) {
+    const dv = valor.slice(-1).toUpperCase();
+    let numero = valor.slice(0, -1);
+    
+    // Formatear con puntos (de derecha a izquierda cada 3 dígitos)
+    numero = numero.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    
+    // Agregar guión solo si tenemos al menos 2 caracteres
+    resultado = numero.length > 0 ? `${numero}-${dv}` : dv;
+  } else {
+    resultado = valor;
+  }
+  
+  return resultado;
+};
+
+/**
+ * Valida un RUT chileno
+ * @param {string} rut - RUT a validar
+ * @returns {Object} { isValid: boolean, error: string }
+ */
+export const validarRut = (rut) => {
+  if (!rut || rut.trim().length === 0) {
+    return {
+      isValid: false,
+      error: 'El RUT es requerido.'
+    };
+  }
+
+  // Limpiar RUT (remover puntos, guiones, espacios)
+  const rutLimpio = rut.replace(/[.\-\s]/g, '');
+  
+  // Validar formato básico (mínimo 8 caracteres: 7 números + 1 verificador)
+  if (rutLimpio.length < 8) {
+    return {
+      isValid: false,
+      error: 'El RUT debe tener al menos 8 caracteres.'
+    };
+  }
+
+  // Validar que tenga el formato correcto (números y último puede ser K)
+  if (!/^[0-9]+[0-9kK]$/.test(rutLimpio)) {
+    return {
+      isValid: false,
+      error: 'El formato del RUT es inválido.'
+    };
+  }
+
+  // Separar número y dígito verificador
+  const numero = rutLimpio.slice(0, -1);
+  const dvIngresado = rutLimpio.slice(-1).toUpperCase();
+
+  // Calcular dígito verificador
+  let suma = 0;
+  let multiplicador = 2;
+
+  for (let i = numero.length - 1; i >= 0; i--) {
+    suma += parseInt(numero.charAt(i)) * multiplicador;
+    multiplicador = multiplicador === 7 ? 2 : multiplicador + 1;
+  }
+
+  const resto = suma % 11;
+  const dvCalculado = resto === 0 ? '0' : resto === 1 ? 'K' : String(11 - resto);
+
+  if (dvIngresado !== dvCalculado) {
+    return {
+      isValid: false,
+      error: 'El RUT ingresado no es válido.'
+    };
+  }
+
+  return { isValid: true, error: null };
+};
+
+/**
  * Valida que las contraseñas coincidan
  * @param {string} password - Contraseña
  * @param {string} confirmPassword - Confirmación de contraseña
@@ -138,6 +236,13 @@ export const validarFormularioRegistro = (formData) => {
   const nombreValidacion = validarNombre(formData.nombre);
   if (!nombreValidacion.isValid) {
     errors.nombre = nombreValidacion.error;
+    isValid = false;
+  }
+
+  // Validar RUT
+  const rutValidacion = validarRut(formData.rut);
+  if (!rutValidacion.isValid) {
+    errors.rut = rutValidacion.error;
     isValid = false;
   }
 

@@ -16,6 +16,7 @@ function transformBeatFromBackend(backendBeat) {
     titulo: backendBeat.titulo,
     artista: backendBeat.artista,
     genero: backendBeat.genero,
+    emocion: backendBeat.emocion,
     precio: backendBeat.precio, // El backend devuelve precio como Integer (centavos o valor directo)
     precioNumerico: backendBeat.precio,
     descripcion: backendBeat.descripcion,
@@ -44,6 +45,7 @@ function transformBeatToBackend(frontendBeat) {
     titulo: frontendBeat.titulo,
     artista: frontendBeat.artista,
     genero: frontendBeat.genero,
+    emocion: frontendBeat.emocion,
     precio: frontendBeat.precioNumerico || frontendBeat.precio,
     descripcion: frontendBeat.descripcion,
     imagenUrl: frontendBeat.imagenUrl || frontendBeat.imagen,
