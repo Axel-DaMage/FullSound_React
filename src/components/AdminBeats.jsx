@@ -100,32 +100,39 @@ export default function AdminBeats() {
       return;
     }
 
+    // Validar que el precio sea un número mayor a 0
+    const precioNumero = parseInt(form.precio, 10);
+    if (isNaN(precioNumero) || precioNumero < 1) {
+      alert('El precio debe ser un número entero mayor a 0');
+      return;
+    }
+
     try {
-      const formData = new FormData();
-      formData.append('titulo', form.titulo);
-      formData.append('artista', form.artista);
-      formData.append('genero', form.genero);
-      formData.append('precio', form.precio);
-      formData.append('descripcion', form.descripcion || '');
-      formData.append('emocion', form.emocion || '');
-      
-      if (form.imagenFile) {
-        formData.append('imagen', form.imagenFile);
-      } else if (form.imagenUrl) {
-        formData.append('imagenUrl', form.imagenUrl);
-      }
-      
-      if (form.audioFile) {
-        formData.append('audio', form.audioFile);
-      } else if (form.audioUrl) {
-        formData.append('audioUrl', form.audioUrl);
+      // Preparar datos en formato JSON (el backend espera JSON, no FormData)
+      const beatData = {
+        titulo: form.titulo.trim(),
+        artista: form.artista.trim(),
+        genero: form.genero,
+        precio: precioNumero, // Enviar como número entero
+        descripcion: form.descripcion?.trim() || '',
+        emocion: form.emocion || '',
+        imagenUrl: form.imagenUrl?.trim() || '',
+        audioUrl: form.audioUrl?.trim() || '',
+        estado: 'DISPONIBLE'
+      };
+
+      // Nota: Si necesitas subir archivos, deberás implementar un endpoint separado
+      // para upload de archivos o usar Supabase Storage directamente
+      if (form.imagenFile || form.audioFile) {
+        alert('La carga de archivos se realizará mediante URLs. Por favor, sube los archivos a Supabase y pega las URLs.');
+        return;
       }
 
       if (beatEditando) {
-        await actualizarBeat(beatEditando.id, formData);
+        await actualizarBeat(beatEditando.id, beatData);
         alert('Beat actualizado exitosamente');
       } else {
-        await crearBeat(formData);
+        await crearBeat(beatData);
         alert('Beat creado exitosamente');
       }
       
@@ -133,7 +140,8 @@ export default function AdminBeats() {
       await cargarBeats();
     } catch (error) {
       console.error('Error al guardar beat:', error);
-      alert('Error al guardar el beat: ' + (error.response?.data?.message || error.message));
+      const errorMsg = error.response?.data?.message || error.response?.data?.error || error.message;
+      alert('Error al guardar el beat: ' + errorMsg);
     }
   };
 
