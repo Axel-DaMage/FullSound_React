@@ -3,20 +3,75 @@ import Layout from "./Layout";
 import { useCart } from "../utils/cartUtils";
 import { useNavigate } from "react-router-dom";
 import { estaAutenticado } from "../services/authService";
+import { descargarLicencia, descargarMP3, vaciarCarrito } from "../services/carritoService";
+import { marcarBeatComoVendido } from "../services/beatsService";
 
 export default function Carrito() {
   const { items, removeItem, total } = useCart();
   const [mostrarMensaje, setMostrarMensaje] = useState(false);
+  const [procesando, setProcesando] = useState(false);
   const navigate = useNavigate();
 
-  const finalizarCompra = () => {
+  const finalizarCompra = async () => {
     if (!estaAutenticado()) {
       alert("Debes iniciar sesión para realizar una compra.");
       navigate("/login");
       return;
     }
-    setMostrarMensaje(true);
-    setTimeout(() => setMostrarMensaje(false), 2000);
+
+    if (items.length === 0) {
+      alert("No hay productos en el carrito.");
+      return;
+    }
+
+    setProcesando(true);
+
+    try {
+      // Procesar cada beat comprado
+      for (const item of items) {
+        try {
+          // 1. Marcar el beat como vendido
+          await marcarBeatComoVendido(item.beatId || item.id);
+          
+          // 2. Descargar la licencia TXT
+          descargarLicencia({
+            titulo: item.titulo,
+            artista: item.artista || 'Artista Desconocido'
+          });
+          
+          // 3. Pequeña pausa para evitar bloqueo del navegador
+          await new Promise(resolve => setTimeout(resolve, 500));
+          
+          // 4. Descargar el archivo MP3
+          await descargarMP3({
+            titulo: item.titulo,
+            audioUrl: item.audioUrl || item.audio || item.fuente
+          });
+          
+          console.log(`✓ Beat "${item.titulo}" procesado correctamente`);
+        } catch (error) {
+          console.error(`Error procesando el beat "${item.titulo}":`, error);
+          // Continuar con los demás beats aunque uno falle
+        }
+      }
+
+      // Vaciar el carrito
+      await vaciarCarrito();
+      
+      // Mostrar mensaje de éxito
+      setMostrarMensaje(true);
+      setTimeout(() => {
+        setMostrarMensaje(false);
+        // Recargar la página para actualizar el carrito
+        window.location.reload();
+      }, 3000);
+      
+    } catch (error) {
+      console.error('Error durante el proceso de compra:', error);
+      alert('Hubo un error al procesar la compra. Por favor, intenta nuevamente.');
+    } finally {
+      setProcesando(false);
+    }
   };
 
   return (
@@ -74,11 +129,20 @@ export default function Carrito() {
                   Total: <span className="float-right">${ total.toLocaleString('es-CL') }</span>
                 </h5>
                 <div className="d-flex justify-content-center mt-4">
-                  <button className="site-btn" onClick={finalizarCompra}>Finalizar compra</button>
+                  <button 
+                    className="site-btn" 
+                    onClick={finalizarCompra}
+                    disabled={procesando}
+                  >
+                    {procesando ? 'Procesando...' : 'Finalizar compra'}
+                  </button>
                 </div>
                 {mostrarMensaje && (
                   <div className="text-center mt-3">
                     <h4 style={{color: '#00bcd4'}}>¡Compra finalizada!</h4>
+                    <p style={{color: '#fff', fontSize: '14px'}}>
+                      Tus archivos se están descargando...
+                    </p>
                   </div>
                 )}
               </div>

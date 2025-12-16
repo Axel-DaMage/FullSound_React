@@ -178,3 +178,66 @@ export const procesarCheckout = async (datosCompra) => {
     return { data: orden, source: 'local' };
   }
 };
+
+/**
+ * Genera y descarga un archivo TXT de licencia para un beat
+ * @param {Object} beat - Datos del beat comprado
+ * @param {string} beat.titulo - Título del beat
+ * @param {string} beat.artista - Artista del beat
+ */
+export const descargarLicencia = (beat) => {
+  const contenidoLicencia = `Licencia de beat ${beat.titulo} valido de forma permanente firmado por _fullsound_ y ${beat.artista}`;
+  
+  const blob = new Blob([contenidoLicencia], { type: 'text/plain;charset=utf-8' });
+  const url = window.URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `Licencia_${beat.titulo.replace(/\s+/g, '_')}.txt`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  window.URL.revokeObjectURL(url);
+  
+  console.log(`[DOWNLOAD] Licencia del beat "${beat.titulo}" descargada`);
+};
+
+/**
+ * Descarga el archivo MP3 de un beat
+ * @param {Object} beat - Datos del beat comprado
+ * @param {string} beat.titulo - Título del beat
+ * @param {string} beat.audioUrl - URL del archivo de audio
+ */
+export const descargarMP3 = async (beat) => {
+  try {
+    const audioUrl = beat.audioUrl || beat.audio || beat.fuente;
+    
+    if (!audioUrl) {
+      console.error('[ERROR] No se encontró URL de audio para el beat');
+      return;
+    }
+
+    // Hacer fetch del archivo
+    const response = await fetch(audioUrl);
+    const blob = await response.blob();
+    
+    // Crear enlace de descarga
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${beat.titulo.replace(/\s+/g, '_')}.mp3`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+    
+    console.log(`[DOWNLOAD] MP3 del beat "${beat.titulo}" descargado`);
+  } catch (error) {
+    console.error('[ERROR] Error al descargar el MP3:', error);
+    // Fallback: abrir en nueva pestaña
+    const audioUrl = beat.audioUrl || beat.audio || beat.fuente;
+    if (audioUrl) {
+      window.open(audioUrl, '_blank');
+    }
+  }
+};
+

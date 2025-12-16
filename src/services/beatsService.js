@@ -149,3 +149,20 @@ export const obtenerGeneros = async () => {
   const generosUnicos = [...new Set(response.data.map(b => b.genero).filter(Boolean))];
   return { data: generosUnicos, source: 'api' };
 };
+
+/**
+ * Actualiza el estado de un beat a VENDIDO
+ * @param {number|string} id - ID del beat
+ * @returns {Promise<Object>} Beat actualizado
+ */
+export const marcarBeatComoVendido = async (id) => {
+  try {
+    const response = await api.put(`/beats/${id}`, { estado: 'VENDIDO' });
+    console.log(`[API] Beat ${id} marcado como VENDIDO`);
+    const beatTransformado = transformBeatFromBackend(response.data);
+    return { data: beatTransformado, source: 'api' };
+  } catch (error) {
+    console.error(`[ERROR] No se pudo actualizar el estado del beat ${id}:`, error);
+    throw error;
+  }
+};
