@@ -32,6 +32,13 @@ jobs:
         run: npm ci
 
       - name: Build frontend
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          VITE_ACTIVE_BACKEND: ${{ secrets.VITE_ACTIVE_BACKEND }}
+          VITE_SUPABASE_PROJECT_URL: ${{ secrets.VITE_SUPABASE_PROJECT_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          VITE_SUPABASE_BUCKET_IMAGES: ${{ secrets.VITE_SUPABASE_BUCKET_IMAGES }}
+          VITE_SUPABASE_BUCKET_AUDIO: ${{ secrets.VITE_SUPABASE_BUCKET_AUDIO }}
         run: npm run build
 
       - name: Create build archive
