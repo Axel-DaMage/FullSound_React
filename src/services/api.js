@@ -6,9 +6,10 @@
 import axios from 'axios';
 
 // URL base del backend - ajustar según el entorno
+// En desarrollo, usar la URL configurada en .env (AWS EC2)
 // En producción, el frontend se sirve desde el mismo backend, usar ruta relativa
 const BASE_URL = import.meta.env.DEV 
-  ? (import.meta.env.VITE_API_URL || 'http://localhost:8080/api')
+  ? (import.meta.env.VITE_API_URL || 'http://54.147.197.23:8080/api')
   : '/api'; // Ruta relativa en producción (frontend servido por Spring Boot)
 
 // Instancia de axios configurada

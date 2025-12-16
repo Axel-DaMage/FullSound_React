@@ -24,9 +24,18 @@ const BACKEND_URLS = {
 
 // Backend activo (configurado por variable de entorno o automático)
 const getActiveBackend = () => {
-  // En desarrollo, siempre usar backend local
+  // Verificar si hay una configuración explícita
+  const configuredBackend = import.meta.env.VITE_ACTIVE_BACKEND;
+  
+  // Si está configurado para usar AWS, usar URL de AWS
+  if (configuredBackend === 'aws' && import.meta.env.VITE_API_URL) {
+    console.log('[ENV] Usando backend AWS configurado:', import.meta.env.VITE_API_URL);
+    return 'aws';
+  }
+  
+  // En desarrollo, usar backend local por defecto
   if (isDevelopment) {
-    console.log('[ENV] Modo desarrollo: Usando backend local');
+    console.log('[ENV] Modo desarrollo: Usando backend configurado');
     return BACKENDS.LOCAL;
   }
 
@@ -39,6 +48,10 @@ const activeBackend = getActiveBackend();
 
 // Obtener la URL del backend activo
 export const getBackendUrl = () => {
+  // Si está configurado para AWS, usar la URL de AWS
+  if (activeBackend === 'aws' && import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL;
+  }
   return BACKEND_URLS[activeBackend];
 };
 
