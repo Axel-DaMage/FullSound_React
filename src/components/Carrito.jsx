@@ -40,29 +40,35 @@ export default function Carrito() {
           console.log('Beat completo obtenido:', beatCompleto);
           
           // 2. Marcar el beat como vendido
+          console.log(`Marcando beat ${beatId} como vendido...`);
           await marcarBeatComoVendido(beatId);
           console.log(`✓ Beat "${beatCompleto.titulo}" marcado como VENDIDO`);
           
           // 3. Descargar la licencia TXT
+          console.log(`Generando licencia para "${beatCompleto.titulo}"...`);
           descargarLicencia({
             titulo: beatCompleto.titulo,
-            artista: beatCompleto.artista || 'Artista Desconocido'
+            artista: beatCompleto.artista || 'FullSound Productions'
           });
           console.log(`✓ Licencia de "${beatCompleto.titulo}" generada`);
           
           // 4. Pequeña pausa para evitar bloqueo del navegador
-          await new Promise(resolve => setTimeout(resolve, 800));
+          await new Promise(resolve => setTimeout(resolve, 1000));
           
           // 5. Descargar el archivo MP3
+          console.log(`Descargando MP3 de "${beatCompleto.titulo}"...`);
           await descargarMP3({
             titulo: beatCompleto.titulo,
             audioUrl: beatCompleto.audioUrl || beatCompleto.audio || beatCompleto.fuente
           });
           console.log(`✓ MP3 de "${beatCompleto.titulo}" descargado`);
           
+          // Pausa adicional entre beats
+          await new Promise(resolve => setTimeout(resolve, 500));
+          
         } catch (error) {
-          console.error(`Error procesando el beat "${item.titulo}":`, error);
-          alert(`Error al procesar "${item.titulo}": ${error.message}`);
+          console.error(`❌ Error procesando el beat "${item.titulo}":`, error);
+          console.error('Detalles del error:', error.response?.data || error.message);
           // Continuar con los demás beats aunque uno falle
         }
       }

@@ -22,11 +22,24 @@ export default function Header({ activeItem = "" }) {
   const actualizarUsuario = () => {
     if (estaAutenticado()) {
       const usuarioActual = obtenerUsuarioActual();
-      console.log('[HEADER] Usuario actualizado:', usuarioActual);
-      setUsuario(usuarioActual);
+      // Solo actualizar si el usuario cambió realmente
+      setUsuario(prevUsuario => {
+        const usuarioString = JSON.stringify(usuarioActual);
+        const prevUsuarioString = JSON.stringify(prevUsuario);
+        if (usuarioString !== prevUsuarioString) {
+          console.log('[HEADER] Usuario actualizado:', usuarioActual);
+          return usuarioActual;
+        }
+        return prevUsuario;
+      });
     } else {
-      console.log('[HEADER] No hay usuario autenticado');
-      setUsuario(null);
+      setUsuario(prevUsuario => {
+        if (prevUsuario !== null) {
+          console.log('[HEADER] Usuario cerrado sesión');
+          return null;
+        }
+        return prevUsuario;
+      });
     }
   };
 
@@ -34,15 +47,15 @@ export default function Header({ activeItem = "" }) {
     // Verificar usuario al cargar
     actualizarUsuario();
 
-    // Escuchar cambios en localStorage (para actualizar cuando se inicie/cierre sesión)
+    // Escuchar cambios en localStorage (para actualizar cuando se inicie/cierre sesión en otras pestañas)
     window.addEventListener('storage', actualizarUsuario);
     
-    // También verificar periódicamente (para cambios en la misma pestaña)
-    const interval = setInterval(actualizarUsuario, 1000);
+    // Crear un evento personalizado para cambios en la misma pestaña
+    window.addEventListener('usuarioActualizado', actualizarUsuario);
 
     return () => {
       window.removeEventListener('storage', actualizarUsuario);
-      clearInterval(interval);
+      window.removeEventListener('usuarioActualizado', actualizarUsuario);
     };
   }, []);
 

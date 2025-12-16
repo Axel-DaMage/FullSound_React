@@ -157,7 +157,17 @@ export const obtenerGeneros = async () => {
  */
 export const marcarBeatComoVendido = async (id) => {
   try {
-    const response = await api.put(`/beats/${id}`, { estado: 'VENDIDO' });
+    // Primero obtener el beat completo
+    const beatActual = await api.get(`/beats/${id}`);
+    console.log(`[API] Beat ${id} obtenido:`, beatActual.data);
+    
+    // Actualizar solo el estado, pero enviar el objeto completo
+    const beatActualizado = {
+      ...beatActual.data,
+      estado: 'VENDIDO'
+    };
+    
+    const response = await api.put(`/beats/${id}`, beatActualizado);
     console.log(`[API] Beat ${id} marcado como VENDIDO`);
     const beatTransformado = transformBeatFromBackend(response.data);
     return { data: beatTransformado, source: 'api' };

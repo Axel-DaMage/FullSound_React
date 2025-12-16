@@ -186,7 +186,44 @@ export const procesarCheckout = async (datosCompra) => {
  * @param {string} beat.artista - Artista del beat
  */
 export const descargarLicencia = (beat) => {
-  const contenidoLicencia = `Licencia de beat ${beat.titulo} valido de forma permanente firmado por _fullsound_ y ${beat.artista}`;
+  const fecha = new Date().toLocaleDateString('es-CL');
+  const contenidoLicencia = `
+═══════════════════════════════════════════════════
+         LICENCIA DE USO - FULLSOUND BEATS
+═══════════════════════════════════════════════════
+
+Título del Beat: ${beat.titulo}
+Artista/Productor: ${beat.artista || 'FullSound Productions'}
+Fecha de Compra: ${fecha}
+
+---------------------------------------------------
+                 TÉRMINOS DE LICENCIA
+---------------------------------------------------
+
+Esta licencia otorga al comprador los siguientes derechos:
+
+✓ Uso ilimitado del beat para proyectos musicales
+✓ Distribución en plataformas digitales (Spotify, YouTube, etc.)
+✓ Monetización de contenido que utilice este beat
+✓ Uso comercial autorizado
+✓ Válido de forma permanente
+
+RESTRICCIONES:
+✗ No se permite revender el beat como instrumento
+✗ No se permite reclamar autoría de la producción
+
+CRÉDITOS REQUERIDOS:
+Prod. by ${beat.artista || 'FullSound'}
+
+---------------------------------------------------
+
+Licencia emitida por FullSound.com
+Todos los derechos reservados © ${new Date().getFullYear()}
+
+Para consultas: contact@fullsound.com
+
+═══════════════════════════════════════════════════
+`;
   
   const blob = new Blob([contenidoLicencia], { type: 'text/plain;charset=utf-8' });
   const url = window.URL.createObjectURL(blob);

@@ -147,6 +147,8 @@ export const guardarUsuario = (usuario) => {
 export const limpiarUsuario = () => {
   localStorage.removeItem('user');
   localStorage.removeItem('token');
+  // Notificar el cambio
+  window.dispatchEvent(new CustomEvent('usuarioActualizado'));
 };
 
 /**

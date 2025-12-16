@@ -6,6 +6,13 @@
 import api from './api';
 
 /**
+ * Dispara un evento personalizado para notificar cambios en el usuario
+ */
+const notificarCambioUsuario = () => {
+  window.dispatchEvent(new CustomEvent('usuarioActualizado'));
+};
+
+/**
  * Inicia sesión de usuario
  * @param {Object} credentials - Credenciales de usuario
  * @param {string} credentials.nombreUsuario - Nombre de usuario o correo
@@ -38,6 +45,7 @@ export const login = async (credentials) => {
     
     console.log('[API] Usuario autenticado:', { ...user, contraseña: '[OCULTA]' });
     localStorage.setItem('user', JSON.stringify(user));
+    notificarCambioUsuario();
     
     return { data: { user, token: response.data.token }, source: 'api' };
   }
@@ -82,6 +90,7 @@ export const logout = async () => {
   // Limpiar datos locales
   localStorage.removeItem('token');
   localStorage.removeItem('user');
+  notificarCambioUsuario();
   console.log('[API] Sesión cerrada');
 };
 
