@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { obtenerBeats, crearBeat, actualizarBeat, eliminarBeat, obtenerGeneros } from '../services/beatsService';
+import { uploadImage, uploadAudio, isValidImageFile, isValidAudioFile, isValidFileSize } from '../services/supabaseUpload';
 
 export default function AdminBeats() {
   const [beats, setBeats] = useState([]);
@@ -88,7 +89,34 @@ export default function AdminBeats() {
   const handleFileChange = (e) => {
     const { name, files } = e.target;
     if (files && files[0]) {
-      setForm(prev => ({ ...prev, [name]: files[0] }));
+      const file = files[0];
+      
+      // Validar tipo y tamaño
+      if (name === 'imagenFile') {
+        if (!isValidImageFile(file)) {
+          alert('Por favor selecciona una imagen válida (JPG, PNG, GIF, WEBP)');
+          e.target.value = '';
+          return;
+        }
+        if (!isValidFileSize(file, 'image')) {
+          alert('La imagen no debe superar los 50MB');
+          e.target.value = '';
+          return;
+        }
+      } else if (name === 'audioFile') {
+        if (!isValidAudioFile(file)) {
+          alert('Por favor selecciona un archivo de audio válido (MP3, WAV, OGG)');
+          e.target.value = '';
+          return;
+        }
+        if (!isValidFileSize(file, 'audio')) {
+          alert('El audio no debe superar los 200MB');
+          e.target.value = '';
+          return;
+        }
+      }
+      
+      setForm(prev => ({ ...prev, [name]: file }));
     }
   };
 
@@ -108,25 +136,44 @@ export default function AdminBeats() {
     }
 
     try {
-      // Preparar datos en formato JSON (el backend espera JSON, no FormData)
+      let imagenUrl = form.imagenUrl?.trim() || '';
+      let audioUrl = form.audioUrl?.trim() || '';
+      
+      // Subir archivos a Supabase si se seleccionaron
+      if (form.imagenFile) {
+        try {
+          console.log('Subiendo imagen a Supabase...');
+          imagenUrl = await uploadImage(form.imagenFile);
+          console.log('Imagen subida:', imagenUrl);
+        } catch (error) {
+          alert('Error al subir la imagen: ' + error.message);
+          return;
+        }
+      }
+      
+      if (form.audioFile) {
+        try {
+          console.log('Subiendo audio a Supabase...');
+          audioUrl = await uploadAudio(form.audioFile);
+          console.log('Audio subido:', audioUrl);
+        } catch (error) {
+          alert('Error al subir el audio: ' + error.message);
+          return;
+        }
+      }
+
+      // Preparar datos en formato JSON
       const beatData = {
         titulo: form.titulo.trim(),
         artista: form.artista.trim(),
         genero: form.genero,
-        precio: precioNumero, // Enviar como número entero
+        precio: precioNumero,
         descripcion: form.descripcion?.trim() || '',
         emocion: form.emocion || '',
-        imagenUrl: form.imagenUrl?.trim() || '',
-        audioUrl: form.audioUrl?.trim() || '',
+        imagenUrl: imagenUrl,
+        audioUrl: audioUrl,
         estado: 'DISPONIBLE'
       };
-
-      // Nota: Si necesitas subir archivos, deberás implementar un endpoint separado
-      // para upload de archivos o usar Supabase Storage directamente
-      if (form.imagenFile || form.audioFile) {
-        alert('La carga de archivos se realizará mediante URLs. Por favor, sube los archivos a Supabase y pega las URLs.');
-        return;
-      }
 
       if (beatEditando) {
         await actualizarBeat(beatEditando.id, beatData);
