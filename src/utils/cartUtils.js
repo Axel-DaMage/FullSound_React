@@ -33,10 +33,13 @@ export function addItemToCart(beat, cantidad = 1) {
     const titulo = beat.titulo || beat.nombre || 'Beat';
     items.push({
       id: beat.id,
+      beatId: beat.id,
       titulo,
+      artista: beat.artista || 'Artista Desconocido',
       precioNumerico: beat.precioNumerico || beat.precio || 0,
       precio: beat.precio,
       imagen: beat.imagen || beat.imagenUrl,
+      audioUrl: beat.audioUrl || beat.audio || beat.fuente,
       cantidad: 1,
     });
   }

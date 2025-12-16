@@ -211,33 +211,53 @@ export const descargarMP3 = async (beat) => {
   try {
     const audioUrl = beat.audioUrl || beat.audio || beat.fuente;
     
+    console.log('[DOWNLOAD] Intentando descargar MP3:', { titulo: beat.titulo, audioUrl });
+    
     if (!audioUrl) {
-      console.error('[ERROR] No se encontró URL de audio para el beat');
-      return;
+      throw new Error('No se encontró URL de audio para el beat');
     }
 
-    // Hacer fetch del archivo
-    const response = await fetch(audioUrl);
+    // Hacer fetch del archivo con modo CORS
+    const response = await fetch(audioUrl, {
+      mode: 'cors',
+      credentials: 'omit'
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Error HTTP: ${response.status}`);
+    }
+    
     const blob = await response.blob();
+    console.log('[DOWNLOAD] Blob obtenido:', blob.size, 'bytes');
     
     // Crear enlace de descarga
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
     link.download = `${beat.titulo.replace(/\s+/g, '_')}.mp3`;
+    link.style.display = 'none';
     document.body.appendChild(link);
     link.click();
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(url);
     
-    console.log(`[DOWNLOAD] MP3 del beat "${beat.titulo}" descargado`);
+    // Limpiar después de un delay
+    setTimeout(() => {
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    }, 100);
+    
+    console.log(`[DOWNLOAD] ✓ MP3 del beat "${beat.titulo}" descargado correctamente`);
   } catch (error) {
     console.error('[ERROR] Error al descargar el MP3:', error);
+    console.error('[ERROR] Detalles:', { titulo: beat.titulo, error: error.message });
+    
     // Fallback: abrir en nueva pestaña
     const audioUrl = beat.audioUrl || beat.audio || beat.fuente;
     if (audioUrl) {
+      console.log('[FALLBACK] Abriendo audio en nueva pestaña');
       window.open(audioUrl, '_blank');
     }
+    
+    throw error; // Re-lanzar para que se capture en el componente
   }
 };
 

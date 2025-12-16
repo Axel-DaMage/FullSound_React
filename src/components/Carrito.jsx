@@ -30,27 +30,39 @@ export default function Carrito() {
       // Procesar cada beat comprado
       for (const item of items) {
         try {
-          // 1. Marcar el beat como vendido
-          await marcarBeatComoVendido(item.beatId || item.id);
+          console.log('Procesando item del carrito:', item);
           
-          // 2. Descargar la licencia TXT
+          const beatId = item.beatId || item.id;
+          
+          // 1. Obtener información completa del beat desde la base de datos
+          const { obtenerBeatPorId } = await import('../services/beatsService');
+          const { data: beatCompleto } = await obtenerBeatPorId(beatId);
+          console.log('Beat completo obtenido:', beatCompleto);
+          
+          // 2. Marcar el beat como vendido
+          await marcarBeatComoVendido(beatId);
+          console.log(`✓ Beat "${beatCompleto.titulo}" marcado como VENDIDO`);
+          
+          // 3. Descargar la licencia TXT
           descargarLicencia({
-            titulo: item.titulo,
-            artista: item.artista || 'Artista Desconocido'
+            titulo: beatCompleto.titulo,
+            artista: beatCompleto.artista || 'Artista Desconocido'
           });
+          console.log(`✓ Licencia de "${beatCompleto.titulo}" generada`);
           
-          // 3. Pequeña pausa para evitar bloqueo del navegador
-          await new Promise(resolve => setTimeout(resolve, 500));
+          // 4. Pequeña pausa para evitar bloqueo del navegador
+          await new Promise(resolve => setTimeout(resolve, 800));
           
-          // 4. Descargar el archivo MP3
+          // 5. Descargar el archivo MP3
           await descargarMP3({
-            titulo: item.titulo,
-            audioUrl: item.audioUrl || item.audio || item.fuente
+            titulo: beatCompleto.titulo,
+            audioUrl: beatCompleto.audioUrl || beatCompleto.audio || beatCompleto.fuente
           });
+          console.log(`✓ MP3 de "${beatCompleto.titulo}" descargado`);
           
-          console.log(`✓ Beat "${item.titulo}" procesado correctamente`);
         } catch (error) {
           console.error(`Error procesando el beat "${item.titulo}":`, error);
+          alert(`Error al procesar "${item.titulo}": ${error.message}`);
           // Continuar con los demás beats aunque uno falle
         }
       }
